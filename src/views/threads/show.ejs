@@ -14,8 +14,16 @@
 <p><%= thread.body %></p>
 <div class="row">
   <form method="post" action="/threads/<%= thread._id %>/like"><button>ถูกใจ</button></form>
-  <% if (currentUser){ %><a class="button" href="/threads/<%= thread._id %>/report">รายงาน</a><% } %>
+
+  <% if (currentUser && (currentUser.id === String(thread.author._id) || currentUser.role==='admin')){ %>
+    <form method="post" action="/threads/<%= thread._id %>/delete">
+      <button class="danger">ลบกระทู้</button>
+    </form>
+  <% } else if (currentUser) { %>
+    <a class="button" href="/threads/<%= thread._id %>/report">รายงาน</a>
+  <% } %>
 </div>
+
 <hr/>
 <h3>คำตอบ</h3>
 <ul class="comments">

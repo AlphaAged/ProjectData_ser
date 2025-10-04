@@ -25,7 +25,8 @@ const PostSchema = new mongoose.Schema({
   views: {type:Number, default:0},
   comments: [CommentSchema],
   reports: [ReportSchema],
-  slug: {type:String, unique:true}
+  slug: {type:String, unique:true},
+  deleted: { type: Boolean, default: false } // <-- เพิ่มตรงนี้
 }, {timestamps:true});
 
 PostSchema.pre('save', function(next){
