@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CP KKU Study Notes</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="brand" href="/">CP KKU STUDY NOTES</a>
+    <nav>
+      <a href="/">หน้าหลัก</a>
+      <a href="/search">ค้นหาสรุป</a>
+      <a href="/community">พูดคุย</a>
+
+      <% if (currentUser) { %>
+        <a href="/notifications">แจ้งเตือน</a>
+        <a href="/posts/new">+ โพสต์สรุป</a>
+        <a href="/threads/new">+ ตั้งคำถาม</a>
+
+        <% if (currentUser.role==='admin' ) { %>
+          <a href="/admin">แอดมิน</a>
+        <% } %>
+
+        <form action="/logout" method="post" style="display:inline">
+          <button class="linklike">ออกจากระบบ</button>
+        </form>
+        <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+      <% } else { %>
+        <a href="/login">เข้าสู่ระบบ</a>
+        <a href="/register">สมัครสมาชิก</a>
+      <% } %>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2 class="d-flex justify-content-center">แก้ไขโพสต์</h2>
+    <div class="d-flex justify-content-center align-items-center min-vh-50">
+      <div class="preference" style="max-width: 800px; width: 100%;">
+        <form method="post" action="/posts/<%= post.slug %>" enctype="multipart/form-data">
+
+          <div class="mb-3">
+            <label class="form-label fs-5">ชื่อเรื่อง</label>
+            <input name="title" class="form-control" value="<%= post.title %>" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fs-5">เนื้อหา</label>
+            <textarea name="body" rows="8" class="form-control" required><%= post.body %></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fs-5">แท็ก</label>
+            <select name="tags" class="form-select"  required>
+              <% ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=> { %>
+                <option value="<%= t %>" <%= post.tags.includes(t)?'selected':'' %>>
+                  <%= t %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fs-5">ภาพหน้าปก</label>
+            <input type="file" name="cover" class="form-control" accept="image/*" onchange="previewImage(event)">
+          </div>
+
+          <div class="text-center mt-3">
+            <% if (post.cover) { %>
+              <img id="coverPreview" src="<%= post.cover %>" class="img-fluid rounded shadow-sm"
+                style="max-height: 300px;" />
+            <% } else { %>
+              <img id="coverPreview" src="#" alt="Preview"
+                class="img-fluid rounded shadow-sm d-none" style="max-height: 300px;" />
+            <% } %>
+          </div>
+
+          <script>
+            function previewImage(event) {
+              const input = event.target;
+              const preview = document.getElementById("coverPreview");
+
+              if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                  preview.src = e.target.result;
+                  preview.classList.remove("d-none");
+                }
+                reader.readAsDataURL(input.files[0]);
+              } else {
+                preview.src = "#";
+                preview.classList.add("d-none");
+              }
+            }
+          </script>
+
+          <div class="d-flex justify-content-end mt-3">
+            <button type="submit" class="btn btn-success">บันทึก</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2025 CP KKU Study Notes (MVP)
+  </footer>
+</body>
+
+</html>
