@@ -7,25 +7,7 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">CP KKU STUDY NOTES</a>
-  <nav>
-    <a href="/">หน้าหลัก</a>
-    <a href="/search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
-    <% if (currentUser){ %>
-      <a href="/notifications">แจ้งเตือน</a>
-      <!-- <a href="/posts/new">+ โพสต์สรุป</a> --> 
-      <!-- <a href="/threads/new">+ ตั้งคำถาม</a> --> 
-      <% if (currentUser.role==='admin'){ %><a href="/admin">แอดมิน</a><% } %>
-      <form action="/logout" method="post" style="display:inline"><button class="linklike">ออกจากระบบ</button></form>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
-    <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
-    <% } %>
-  </nav>
-</header>
+
 <main class="container">
 <article class="post">
   <% if (post.coverImage){ %><img src="<%= post.coverImage %>" class="cover-xl"/><% } %>
