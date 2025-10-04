@@ -47,13 +47,14 @@
               <span class="tag"><%= tag %></span>
             <% }) %>
           </div>
-          <form method="post" action="/posts/<%= post.slug %>/save" style="display:inline">
-            <button>ยกเลิกบันทึก</button>
-          </form>
+         
+            <button type="button" class="unsave-btn" data-slug="<%= post.slug %>">ยกเลิกบันทึก</button>
+      
         </li>
       <% }) %>
     </ul>
   <% } %>
 </main>
+<script src="/js/save-post.js"></script>
 </body>
 </html>
