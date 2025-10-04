@@ -13,7 +13,7 @@ router.post('/register', async (req,res)=>{
     req.session.user = {id:user._id, username:user.username, role:user.role, avatar:user.avatar, email:user.email};
     res.redirect('/');
   } catch (e) {
-    res.render('auth/register', {error: 'Registration failed: '+e.message});
+    res.render('auth/register', {error: 'มีผู้ใช้ชื่อนี้หรืออีเมลนี้แล้ว'});
   }
 });
 
