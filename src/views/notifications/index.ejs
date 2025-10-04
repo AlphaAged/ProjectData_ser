@@ -5,19 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CP KKU Study Notes</title>
   <link rel="stylesheet" href="/style.css"/>
+  <!-- css ตรงนี้คือไปที่คลาส list อ่านแล้ว blur --> 
+  <style>
+    .list li.read {
+  opacity: 0.6;
+  filter: blur(0.4px); 
+}
+
+  </style>
 </head>
 <body>
 <main class="container">
 <h2>กล่องแจ้งเตือนของฉัน</h2>
 <form method="post" action="/notifications/mark-all-read"><button>ทำเครื่องหมายว่าอ่านแล้วทั้งหมด</button></form>
+
 <ul class="list">
-  <% notifications.forEach(n=>{ %>
-    <li class="<%= n.read?'read':'' %>">
-      <a href="<%= n.link %>"><%= n.message %></a>
+  <% notifications.forEach(n => { %>
+    <li class="notification <%= n.read ? 'read' : '' %>" data-id="<%= n._id %>">
+      <a href="<%= n.link %>" class="notification-link"><%= n.message %></a>
       <span class="muted"><%= new Date(n.createdAt).toLocaleString() %></span>
     </li>
   <% }) %>
 </ul>
-</main>
+
+<script>
+document.querySelectorAll('.notification-link').forEach(link => {
+  link.addEventListener('click', async (e) => {
+    const li = e.target.closest('.notification');
+    const id = li.dataset.id;
+    //ส่งrequest ไป mark ว่าอ่านแล้ว
+    await fetch(`/notifications/${id}/mark-read`, { method: 'POST' });
+    li.classList.add('read'); //class read คืออ่านแล้ว
+  });
+});
+</script>
+
 </body>
 </html>
