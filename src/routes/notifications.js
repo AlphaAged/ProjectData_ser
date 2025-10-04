@@ -16,4 +16,10 @@ router.post('/notifications/mark-all-read', requireAuth, async (req,res)=>{
   res.redirect('/notifications');
 });
 
+router.post('/:id/mark-read', async (req, res) => {
+  const id = req.params.id;
+  await Notification.findByIdAndUpdate(id, { read: true });
+  res.json({ success: true });
+});
+
 export default router;
