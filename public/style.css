@@ -93,3 +93,80 @@ button,.button{background:#0ea5e9;color:white;border:none} .danger{background:#e
   .fab { width: 56px; height: 56px; }
 }
  /*ปิด*/ 
+
+ /*burger bar*/
+ /* โครงสร้าง navbar ปรกติ */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+
+}
+
+.navbar a, .navbar .linklike {
+  /* color: white; */
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+.linklike {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  /* color: white; */
+}
+
+/* burger button ซ่อนตอนจอใหญ่ */
+.burger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* side menu (ซ่อน default) */
+.side-menu {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  right: -250px;
+  background: #0d63a5;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-menu a, .side-menu .linklike {
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.side-menu .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Responsive: จอเล็ก */
+@media (max-width: 845px) {
+  .nav-left, .nav-right {
+    display: none; /* ซ่อนเมนูปรกติ */
+  }
+  .burger {
+    display: block; /* โชว์ burger button */
+  }
+}
+/*ปิด*/
