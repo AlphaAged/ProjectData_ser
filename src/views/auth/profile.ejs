@@ -1,31 +1,65 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
 </head>
+
 <body>
-<%- include('../partials/header') %>
-<main class="container">
-  <h2>โปรไฟล์ของฉัน</h2>
+  <%- include('../partials/header') %>
+    <main class="container">
+      <div class="profile-wrapper">
+        <h2>โปรไฟล์ของฉัน</h2>
+        <% if (message){ %>
+          <div class="alert">
+            <%= message %>
+          </div>
+          <% } %>
 
-  <% if (message){ %>
-    <div class="alert"><%= message %></div>
-  <% } %>
+            <div class="profile-info">
+              <p><strong>ชื่อผู้ใช้:</strong>
+                <%= user.username %>
+              </p>
+              <p><strong>อีเมล:</strong>
+                <%= user.email %>
+              </p>
+              <p><strong>สาขา/โปรแกรม:</strong>
+                <%= user.program || '-' %>
+              </p>
+              <p><strong>ชั้นปี:</strong>
+                <%= user.year || '-' %>
+              </p>
+              <p><strong>แนะนำตัว:</strong>
+                <%= user.bio || '-' %>
+              </p>
+            </div>
 
-  <div class="profile-info">
-    <p><strong>ชื่อผู้ใช้:</strong> <%= user.username %></p>
-    <p><strong>อีเมล:</strong> <%= user.email %></p>
-    <p><strong>สาขา/โปรแกรม:</strong> <%= user.program || '-' %></p>
-    <p><strong>ชั้นปี:</strong> <%= user.year || '-' %></p>
-    <p><strong>แนะนำตัว:</strong> <%= user.bio || '-' %></p>
-  </div>
-
-  <a href="/edit-profile">แก้ไขโปรไฟล์ </a>
-  <a href="/saved-posts">รายการที่บันทึก</a>
-</main>
+            <div class="profile-actions">
+            <a id="edit-btn" class="action-btn" href="/edit-profile">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-pencil-icon lucide-pencil">
+                <path
+                  d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                <path d="m15 5 4 4" />
+              </svg>
+              แก้ไขโปรไฟล์
+            </a>
+            <a id="saved-btn" class="action-btn" href="/saved-posts">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-bookmark-icon lucide-bookmark">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+              </svg>
+              รายการที่บันทึก
+            </a>
+            </div>
+      </div>
+    </main>
 
 </body>
+
 </html>

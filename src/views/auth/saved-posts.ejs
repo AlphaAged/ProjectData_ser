@@ -7,24 +7,9 @@
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">CP KKU STUDY NOTES</a>
-  <nav>
-    <a href="/">หน้าหลัก</a>
-    <a href="/search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
-    <% if (currentUser) { %>
-      <a href="/notifications">แจ้งเตือน</a>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
-      <form action="/logout" method="post" style="display:inline">
-        <button class="linklike">ออกจากระบบ</button>
-      </form>
-    <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
-    <% } %>
-  </nav>
-</header>
+  
+<%- include('../partials/header') %>
+
 
 <main class="container">
   <h2>โพสต์ที่บันทึกไว้</h2>

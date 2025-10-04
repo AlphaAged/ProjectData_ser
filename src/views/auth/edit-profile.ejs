@@ -7,55 +7,56 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">CP KKU STUDY NOTES</a>
-  <nav>
-    <a href="/">หน้าหลัก</a>
-    <a href="/search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
-    <% if (currentUser){ %>
-      <a href="/notifications">แจ้งเตือน</a>
-      <!-- <a href="/posts/new">+ โพสต์สรุป</a> --> 
-      <!-- <a href="/threads/new">+ ตั้งคำถาม</a> --> 
-      <% if (currentUser.role==='admin'){ %><a href="/admin">แอดมิน</a><% } %>
-      <form action="/logout" method="post" style="display:inline"><button class="linklike">ออกจากระบบ</button></form>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
-    <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
-    <% } %>
-  </nav>
-</header>
+  <%- include('../partials/header') %>
 <main class="container">
-<h2>โปรไฟล์ของฉัน</h2>
 <% if (message){ %><div class="alert"><%= message %></div><% } %>
-<form method="post">
-  <label>ชื่อผู้ใช้ <input name="username" value="<%= user.username %>"/></label>
-  <label>อีเมล <input name="email" value="<%= user.email %>"/></label>
-  <label>สาขา 
-  <select name="program">
-    <option value="">-- เลือกสาขา --</option>
-    <option value="CS" <%= user.program === 'CS' ? 'selected' : '' %>>CS</option>
-    <option value="IT" <%= user.program === 'IT' ? 'selected' : '' %>>IT</option>
-    <option value="GIS" <%= user.program === 'GIS' ? 'selected' : '' %>>GIS</option>
-    <option value="CY" <%= user.program === 'CY' ? 'selected' : '' %>>CY</option>
-    <option value="AI" <%= user.program === 'AI' ? 'selected' : '' %>>AI</option>
-  </select>
-</label>
+<form method="post" class="profile-form">
+  <h2>แก้ไขโปรไฟล์ของฉัน</h2>
 
-<label>ชั้นปี 
-  <select name="year">
-    <option value="">-- เลือกชั้นปี --</option>
-    <option value="1" <%= user.year === '1' ? 'selected' : '' %>>1</option>
-    <option value="2" <%= user.year === '2' ? 'selected' : '' %>>2</option>
-    <option value="3" <%= user.year === '3' ? 'selected' : '' %>>3</option>
-    <option value="4" <%= user.year === '4' ? 'selected' : '' %>>4</option>
-  </select>
-</label>
+  <div class="form-row">
+    <div class="form-group">
+      <label>ชื่อผู้ใช้</label>
+      <input name="username" value="<%= user.username %>" />
+    </div>
+    <div class="form-group">
+      <label>อีเมล</label>
+      <input name="email" value="<%= user.email %>" />
+    </div>
+  </div>
 
-  <label>แนะนำตัว <textarea name="bio"><%= user.bio||'' %></textarea></label>
-  <a href="/profile">ยกเลิก</a>
-  <button>บันทึก</button>
+  <div class="form-row">
+    <div class="form-group">
+      <label>สาขา</label>
+      <select name="program">
+        <option value="">-- เลือกสาขา --</option>
+        <option value="CS" <%= user.program === 'CS' ? 'selected' : '' %>>CS</option>
+        <option value="IT" <%= user.program === 'IT' ? 'selected' : '' %>>IT</option>
+        <option value="GIS" <%= user.program === 'GIS' ? 'selected' : '' %>>GIS</option>
+        <option value="CY" <%= user.program === 'CY' ? 'selected' : '' %>>CY</option>
+        <option value="AI" <%= user.program === 'AI' ? 'selected' : '' %>>AI</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>ชั้นปี</label>
+      <select name="year">
+        <option value="">-- เลือกชั้นปี --</option>
+        <option value="1" <%= user.year === '1' ? 'selected' : '' %>>1</option>
+        <option value="2" <%= user.year === '2' ? 'selected' : '' %>>2</option>
+        <option value="3" <%= user.year === '3' ? 'selected' : '' %>>3</option>
+        <option value="4" <%= user.year === '4' ? 'selected' : '' %>>4</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>แนะนำตัว</label>
+    <textarea name="bio" rows="5"><%= user.bio||'' %></textarea>
+  </div>
+
+  <div class="form-actions">
+    <a id="cancel-btn" class="linklike" href="/profile">ยกเลิก</a>
+    <button id="saved-btn" class="button" type="submit">บันทึก</button>
+  </div>
 </form>
 
 </main>

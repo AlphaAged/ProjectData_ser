@@ -29,7 +29,7 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #FBF8EF;
+  background: #FBFFF1;
   padding: 10px 16px;
   border-bottom: 1px solid #cfe7ff;
   position: sticky;
@@ -263,6 +263,132 @@ button,
   pointer-events: none;
 }
 
+/* profile css */
+.profile-wrapper {
+  max-width: 500px;
+  margin: 0 auto 20px;
+  background: white;
+  border: 1px solid #e6eef5;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* profile action buttons: align icon and label */
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #0d63a5;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.action-btn svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.action-btn svg path {
+  stroke-width: 2;
+}
+
+.action-btn:hover {
+  background: #0a4e7a;
+  text-decoration: none;
+
+}
+
+/* edit-profile form styles */
+.profile-form {
+  max-width: 700px;
+  margin: 18px auto 60px;
+  background: white;
+  padding: 18px;
+  border: 1px solid #e6eef5;
+  border-radius: 12px;
+}
+
+.profile-form .form-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.profile-form .form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+  border: 1px solid #cfe7ff;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.profile-form textarea {
+  resize: vertical
+}
+
+.profile-form .form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.profile-form .linklike {
+  background: transparent;
+  border: 1px solid #cfe7ff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: #0d63a5;
+}
+
+.profile-form .linklike:hover {
+  text-decoration: none;
+  background: #eef7ff;
+}
+
+#saved-btn {
+  background: #0d63a5;
+  border: none;
+  color: white;
+  font-family: "kanit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  cursor: pointer;
+  padding: 10px 16px;
+  border-radius: 10px;
+
+}
+
+#saved-btn:hover {
+  background: #0a4e7a;
+  text-decoration: none;
+}
+
+.profile-form .button {
+  padding: 8px 14px
+}
+
 /* ขนาดเล็กลงบนจอมือถือ */
 @media (max-width: 480px) {
   .fab {
@@ -295,7 +421,7 @@ button,
     position: absolute;
     right: 16px;
     top: calc(100% + 8px);
-    background: #eef7ff;
+    background: #FBFFF1;
     border: 1px solid #cfe7ff;
     border-radius: 10px;
     padding: 8px 10px;
@@ -342,4 +468,20 @@ button,
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   margin-top: 6px;
   color: var(--muted, #6b7280)
+}
+
+
+
+@media (max-width:720px) {
+  .profile-form .form-row {
+    flex-direction: column
+  }
+
+  .profile-form {
+    padding: 14px
+  }
+
+  .profile-form .form-actions {
+    justify-content: space-between
+  }
 }
