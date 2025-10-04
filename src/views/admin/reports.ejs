@@ -32,37 +32,20 @@
 <ul class="list">
   <% posts.forEach(p=>{ p.reports.forEach((r,idx)=>{ %>
     <li>
-      <b><%= p.title %></b> - <%= r.reasonTitle %> (<%= r.status %>)
-      <form method="post" action="/admin/reports/post/<%= p.slug %>/<%= idx %>/status" class="inline">
-        <select name="status">
-          <option value="pending">ยังไม่ดำเนินการ</option>
-          <option value="in_progress">กำลังดำเนินการ</option>
-          <option value="resolved">ดำเนินการเสร็จสิ้น</option>
-        </select>
-        <button>อัปเดต</button>
-      </form>
-      <form method="post" action="/admin/posts/<%= p.slug %>/delete" class="inline">
-        <button class="danger">ลบโพสต์</button>
-      </form>
+      <a href="/admin/reports/post/<%= p._id %>/<%= idx %>">
+        <b><%= p.title %></b> (<%= r.status %>)
+      </a>
     </li>
   <% }) }) %>
 </ul>
+
 <h3>จากกระทู้พูดคุย</h3>
 <ul class="list">
   <% threads.forEach(t=>{ t.reports.forEach((r,idx)=>{ %>
     <li>
-      <b><%= t.title %></b> - <%= r.reasonTitle %> (<%= r.status %>)
-      <form method="post" action="/admin/reports/thread/<%= t._id %>/<%= idx %>/status" class="inline">
-        <select name="status">
-          <option value="pending">ยังไม่ดำเนินการ</option>
-          <option value="in_progress">กำลังดำเนินการ</option>
-          <option value="resolved">ดำเนินการเสร็จสิ้น</option>
-        </select>
-        <button>อัปเดต</button>
-      </form>
-      <form method="post" action="/admin/threads/<%= t._id %>/delete" class="inline">
-        <button class="danger">ลบกระทู้</button>
-      </form>
+      <a href="/admin/reports/thread/<%= t._id %>/<%= idx %>">
+        <b><%= t.title %></b> (<%= r.status %>)
+      </a>
     </li>
   <% }) }) %>
 </ul>

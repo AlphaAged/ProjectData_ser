@@ -56,4 +56,14 @@ router.post('/threads/:id/report', requireAuth, async (req,res)=>{
   res.redirect('/threads/'+th._id);
 });
 
+// delete or report button
+router.post('/threads/:id/delete', requireAuth, async (req,res)=>{
+  const th = await Thread.findById(req.params.id);
+  if (!th) return res.status(404).send('Not found');
+  if (th.author.toString() !== req.session.user.id && req.session.user.role!=='admin') 
+    return res.status(403).send('Forbidden');
+  await Thread.deleteOne({_id: th._id});
+  res.redirect('/community');
+});
+
 export default router;
