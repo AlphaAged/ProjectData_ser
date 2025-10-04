@@ -31,7 +31,12 @@ router.post('/users/:id/role', async (req,res)=>{
   res.redirect('/admin/users');
 });
 router.post('/users/:id/delete', async (req,res)=>{
-  await User.deleteOne({_id:req.params.id});
+  // ลบโพสต์และกระทู้ของ user ก่อนลบ user
+  await Promise.all([
+    Post.deleteMany({author: req.params.id}),
+    Thread.deleteMany({author: req.params.id}),
+    User.deleteOne({_id:req.params.id})
+  ]);
   res.redirect('/admin/users');
 });
 
