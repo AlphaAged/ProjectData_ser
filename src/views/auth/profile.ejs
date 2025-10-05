@@ -7,36 +7,25 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">CP KKU STUDY NOTES</a>
-  <nav>
-    <a href="/">หน้าหลัก</a>
-    <a href="/search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
-    <% if (currentUser){ %>
-      <a href="/notifications">แจ้งเตือน</a>
-      <!-- <a href="/posts/new">+ โพสต์สรุป</a> --> 
-      <!-- <a href="/threads/new">+ ตั้งคำถาม</a> --> 
-      <% if (currentUser.role==='admin'){ %><a href="/admin">แอดมิน</a><% } %>
-      <form action="/logout" method="post" style="display:inline"><button class="linklike">ออกจากระบบ</button></form>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
-    <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
-    <% } %>
-  </nav>
-</header>
+
 <main class="container">
-<h2>โปรไฟล์ของฉัน</h2>
-<% if (message){ %><div class="alert"><%= message %></div><% } %>
-<form method="post">
-  <label>ชื่อผู้ใช้ <input name="username" value="<%= user.username %>"/></label>
-  <label>อีเมล <input name="email" value="<%= user.email %>"/></label>
-  <label>สาขา/โปรแกรม <input name="program" value="<%= user.program||'' %>"/></label>
-  <label>ชั้นปี <input name="year" value="<%= user.year||'' %>"/></label>
-  <label>แนะนำตัว <textarea name="bio"><%= user.bio||'' %></textarea></label>
-  <button>บันทึก</button>
-</form>
+  <h2>โปรไฟล์ของฉัน</h2>
+
+  <% if (message){ %>
+    <div class="alert"><%= message %></div>
+  <% } %>
+
+  <div class="profile-info">
+    <p><strong>ชื่อผู้ใช้:</strong> <%= user.username %></p>
+    <p><strong>อีเมล:</strong> <%= user.email %></p>
+    <p><strong>สาขา/โปรแกรม:</strong> <%= user.program || '-' %></p>
+    <p><strong>ชั้นปี:</strong> <%= user.year || '-' %></p>
+    <p><strong>แนะนำตัว:</strong> <%= user.bio || '-' %></p>
+  </div>
+
+  <a href="/edit-profile">แก้ไขโปรไฟล์ </a>
+  <a href="/saved-posts">รายการที่บันทึก</a>
 </main>
+
 </body>
 </html>

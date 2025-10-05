@@ -18,7 +18,8 @@ const UserSchema = new mongoose.Schema({
   program: String,
   year: String,
   bio: String,
-  notifications: [NotificationSchema]
+  notifications: [NotificationSchema],
+   savePosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
 }, {timestamps:true});
 
 UserSchema.methods.setPassword = async function(password){

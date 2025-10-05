@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.post('/register', async (req,res)=>{
     req.session.user = {id:user._id, username:user.username, role:user.role, avatar:user.avatar, email:user.email};
     res.redirect('/');
   } catch (e) {
-    res.render('auth/register', {error: 'Registration failed: '+e.message});
+    res.render('auth/register', {error: 'มีผู้ใช้ชื่อนี้หรืออีเมลนี้แล้ว'});
   }
 });
 
@@ -32,22 +33,50 @@ router.post('/logout', (req,res)=>{
   req.session.destroy(()=> res.redirect('/'));
 });
 
-// profile
+// แสดงโปรไฟล์
 router.get('/profile', async (req,res)=>{
   if (!req.session.user) return res.redirect('/login');
   const user = await User.findById(req.session.user.id);
   res.render('auth/profile', {user, message:null});
 });
 
-router.post('/profile', async (req,res)=>{
+// แสดงฟอร์มแก้ไขโปรไฟล์
+router.get('/edit-profile', async (req,res)=>{
   if (!req.session.user) return res.redirect('/login');
   const user = await User.findById(req.session.user.id);
+ res.render('auth/edit-profile', { user, message: null });// 👈 เปลี่ยนไป render edit-profile.ejs
+});
+
+// อัปเดตโปรไฟล์
+router.post('/edit-profile', async (req,res)=>{
+  if (!req.session.user) return res.redirect('/login');
+  const user = await User.findById(req.session.user.id);
+
   const {username,email,program,year,bio} = req.body;
-  user.username=username; user.email=email; user.program=program; user.year=year; user.bio=bio;
+  user.username = username;
+  user.email = email;
+  user.program = program;
+  user.year = year;
+  user.bio = bio;
+
   await user.save();
+
+  // อัปเดต session ด้วย
   req.session.user.username = username;
   req.session.user.email = email;
+
   res.render('auth/profile', {user, message:'อัปเดตโปรไฟล์แล้ว'});
 });
+
+// บันทึก/ยกเลิกบันทึกโพสต์
+router.get('/saved-posts', requireAuth, async (req, res) => {
+  const user = await User.findById(req.session.user.id).populate({
+    path: 'savePosts',
+    populate: { path: 'author' } // ดึง author ของแต่ละ post
+  });
+
+  res.render('auth/saved-posts', { savedPosts: user.savePosts, currentUser: req.session.user });
+});
+
 
 export default router;

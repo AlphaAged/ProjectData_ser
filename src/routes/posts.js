@@ -25,7 +25,13 @@ router.get('/posts/:slug', async (req,res)=>{
                    .populate('author')
                    .populate('comments.author');
   if (!post) return res.status(404).send('Not found');
-  
+
+  // ถ้า user ที่สร้างโพสต์ถูกลบ ให้ลบโพสต์นี้และ redirect ไปหน้าหลัก
+  if (!post.author) {
+    await Post.deleteOne({_id: post._id});
+    return res.redirect('/');
+  }
+
   post.views += 1;
   await post.save();
   res.render('posts/show', {post});
@@ -107,5 +113,34 @@ router.post('/posts/:slug/report', requireAuth, async (req,res)=>{
   await post.save();
   res.redirect('/posts/'+post.slug);
 });
+
+// toggle save post แบบ AJAX
+router.post('/posts/:slug/save', requireAuth, async (req, res) => {
+  const user = await User.findById(req.session.user.id);
+  const post = await Post.findOne({ slug: req.params.slug });
+  if (!post) return res.status(404).json({ error: 'โพสต์ไม่พบ' });
+
+  if (!user.savePosts) user.savePosts = [];
+
+  let saved;
+  const postIdStr = String(post._id);
+
+  if (user.savePosts.includes(postIdStr)) {
+    // ยกเลิกบันทึก
+    user.savePosts = user.savePosts.filter(id => String(id) !== postIdStr);
+    saved = false;
+  } else {
+    // บันทึกโพสต์
+    user.savePosts.push(post._id);
+    saved = true;
+  }
+
+  await user.save();
+  req.session.user.savePosts = user.savePosts.map(id => id.toString());
+
+  res.json({ saved });
+});
+
+
 
 export default router;
