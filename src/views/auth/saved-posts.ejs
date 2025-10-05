@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>โพสต์ที่บันทึกแล้ว</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">CP KKU STUDY NOTES</a>
+  <nav>
+    <a href="/">หน้าหลัก</a>
+    <a href="/search">ค้นหาสรุป</a>
+    <a href="/community">พูดคุย</a>
+    <% if (currentUser) { %>
+      <a href="/notifications">แจ้งเตือน</a>
+      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+      <form action="/logout" method="post" style="display:inline">
+        <button class="linklike">ออกจากระบบ</button>
+      </form>
+    <% } else { %>
+      <a href="/login">เข้าสู่ระบบ</a>
+      <a href="/register">สมัครสมาชิก</a>
+    <% } %>
+  </nav>
+</header>
+
+<main class="container">
+  <h2>โพสต์ที่บันทึกไว้</h2>
+
+  <% if (savedPosts.length === 0) { %>
+    <p class="muted">คุณยังไม่ได้บันทึกโพสต์ใด ๆ</p>
+  <% } else { %>
+    <ul class="saved-posts">
+      <% savedPosts.forEach(post => { %>
+        <li class="saved-post">
+          <% if (post.coverImage) { %>
+            <img src="<%= post.coverImage %>" class="cover-md"/>
+          <% } %>
+          <h3><a href="/posts/<%= post.slug %>"><%= post.title %></a></h3>
+          <p class="muted">
+            โดย <%= post.author?.username %> · ♥ <%= post.likes.length %> · 👁️ <%= post.views %>
+          </p>
+          <div class="tags">
+            <% (post.tags || []).forEach(tag => { %>
+              <span class="tag"><%= tag %></span>
+            <% }) %>
+          </div>
+         
+            <button type="button" class="unsave-btn" data-slug="<%= post.slug %>">ยกเลิกบันทึก</button>
+      
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+<script src="/js/save-post.js"></script>
+</body>
+</html>

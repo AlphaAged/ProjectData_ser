@@ -25,7 +25,12 @@
     <% } else if (currentUser) { %>
       <a class="button" href="/posts/<%= post.slug %>/report">รายงาน</a>
     <% } %>
-  </div>
+  </div> 
+  <% if (currentUser) { %>
+  <button id="save-post-btn" data-slug="<%= post.slug %>">
+    <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'ยกเลิกบันทึก' : 'บันทึกโพสต์' %>
+  </button>
+<% } %>
   <hr/>
   <h3>คอมเมนต์</h3>
   <ul class="comments">
@@ -42,4 +47,5 @@
 </article>
 </main>
 </body>
+<script src="/js/save-post.js"></script>
 </html>

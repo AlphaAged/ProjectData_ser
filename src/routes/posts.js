@@ -105,4 +105,33 @@ router.post('/posts/:slug/report', requireAuth, async (req,res)=>{
   res.redirect('/posts/'+post.slug);
 });
 
+// toggle save post แบบ AJAX
+router.post('/posts/:slug/save', requireAuth, async (req, res) => {
+  const user = await User.findById(req.session.user.id);
+  const post = await Post.findOne({ slug: req.params.slug });
+  if (!post) return res.status(404).json({ error: 'โพสต์ไม่พบ' });
+
+  if (!user.savePosts) user.savePosts = [];
+
+  let saved;
+  const postIdStr = String(post._id);
+
+  if (user.savePosts.includes(postIdStr)) {
+    // ยกเลิกบันทึก
+    user.savePosts = user.savePosts.filter(id => String(id) !== postIdStr);
+    saved = false;
+  } else {
+    // บันทึกโพสต์
+    user.savePosts.push(post._id);
+    saved = true;
+  }
+
+  await user.save();
+  req.session.user.savePosts = user.savePosts.map(id => id.toString());
+
+  res.json({ saved });
+});
+
+
+
 export default router;
