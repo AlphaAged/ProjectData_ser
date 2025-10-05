@@ -26,6 +26,7 @@
             <p class="muted">
               โดย <%= post.author?.username %> · 
               ♥ <span class="like-count"><%= post.likes.length %></span> 
+              · 💬 <span class="comment-count"><%= post.comments.length %></span>
               · 👁️ <%= post.views %>
             </p>
             <div class="tags">
@@ -129,6 +130,11 @@ if (commentForm && commentTextarea && commentsList) {
         const html = `<li><b>${username}</b> <span class="muted">${now.toLocaleString()}</span><br />${body}</li>`;
         commentsList.insertAdjacentHTML('beforeend', html);
         commentTextarea.value = '';
+        // Update comment count in meta
+        const commentCountSpan = document.querySelector('.comment-count');
+        if (commentCountSpan) {
+          commentCountSpan.textContent = (parseInt(commentCountSpan.textContent, 10) + 1).toString();
+        }
       }
     } finally {
       btn.disabled = false;
