@@ -34,9 +34,16 @@
 <p><b>วันที่รายงาน:</b> <%= report.createdAt.toLocaleString() %></p>
 
 <% if (originalItem) { %>
-  <a href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>" target="_blank">ไปยังโพสต์ต้นฉบับ</a>
+  <% if (originalItem.deleted) { %>
+    <p style="color:red;">ต้นทางถูกลบไปแล้ว</p>
+  <% } else { %>
+    <a href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>" target="_blank">
+  ไปยัง <%= type==='post' ? 'โพสต์' : 'กระทู้' %> ต้นฉบับ
+</a>
+
+  <% } %>
 <% } else { %>
-  <p style="color:red;">ต้นทางถูกลบไปแล้ว</p>
+  <p style="color:red;">ต้นทางไม่พบในฐานข้อมูล</p>
 <% } %>
 
 <form method="post" action="/admin/reports/<%= type %>/<%= originalItem._id %>/<%= reportIdx %>/status">
@@ -47,8 +54,6 @@
   </select>
   <button>อัปเดตสถานะการดำเนินการ</button>
 </form>
-
-
 
 </main>
 </body>

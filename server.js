@@ -59,7 +59,7 @@ app.use('/admin', adminRoutes);
 // Home
 import Post from './src/models/Post.js';
 app.get('/', async (req,res)=>{
-  const posts = await Post.find().sort({createdAt:-1}).limit(12).populate('author');
+  const posts = await Post.find({ deleted: false }).sort({createdAt:-1}).limit(12).populate('author');
   res.render('home', { posts });
 });
 
