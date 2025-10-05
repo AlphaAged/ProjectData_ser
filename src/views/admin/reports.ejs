@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-<%- include('../partials/header') %>
+
 <main class="container">
 <h2>รายงานปัญหา</h2>
 <h3>จากโพสต์สรุป</h3>
@@ -15,8 +15,7 @@
   <% posts.forEach(p=>{ p.reports.forEach((r,idx)=>{ %>
     <li>
       <a href="/admin/reports/post/<%= p._id %>/<%= idx %>">
-        <b><%= p.title %></b> (<%= r.status %>)
-      </a>
+        <b><%= r.reasonTitle %></b> (<%= r.status %>)      </a>
     </li>
   <% }) }) %>
 </ul>
@@ -26,7 +25,7 @@
   <% threads.forEach(t=>{ t.reports.forEach((r,idx)=>{ %>
     <li>
       <a href="/admin/reports/thread/<%= t._id %>/<%= idx %>">
-        <b><%= t.title %></b> (<%= r.status %>)
+        <b><%= r.reasonTitle %></b> (<%= r.status %>)
       </a>
     </li>
   <% }) }) %>

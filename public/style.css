@@ -427,92 +427,81 @@ button,
     height: 56px;
   }
 }
+ /*ปิด*/ 
 
-/* Responsive topbar: collapse nav into hamburger under 720px */
-@media (max-width: 720px) {
-  .topbar {
-    padding: 10px
-  }
+ /*burger bar*/
+ /* โครงสร้าง navbar ปรกติ */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
 
-  .brand {
-    font-size: 0.95rem
-  }
-
-  .nav-toggle {
-    display: inline-flex;
-    margin-left: auto;
-    z-index: 1100
-  }
-
-  .topbar nav {
-    position: relative
-  }
-
-  .topbar .nav-links {
-    position: absolute;
-    right: 16px;
-    top: calc(100% + 8px);
-    background: #FBFFF1;
-    border: 1px solid #cfe7ff;
-    border-radius: 10px;
-    padding: 8px 10px;
-    flex-direction: column;
-    align-items: flex-end;
-    min-width: 160px;
-    box-shadow: 0 8px 18px rgba(11, 35, 55, .08);
-    transform-origin: top right;
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(.95);
-    transition: opacity .15s ease, transform .15s ease, visibility .15s
-  }
-
-  .topbar .nav-links a {
-    margin: 8px 0
-  }
-
-  .topbar .nav-links form {
-    margin: 8px 0
-  }
-
-  .topbar .nav-links.open {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1)
-  }
 }
 
-/* hero section: responsive heading & subtitle */
-.hero {
-  max-width: 1000px;
-  margin: 18px auto 8px;
-  padding: 8px 16px;
-  text-align: center
+.navbar a, .navbar .linklike {
+  /* color: white; */
+  text-decoration: none;
+  margin: 0 8px;
 }
 
-.hero h1 {
-  font-size: clamp(1.4rem, 2.5vw, 2.2rem);
-  margin: 0
+.linklike {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  /* color: white; */
 }
 
-.hero p {
-  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
-  margin-top: 6px;
-  color: var(--muted, #6b7280)
+/* burger button ซ่อนตอนจอใหญ่ */
+.burger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
 }
 
+/* side menu (ซ่อน default) */
+.side-menu {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  right: -250px;
+  background: #0d63a5;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
 
+.side-menu a, .side-menu .linklike {
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 
-@media (max-width:720px) {
-  .profile-form .form-row {
-    flex-direction: column
+.side-menu .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* Responsive: จอเล็ก */
+@media (max-width: 845px) {
+  .nav-left, .nav-right {
+    display: none; /* ซ่อนเมนูปรกติ */
   }
-
-  .profile-form {
-    padding: 14px
-  }
-
-  .profile-form .form-actions {
-    justify-content: space-between
+  .burger {
+    display: block; /* โชว์ burger button */
   }
 }
+/*ปิด*/

@@ -9,15 +9,13 @@
 </head>
 
 <body>
-  <%- include('../partials/header') %>
-    <main class="container">
-      <div class="profile-wrapper">
-        <h2>โปรไฟล์ของฉัน</h2>
-        <% if (message){ %>
-          <div class="alert">
-            <%= message %>
-          </div>
-          <% } %>
+
+<main class="container">
+  <h2>โปรไฟล์ของฉัน</h2>
+
+  <% if (message){ %>
+    <div class="alert"><%= message %></div>
+  <% } %>
 
             <div class="profile-info">
               <p><strong>ชื่อผู้ใช้:</strong>

@@ -1,0 +1,51 @@
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="/">หน้าหลัก</a>
+    <a href="./search">ค้นหาสรุป</a>
+    <a href="/community">พูดคุย</a>
+
+    <% if (currentUser) { %>
+      <a href="/notifications">แจ้งเตือน</a>
+      <% if (currentUser.role === 'admin') { %>
+        <a href="/admin">แอดมิน</a>
+      <% } %>
+    <% } %>
+  </div>
+
+  <div class="nav-right">
+    <% if (currentUser) { %>
+      <form action="/logout" method="post" style="display:inline">
+        <button class="linklike">ออกจากระบบ</button>
+      </form>
+      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+    <% } else { %>
+      <a href="/login">เข้าสู่ระบบ</a>
+      <a href="/register">สมัครสมาชิก</a>
+    <% } %>
+  </div>
+
+  <!-- Burger Button (แสดงเมื่อจอเล็ก) -->
+  <div class="burger" id="burger">&#9776;</div>
+</nav>
+
+<!-- เมนูสำหรับจอเล็ก (slide from right) -->
+<div class="side-menu" id="sideMenu">
+  <button class="close-btn" id="closeBtn">&times;</button>
+  <a href="/">หน้าหลัก</a>
+  <a href="./search">ค้นหาสรุป</a>
+  <a href="/community">พูดคุย</a>
+
+  <% if (currentUser) { %>
+    <a href="/notifications">แจ้งเตือน</a>
+    <% if (currentUser.role === 'admin') { %>
+      <a href="/admin">แอดมิน</a>
+    <% } %>
+    <form action="/logout" method="post" style="display:inline">
+      <button class="linklike">ออกจากระบบ</button>
+    </form>
+    <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+  <% } else { %>
+    <a href="/login">เข้าสู่ระบบ</a>
+    <a href="/register">สมัครสมาชิก</a>
+  <% } %>
+</div>

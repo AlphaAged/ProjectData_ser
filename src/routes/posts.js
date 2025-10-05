@@ -19,15 +19,19 @@ router.post('/posts', requireAuth, upload.single('cover'), async (req,res)=>{
   res.redirect('/posts/'+post.slug);
 });
 
-// detail (increase views)
+// detail
 router.get('/posts/:slug', async (req,res)=>{
-  const post = await Post.findOne({slug: req.params.slug}).populate('author').populate('comments.author');
+  const post = await Post.findOne({slug: req.params.slug, deleted: false})
+                   .populate('author')
+                   .populate('comments.author');
   if (!post) return res.status(404).send('Not found');
+
   // ถ้า user ที่สร้างโพสต์ถูกลบ ให้ลบโพสต์นี้และ redirect ไปหน้าหลัก
   if (!post.author) {
     await Post.deleteOne({_id: post._id});
     return res.redirect('/');
   }
+
   post.views += 1;
   await post.save();
   res.render('posts/show', {post});
@@ -85,11 +89,16 @@ router.post('/posts/:slug', requireAuth, upload.single('cover'), async (req,res)
 });
 
 // delete or report button
+//soft delete แทนการลบจริง
 router.post('/posts/:slug/delete', requireAuth, async (req,res)=>{
   const post = await Post.findOne({slug:req.params.slug});
   if (!post) return res.status(404).send('Not found');
   if (post.author.toString() !== req.session.user.id && req.session.user.role!=='admin') return res.status(403).send('Forbidden');
-  await Post.deleteOne({_id:post._id});
+  //Soft delete
+  post.deleted = true;
+  post.deletedAt = new Date();
+  await post.save();
+
   res.redirect('/');
 });
 

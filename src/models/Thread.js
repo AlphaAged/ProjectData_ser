@@ -18,7 +18,9 @@ const ThreadSchema = new mongoose.Schema({
     reasonBody: String,
     status: {type:String, enum:['pending','in_progress','resolved'], default:'pending'},
     createdAt: {type:Date, default:Date.now}
-  }]
+  }],
+    deleted: { type: Boolean, default: false },  //เพิ่มลบ
+  deletedAt: Date                                //เพิ่มลบ
 }, {timestamps:true});
 
 export default mongoose.model('Thread', ThreadSchema);

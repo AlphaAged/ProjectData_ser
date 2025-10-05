@@ -7,25 +7,7 @@
   <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/">CP KKU STUDY NOTES</a>
-  <nav>
-    <a href="/">หน้าหลัก</a>
-    <a href="/search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
-    <% if (currentUser){ %>
-      <a href="/notifications">แจ้งเตือน</a>
-      <!-- <a href="/posts/new">+ โพสต์สรุป</a> --> 
-      <!-- <a href="/threads/new">+ ตั้งคำถาม</a> --> 
-      <% if (currentUser.role==='admin'){ %><a href="/admin">แอดมิน</a><% } %>
-      <form action="/logout" method="post" style="display:inline"><button class="linklike">ออกจากระบบ</button></form>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
-    <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
-    <% } %>
-  </nav>
-</header>
+
 <main class="container">
 <h2>รายละเอียดปัญหา</h2>
 <p><b>ปัญหา: </b> <%= report.reasonTitle %></p>
@@ -34,9 +16,16 @@
 <p><b>วันที่รายงาน:</b> <%= report.createdAt.toLocaleString() %></p>
 
 <% if (originalItem) { %>
-  <a href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>" target="_blank">ไปยังโพสต์ต้นฉบับ</a>
+  <% if (originalItem.deleted) { %>
+    <p style="color:red;">ต้นทางถูกลบไปแล้ว</p>
+  <% } else { %>
+    <a href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>" target="_blank">
+  ไปยัง <%= type==='post' ? 'โพสต์' : 'กระทู้' %> ต้นฉบับ
+</a>
+
+  <% } %>
 <% } else { %>
-  <p style="color:red;">ต้นทางถูกลบไปแล้ว</p>
+  <p style="color:red;">ต้นทางไม่พบในฐานข้อมูล</p>
 <% } %>
 
 <form method="post" action="/admin/reports/<%= type %>/<%= originalItem._id %>/<%= reportIdx %>/status">
@@ -47,8 +36,6 @@
   </select>
   <button>อัปเดตสถานะการดำเนินการ</button>
 </form>
-
-
 
 </main>
 </body>
