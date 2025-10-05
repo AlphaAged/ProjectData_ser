@@ -1,57 +1,93 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
 </head>
+
 <body>
 
-<main class="container" style="padding-bottom: 20px;">
-<div class="hero">
-  <h1>ยินดีต้อนรับสู่ CP KKU Study Notes</h1>
-  <p class="muted">แพลตฟอร์มแบ่งปันสรุปและความรู้สำหรับนักศึกษา</p>
-</div>
-
-
-<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-    <div>
-      <% if ((typeof q !== 'undefined' && q) || (typeof tag !== 'undefined' && tag)) { %>
-        <h3 style="margin:0;">ผลลัพธ์การค้นหา <%= q ? `"${q}"` : '' %> <%= tag ? `[${tag}]` : '' %></h3>
-      <% } else { %>
-        <h3 style="margin:0;">โพสต์ล่าสุด</h3>
-      <% } %>
+  <main class="container" style="padding-bottom: 20px;">
+    <div class="hero">
+      <h1>ยินดีต้อนรับสู่ CP KKU Study Notes</h1>
+      <p class="muted">แพลตฟอร์มแบ่งปันสรุปและความรู้สำหรับนักศึกษา</p>
     </div>
-    <form class="row" method="get" action="/" style="gap:0.5rem;">
-      <input name="q" placeholder="คำค้น" value="<%= typeof q !== 'undefined' ? q : '' %>"/>
-      <select name="tag">
-        <option value="">หมวดหมู่ทั้งหมด</option>
-        <% 
-          const selectedTag = typeof tag !== 'undefined' ? tag : '';
-          ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=>{ 
-        %>
-          <option value="<%= t %>" <%= selectedTag===t?'selected':'' %>><%= t %></option>
-        <% }) %>
-      </select>
-      <button>ค้นหา</button>
-    </form>
-  </div>
 
-  <% if ((typeof q !== 'undefined' && q) || (typeof tag !== 'undefined' && tag)) { %>
-    <% if (posts.length === 0) { %>
-      <p class="muted">ไม่พบผลลัพธ์</p>
-    <% } %>
-  <% } %>
-<div class="grid">
-  <% posts.forEach(p=>{ %>
-    <div class="card-container">
-    <a class="card" href="/posts/<%= p.slug %>">
-      <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover"/><% } %>
-      <div class="pad">
-        <h3 class="ellipsis"><%= p.title %></h3>
-        <p class="muted">by <%= p.author?.username %> · ♥ <%= p.likes.length %> · 👁️ <%= p.views %></p>
-         <!-- <p class="muted">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+      <div>
+        <% if ((typeof q !=='undefined' && q) || (typeof tag !=='undefined' && tag)) { %>
+          <h3 style="margin:0;">ผลลัพธ์การค้นหา <%= q ? `"${q}"` : '' %>
+              <%= tag ? `[${tag}]` : '' %>
+          </h3>
+          <% } else { %>
+            <h3 style="margin:0;">โพสต์ล่าสุด</h3>
+            <% } %>
+      </div>
+      <form class="row" method="get" action="/" style="gap:0.5rem;">
+        <input name="q" placeholder="คำค้นหา" value="<%= typeof q !== 'undefined' ? q : '' %>" />
+        <select name="tag">
+          <option value="">หมวดหมู่ทั้งหมด</option>
+          <% const selectedTag=typeof tag !=='undefined' ? tag : '' ;
+            ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=>{
+            %>
+            <option value="<%= t %>" <%=selectedTag===t?'selected':'' %>><%= t %>
+            </option>
+            <% }) %>
+        </select>
+        <button class="search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-search"
+            viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+          </svg>
+          ค้นหา
+        </button>
+      </form>
+    </div>
+
+    <% if ((typeof q !=='undefined' && q) || (typeof tag !=='undefined' && tag)) { %>
+      <% if (posts.length===0) { %>
+        <p class="muted">ไม่พบผลลัพธ์</p>
+        <% } %>
+          <% } %>
+            <div class="grid">
+              <% posts.forEach(p=>{ %>
+                <div class="card-container">
+                  <a class="card" href="/posts/<%= p.slug %>">
+                    <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover" />
+                      <% } %>
+                        <div class="pad">
+                          <h3 class="ellipsis meta-line">
+                            <%= p.title %>
+                          </h3>
+                          <p class="muted meta-line author">
+                            by <%= p.author?.username %>
+                          </p>
+                          <p class="muted meta-line stats">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill"
+                              viewBox="0 0 16 16" aria-hidden="true">
+                              <path fill-rule="evenodd"
+                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>
+                            <span class="stat-num">
+                              <%= p.likes.length %>
+                            </span>
+                            <span class="dot"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill"
+                              viewBox="0 0 16 16" aria-hidden="true">
+                              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                              <path
+                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                            </svg>
+                            <span class="stat-num">
+                              <%= p.views %>
+                            </span>
+                          </p>
+                          <!-- <p class="muted">
             by <%= p.author?.username %> · 
             <button 
               type="button" 
@@ -63,23 +99,26 @@
           </p> -->
 
 
-        <div class="tags">
-          <% (p.tags||[]).forEach(t=>{ %><span class="tag"><%= t %></span><% }) %>
-        </div>
-      </div>
-    </a>
-    </div>
-  <% }) %>
-</div>
-</main>
+                          <div class="tags">
+                            <% (p.tags||[]).forEach(t=>{ %><span class="tag">
+                                <%= t %>
+                              </span>
+                              <% }) %>
+                          </div>
+                        </div>
+                  </a>
+                </div>
+                <% }) %>
+            </div>
+  </main>
 
-<a href="/posts/new" class="fab" aria-label="สร้างโพสต์ใหม่">
-  <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-    <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor"/>
-  </svg>
-</a>
-</a>
-<!-- 
+  <a href="/posts/new" class="fab" aria-label="สร้างโพสต์ใหม่">
+    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+      <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor" />
+    </svg>
+  </a>
+  </a>
+  <!-- 
 <script>
 document.querySelectorAll('.like-btn').forEach(btn => {
   btn.addEventListener('click', async function() {
@@ -101,4 +140,5 @@ document.querySelectorAll('.like-btn').forEach(btn => {
 </script> -->
 
 </body>
+
 </html>
