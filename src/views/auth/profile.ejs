@@ -10,32 +10,35 @@
 
 <body>
 
-<main class="container">
-  <h2>โปรไฟล์ของฉัน</h2>
+  <main class="container">
+    <div class="profile-wrapper">
+      <h2>โปรไฟล์ของฉัน</h2>
 
-  <% if (message){ %>
-    <div class="alert"><%= message %></div>
-  <% } %>
+      <% if (message){ %>
+        <div class="alert">
+          <%= message %>
+        </div>
+        <% } %>
 
-            <div class="profile-info">
-              <p><strong>ชื่อผู้ใช้:</strong>
-                <%= user.username %>
-              </p>
-              <p><strong>อีเมล:</strong>
-                <%= user.email %>
-              </p>
-              <p><strong>สาขา/โปรแกรม:</strong>
-                <%= user.program || '-' %>
-              </p>
-              <p><strong>ชั้นปี:</strong>
-                <%= user.year || '-' %>
-              </p>
-              <p><strong>แนะนำตัว:</strong>
-                <%= user.bio || '-' %>
-              </p>
-            </div>
+          <div class="profile-info">
+            <p><strong>ชื่อผู้ใช้:</strong>
+              <%= user.username %>
+            </p>
+            <p><strong>อีเมล:</strong>
+              <%= user.email %>
+            </p>
+            <p><strong>สาขา/โปรแกรม:</strong>
+              <%= user.program || '-' %>
+            </p>
+            <p><strong>ชั้นปี:</strong>
+              <%= user.year || '-' %>
+            </p>
+            <p><strong>แนะนำตัว:</strong>
+              <%= user.bio || '-' %>
+            </p>
+          </div>
 
-            <div class="profile-actions">
+          <div class="profile-actions">
             <a id="edit-btn" class="action-btn" href="/edit-profile">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -54,9 +57,10 @@
               </svg>
               รายการที่บันทึก
             </a>
-            </div>
-      </div>
-    </main>
+          </div>
+    </div>
+
+  </main>
 
 </body>
 
