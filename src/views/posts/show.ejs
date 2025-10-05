@@ -40,7 +40,7 @@
             <div class="row">
               <button 
                 type="button" 
-                class="like-btn<%= (currentUser && post.likes.map(String).includes(String(currentUser._id))) ? ' liked' : '' %>" 
+                class="like-btn<%= (currentUser && post.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>" 
                 data-slug="<%= post.slug %>"
               >
                 ♥ ถูกใจ
