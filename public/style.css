@@ -309,6 +309,37 @@ button,
 
 }
 
+/* Generic icon + text button to keep icons and labels visually balanced */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* space between icon and text */
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #0ea5e9;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  display: inline-block;
+}
+
+.icon-btn:where(a,button) {
+  text-decoration: none;
+}
+
+.icon-btn.small {
+  padding: 6px 8px;
+  gap: 6px;
+  font-size: .95rem;
+}
+
 /* edit-profile form styles */
 .profile-form {
   max-width: 700px;
