@@ -61,25 +61,20 @@
               <% } %>
                 <hr />
                 <h3>คอมเมนต์</h3>
-                <ul class="comments">
+                <form id="comment-form" method="post" action="/posts/<%= post.slug %>/comments">
+                  <textarea name="body" rows="3" required id="comment-textarea"></textarea>
+                  <button type="submit">ส่งคอมเมนต์</button>
+                </form>
+                <ul class="comments" id="comments-list">
                   <% post.comments.forEach(c=>{ %>
-                    <li><b>
-                        <%= c.author?.username %>
-                      </b> <span class="muted">
-                        <%= new Date(c.createdAt).toLocaleString() %>
-                      </span><br />
+                    <li><b><%= c.author?.username %></b> <span class="muted"><%= new Date(c.createdAt).toLocaleString() %></span><br />
                       <%= c.body %>
                     </li>
-                    <% }) %>
+                  <% }) %>
                 </ul>
-                <% if (currentUser){ %>
-                  <form method="post" action="/posts/<%= post.slug %>/comments">
-                    <textarea name="body" rows="3" required></textarea>
-                    <button>ส่งคอมเมนต์</button>
-                  </form>
-                  <% } else { %>
-                    <p class="muted">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
-                    <% } %>
+                <% if (!currentUser) { %>
+                  <p class="muted">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
+                <% } %>
       </article>
     </div>
   </main>
@@ -103,5 +98,42 @@ document.querySelectorAll('.like-btn').forEach(btn => {
     }
   });
 });
+
+// AJAX comment submit
+const commentForm = document.getElementById('comment-form');
+const commentTextarea = document.getElementById('comment-textarea');
+const commentsList = document.getElementById('comments-list');
+if (commentForm && commentTextarea && commentsList) {
+  commentTextarea.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      commentForm.dispatchEvent(new Event('submit', {cancelable:true}));
+    }
+  });
+  commentForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const body = commentTextarea.value.trim();
+    if (!body) return;
+    const btn = commentForm.querySelector('button[type=submit]');
+    btn.disabled = true;
+    try {
+      const res = await fetch(commentForm.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ body })
+      });
+      if (res.ok) {
+        // Add new comment to list (optimistic, or reload from server if you want)
+        const now = new Date();
+        const username = '<%= currentUser?.username %>';
+        const html = `<li><b>${username}</b> <span class="muted">${now.toLocaleString()}</span><br />${body}</li>`;
+        commentsList.insertAdjacentHTML('beforeend', html);
+        commentTextarea.value = '';
+      }
+    } finally {
+      btn.disabled = false;
+    }
+  });
+}
 </script>
 </html>
