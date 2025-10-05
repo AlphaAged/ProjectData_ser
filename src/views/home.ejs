@@ -8,13 +8,14 @@
 </head>
 <body>
 
-<main class="container">
+<main class="container" style="padding-bottom: 20px;">
 <div class="hero">
   <h1>ยินดีต้อนรับสู่ CP KKU Study Notes</h1>
   <p class="muted">แพลตฟอร์มแบ่งปันสรุปและความรู้สำหรับนักศึกษา</p>
 </div>
 <div class="grid">
   <% posts.forEach(p=>{ %>
+    <div class="card-container">
     <a class="card" href="/posts/<%= p.slug %>">
       <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover"/><% } %>
       <div class="pad">
@@ -25,6 +26,7 @@
         </div>
       </div>
     </a>
+    </div>
   <% }) %>
 </div>
 </main>

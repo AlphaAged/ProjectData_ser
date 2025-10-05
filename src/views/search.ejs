@@ -1,42 +1,63 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
 </head>
+
 <body>
 
-<main class="container">
-<h2>ค้นหาสรุป</h2>
-<form class="row" method="get" action="/search">
-  <input name="q" placeholder="คำค้น" value="<%= q %>"/>
-  <select name="tag">
-    <option value="">--แท็กทั้งหมด--</option>
-    <% ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=>{ %>
-      <option value="<%= t %>" <%= tag===t?'selected':'' %>><%= t %></option>
-    <% }) %>
-  </select>
-  <button>ค้นหา</button>
-</form>
-<div class="grid">
-  <% posts.forEach(p=>{ %>
-    <a class="card" href="/posts/<%= p.slug %>">
-      <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover"/><% } %>
-      <div class="pad">
-        <h3 class="ellipsis"><%= p.title %></h3>
-        <p class="muted">♥ <%= p.likes.length %> · 👁️ <%= p.views %></p>
+  <main class="container">
+    <div class="search-control">
+      <h2>ค้นหาสรุป</h2>
+      <form class="row" method="get" action="/search">
+        <input type="text" name="q" placeholder="คำค้นหา" value="<%= q %>" />
+        <select name="tag">
+          <option value="">--แท็กทั้งหมด--</option>
+          <% ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=>{ %>
+            <option value="<%= t %>" <%=tag===t?'selected':'' %>><%= t %>
+            </option>
+            <% }) %>
+        </select>
+        <button class="search-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+            viewBox="0 0 16 16">
+            <path
+              d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+          </svg>
+          ค้นหา
+        </button>
+      </form>
+    </div>
+    <div class="search-page-grid">
+      <div class="grid">
+        <% posts.forEach(p=>{ %>
+          <div class="card-container">
+          <a class="card" href="/posts/<%= p.slug %>">
+            <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover" />
+              <% } %>
+                <div class="pad">
+                  <h3 class="ellipsis">
+                    <%= p.title %>
+                  </h3>
+                  <p class="muted">♥ <%= p.likes.length %> · 👁️ <%= p.views %>
+                  </p>
+                </div>
+          </a>
+          </div>
+          <% }) %>
       </div>
-    </a>
-  <% }) %>
-</div>
-</main>
+    </div>
+  </main>
 
-<a href="/posts/new" class="fab" aria-label="สร้างโพสต์ใหม่">
-  <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-    <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor"/>
-  </svg>
-</a>
+  <a href="/posts/new" class="fab" aria-label="สร้างโพสต์ใหม่">
+    <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+      <path d="M11 5a1 1 0 0 1 2 0v6h6a1 1 0 1 1 0 2h-6v6a1 1 0 1 1-2 0v-6H5a1 1 0 1 1 0-2h6V5z" fill="currentColor" />
+    </svg>
+  </a>
 </body>
+
 </html>

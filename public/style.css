@@ -16,7 +16,8 @@ a {
 
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+
 }
 
 .container {
@@ -25,21 +26,22 @@ a:hover {
   padding: 0 16px;
 }
 
-.topbar{
-    display:flex;justify-content:space-between;
-    align-items:center;
-    background:#eef7ff;
-    padding:10px 16px;
-    border-bottom:1px solid #cfe7ff;
-    position:sticky;
-    top:0;
-    font-weight: 500;
-    font-size:  1.1rem;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #eef7ff;
+  padding: 10px 16px;
+  border-bottom: 1px solid #cfe7ff;
+  position: sticky;
+  top: 0;
+  font-weight: 500;
+  font-size: 1.1rem;
 }
 
-.topbar a:hover{
-    text-decoration: none;
-    color:#073554;    
+.topbar a:hover {
+  text-decoration: none;
+  color: #073554;
 }
 
 .brand {
@@ -78,10 +80,21 @@ a:hover {
 
 .card {
   background: white;
-  border: 1px solid #e6eef5;
+  border: 1px solid #D0E7F5;
   border-radius: 12px;
   overflow: hidden;
   display: block;
+}
+
+.card-container {
+  transition: transform .15s ease, box-shadow .2s ease;
+  border-radius: 12px;
+}
+
+.card-container:hover {
+  transform: translateY(-2px);
+  width: auto;
+  height: auto;
 }
 
 .cover {
@@ -155,6 +168,8 @@ textarea {
   border-radius: 10px;
   border: 1px solid #cfe7ff;
   padding: 8px 10px;
+  font-family: "Kanit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
 }
 
 button,
@@ -162,7 +177,9 @@ button,
   background: #0ea5e9;
   color: white;
   border: none;
+  font-family: "Kanit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
+
 
 .danger {
   background: #ef4444;
@@ -210,25 +227,69 @@ button,
 }
 
 /* home */
-.hero{
+.hero {
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
   text-align: center;
 }
 
-.hero h1{
-  margin:0 0 10px;
-  font-size:clamp(1.5rem,4vw,2.5rem);
-  font-weight:800;
-  line-height:1.2;
-} 
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
 
-.hero p{
-  margin:0;
-  font-size:clamp(1rem,2.5vw,1.25rem);
-  color:#475569;
-  line-height:1.4;
+.hero p {
+  margin: 0;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* search page */
+.search-page-grid {
+  margin: 10px 0;
+}
+
+.search-control {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-control h2 {
+  margin-right: auto;
+}
+
+.search-control input[type="text"] {
+  max-width: 300px;
+  padding: 8px 12px;
+  border: 1px solid #cfe7ff;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.search-control button {
+  padding: 8px 14px;
+  background: #0d63a5;
+  color: white;
+  border: none;
+  font-family: "Kanit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.search-control button:hover {
+  background: #0a4e7a;
+  text-decoration: none;
+}
+
+.search-control select {
+  padding: 8px 12px;
+  border: 1px solid #cfe7ff;
+  border-radius: 10px;
+  font-size: 1rem;
 }
 
 /* ปุ่ม สร้างโพส */
@@ -323,7 +384,8 @@ button,
 .icon-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px; /* space between icon and text */
+  gap: 8px;
+  /* space between icon and text */
   padding: 8px 12px;
   border-radius: 8px;
   background: #0ea5e9;
@@ -340,7 +402,7 @@ button,
   display: inline-block;
 }
 
-.icon-btn:where(a,button) {
+.icon-btn:where(a, button) {
   text-decoration: none;
 }
 
@@ -437,10 +499,11 @@ button,
     height: 56px;
   }
 }
- /*ปิด*/ 
 
- /*burger bar*/
- /* โครงสร้าง navbar ปรกติ */
+/*ปิด*/
+
+/*burger bar*/
+/* โครงสร้าง navbar ปรกติ */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -449,7 +512,8 @@ button,
 
 }
 
-.navbar a, .navbar .linklike {
+.navbar a,
+.navbar .linklike {
   /* color: white; */
   text-decoration: none;
   margin: 0 8px;
@@ -458,7 +522,6 @@ button,
 /* Active nav link styling */
 .navbar a.active {
   color: #0d63a5;
-  padding: 6px 10px;
   border-radius: 8px;
   font-weight: 700;
 }
@@ -494,16 +557,17 @@ button,
   flex-direction: column;
 }
 
-.side-menu a, .side-menu .linklike {
+.side-menu a,
+.side-menu .linklike {
   padding: 12px 20px;
   text-decoration: none;
   color: white;
   display: block;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .side-menu a.active {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .side-menu .close-btn {
@@ -519,11 +583,17 @@ button,
 
 /* Responsive: จอเล็ก */
 @media (max-width: 845px) {
-  .nav-left, .nav-right {
-    display: none; /* ซ่อนเมนูปรกติ */
+
+  .nav-left,
+  .nav-right {
+    display: none;
+    /* ซ่อนเมนูปรกติ */
   }
+
   .burger {
-    display: block; /* โชว์ burger button */
+    display: block;
+    /* โชว์ burger button */
   }
 }
+
 /*ปิด*/
