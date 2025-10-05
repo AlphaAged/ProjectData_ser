@@ -6,6 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    .like-btn.liked {
+      color: red;
+    }
+
+    .like-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1em;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+  </style>
 </head>
 
 <body>
@@ -68,12 +82,16 @@
                             by <%= p.author?.username %>
                           </p>
                           <p class="muted meta-line stats">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill"
-                              viewBox="0 0 16 16" aria-hidden="true">
-                              <path fill-rule="evenodd"
-                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                            </svg>
-                            <span class="stat-num">
+                            <% if (currentUser && Array.isArray(p.likes) && p.likes.map(id => String(id)).includes(String(currentUser.id))) { %>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16" aria-hidden="true" style="color:red;">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                              </svg>
+                            <% } else { %>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                              </svg>
+                            <% } %>
+                            <span class="stat-num like-count">
                               <%= p.likes.length %>
                             </span>
                             <span class="dot"></span>
@@ -86,18 +104,10 @@
                             <span class="stat-num">
                               <%= p.views %>
                             </span>
+                            <button type="button"
+                              class="like-btn<%= (currentUser && Array.isArray(p.likes) && p.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>"
+                              data-slug="<%= p.slug %>" aria-label="like" style="display:none;">♥</button>
                           </p>
-                          <!-- <p class="muted">
-            by <%= p.author?.username %> · 
-            <button 
-              type="button" 
-              class="like-btn" 
-              data-slug="<%= p.slug %>">
-              ♥ <span class="like-count"><%= p.likes.length %></span>
-            </button>
-            · 👁️ <%= p.views %>
-          </p> -->
-
 
                           <div class="tags">
                             <% (p.tags||[]).forEach(t=>{ %><span class="tag">
@@ -118,27 +128,33 @@
     </svg>
   </a>
   </a>
-  <!-- 
-<script>
-document.querySelectorAll('.like-btn').forEach(btn => {
-  btn.addEventListener('click', async function() {
-    const slug = this.dataset.slug;
-    const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
-    if (res.ok) {
-      const data = await res.json();
-      // อัปเดตจำนวนไลค์บนปุ่ม
-      this.querySelector('.like-count').textContent = data.likes;
-      // เปลี่ยนสีหรือสถานะปุ่มถ้าต้องการ
-      if(data.liked) {
-        this.style.color = 'red';
-      } else {
-        this.style.color = '';
-      }
-    }
-  });
-});
-</script> -->
-
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', async function () {
+          const slug = this.dataset.slug;
+          const card = this.closest('.card-container');
+          try {
+            const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
+            if (res.ok) {
+              const data = await res.json();
+              // Find the like-count span in the same card
+              const likeCount = card.querySelector('.like-count');
+              if (likeCount) likeCount.textContent = data.likes;
+              // Toggle liked class
+              if (data.liked) {
+                this.classList.add('liked');
+              } else {
+                this.classList.remove('liked');
+              }
+            }
+          } catch (err) {
+            console.error('Like error', err);
+          }
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

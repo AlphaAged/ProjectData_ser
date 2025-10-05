@@ -58,8 +58,14 @@ router.post('/posts/:slug/like', requireAuth, async (req,res)=>{
   const post = await Post.findOne({slug:req.params.slug});
   const u = req.session.user.id;
   const idx = post.likes.findIndex(id=>id.toString()===u);
-  if (idx>=0) post.likes.splice(idx,1);
-  else post.likes.push(u);
+  let liked;
+  if (idx>=0) {
+    post.likes.splice(idx,1);
+    liked = false;
+  } else {
+    post.likes.push(u);
+    liked = true;
+  }
   await post.save();
   // notify owner
   if (u !== post.author.toString()){
@@ -67,7 +73,7 @@ router.post('/posts/:slug/like', requireAuth, async (req,res)=>{
     owner.notifications.unshift({type:'like', message:`${req.session.user.username} ถูกใจโพสต์ของคุณ`, link:`/posts/${post.slug}`});
     await owner.save();
   }
-  res.redirect('/posts/'+post.slug);
+  res.json({ liked, likes: post.likes.length }); // <-- ต้องใช้บรรทัดนี้!
 });
 
 // comment

@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
   <link rel="stylesheet" href="/style.css" />
+  <style>
+    .like-btn.liked {
+      color: red;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,7 +23,10 @@
             <h1>
               <%= post.title %>
             </h1>
-            <p class="muted">โดย <%= post.author?.username %> · ♥ <%= post.likes.length %> · 👁️ <%= post.views %>
+            <p class="muted">
+              โดย <%= post.author?.username %> · 
+              ♥ <span class="like-count"><%= post.likes.length %></span> 
+              · 👁️ <%= post.views %>
             </p>
             <div class="tags">
               <% (post.tags||[]).forEach(t=>{ %><span class="tag">
@@ -30,7 +38,13 @@
               <%= post.body %>
             </p>
             <div class="row">
-              <form method="post" action="/posts/<%= post.slug %>/like"><button>ถูกใจ</button></form>
+              <button 
+                type="button" 
+                class="like-btn<%= (currentUser && post.likes.map(String).includes(String(currentUser._id))) ? ' liked' : '' %>" 
+                data-slug="<%= post.slug %>"
+              >
+                ♥ ถูกใจ
+              </button>
               <% if (currentUser && (currentUser.id===String(post.author._id) || currentUser.role==='admin' )){ %>
                 <a class="button" href="/posts/<%= post.slug %>/edit">แก้ไข</a>
                 <form method="post" action="/posts/<%= post.slug %>/delete"><button class="danger">ลบโพสต์</button>
@@ -71,5 +85,23 @@
   </main>
 </body>
 <script src="/js/save-post.js"></script>
-
+<script>
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', async function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const slug = this.dataset.slug;
+    const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
+    if (res.ok) {
+      const data = await res.json();
+      document.querySelector('.like-count').textContent = data.likes;
+      if(data.liked) {
+        this.classList.add('liked');
+      } else {
+        this.classList.remove('liked');
+      }
+    }
+  });
+});
+</script>
 </html>
