@@ -50,6 +50,9 @@ app.use(session({
 app.use((req,res,next)=>{
   res.locals.currentUser = req.session.user || null;
   res.locals.title = '';
+  // expose current request path for active nav link highlighting
+  res.locals.currentPath = req.path;
+  res.locals.currentUrl = req.originalUrl;
   next();
 });
 

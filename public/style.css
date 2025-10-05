@@ -25,17 +25,21 @@ a:hover {
   padding: 0 16px;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #FBFFF1;
-  padding: 10px 16px;
-  border-bottom: 1px solid #cfe7ff;
-  position: sticky;
-  top: 0;
-  font-weight: 600;
-  padding: 15px;
+.topbar{
+    display:flex;justify-content:space-between;
+    align-items:center;
+    background:#eef7ff;
+    padding:10px 16px;
+    border-bottom:1px solid #cfe7ff;
+    position:sticky;
+    top:0;
+    font-weight: 500;
+    font-size:  1.1rem;
+}
+
+.topbar a:hover{
+    text-decoration: none;
+    color:#073554;    
 }
 
 .brand {
@@ -43,21 +47,6 @@ a:hover {
   letter-spacing: .5px;
 }
 
-/* Topbar nav layout */
-.topbar nav {
-  display: flex;
-  align-items: center;
-}
-
-.topbar .nav-links {
-  display: flex;
-  align-items: center;
-}
-
-.topbar .nav-links a,
-.topbar .nav-links form {
-  margin-left: 16px;
-}
 
 .nav-toggle {
   display: none;
@@ -220,6 +209,27 @@ button,
   opacity: .6;
 }
 
+/* home */
+.hero{
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.hero h1{
+  margin:0 0 10px;
+  font-size:clamp(1.5rem,4vw,2.5rem);
+  font-weight:800;
+  line-height:1.2;
+} 
+
+.hero p{
+  margin:0;
+  font-size:clamp(1rem,2.5vw,1.25rem);
+  color:#475569;
+  line-height:1.4;
+}
 
 /* ปุ่ม สร้างโพส */
 
@@ -445,6 +455,14 @@ button,
   margin: 0 8px;
 }
 
+/* Active nav link styling */
+.navbar a.active {
+  color: #0d63a5;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
 .linklike {
   background: none;
   border: none;
@@ -482,6 +500,10 @@ button,
   color: white;
   display: block;
   border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.side-menu a.active {
+  background: rgba(255,255,255,0.06);
 }
 
 .side-menu .close-btn {

@@ -1,13 +1,13 @@
 <nav class="navbar">
   <div class="nav-left">
-    <a href="/">หน้าหลัก</a>
-    <a href="./search">ค้นหาสรุป</a>
-    <a href="/community">พูดคุย</a>
+    <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">หน้าหลัก</a>
+    <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a>
+    <a href="/community" class="<%= currentPath.startsWith('/community') ? 'active' : '' %>">พูดคุย</a>
 
     <% if (currentUser) { %>
-      <a href="/notifications">แจ้งเตือน</a>
+      <a href="/notifications" class="<%= currentPath.startsWith('/notifications') ? 'active' : '' %>">แจ้งเตือน</a>
       <% if (currentUser.role === 'admin') { %>
-        <a href="/admin">แอดมิน</a>
+        <a href="/admin" class="<%= currentPath.startsWith('/admin') ? 'active' : '' %>">แอดมิน</a>
       <% } %>
     <% } %>
   </div>
@@ -17,10 +17,10 @@
       <form action="/logout" method="post" style="display:inline">
         <button class="linklike">ออกจากระบบ</button>
       </form>
-      <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+  <a href="/profile" class="<%= currentPath.startsWith('/profile') ? 'active' : '' %>">โปรไฟล์ (<%= currentUser.username %>)</a>
     <% } else { %>
-      <a href="/login">เข้าสู่ระบบ</a>
-      <a href="/register">สมัครสมาชิก</a>
+  <a href="/login" class="<%= currentPath.startsWith('/login') ? 'active' : '' %>">เข้าสู่ระบบ</a>
+  <a href="/register" class="<%= currentPath.startsWith('/register') ? 'active' : '' %>">สมัครสมาชิก</a>
     <% } %>
   </div>
 
@@ -29,23 +29,23 @@
 </nav>
 
 <!-- เมนูสำหรับจอเล็ก (slide from right) -->
-<div class="side-menu" id="sideMenu">
+  <div class="side-menu" id="sideMenu">
   <button class="close-btn" id="closeBtn">&times;</button>
-  <a href="/">หน้าหลัก</a>
-  <a href="./search">ค้นหาสรุป</a>
-  <a href="/community">พูดคุย</a>
+  <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">หน้าหลัก</a>
+  <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a>
+  <a href="/community" class="<%= currentPath.startsWith('/community') ? 'active' : '' %>">พูดคุย</a>
 
   <% if (currentUser) { %>
-    <a href="/notifications">แจ้งเตือน</a>
+  <a href="/notifications" class="<%= currentPath.startsWith('/notifications') ? 'active' : '' %>">แจ้งเตือน</a>
     <% if (currentUser.role === 'admin') { %>
       <a href="/admin">แอดมิน</a>
     <% } %>
     <form action="/logout" method="post" style="display:inline">
       <button class="linklike">ออกจากระบบ</button>
     </form>
-    <a href="/profile">โปรไฟล์ (<%= currentUser.username %>)</a>
+  <a href="/profile" class="<%= currentPath.startsWith('/profile') ? 'active' : '' %>">โปรไฟล์ (<%= currentUser.username %>)</a>
   <% } else { %>
-    <a href="/login">เข้าสู่ระบบ</a>
-    <a href="/register">สมัครสมาชิก</a>
+    <a href="/login" class="<%= currentPath.startsWith('/login') ? 'active' : '' %>">เข้าสู่ระบบ</a>
+    <a href="/register" class="<%= currentPath.startsWith('/register') ? 'active' : '' %>">สมัครสมาชิก</a>
   <% } %>
 </div>
