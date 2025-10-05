@@ -46,13 +46,14 @@
               >
                 ♥ ถูกใจ
               </button>
-              <% if (currentUser && (currentUser.id===String(post.author._id) || currentUser.role==='admin' )){ %>
+              <% if (currentUser && (String(currentUser.id) === String(post.author._id))) { %>
                 <a class="button" href="/posts/<%= post.slug %>/edit">แก้ไข</a>
-                <form method="post" action="/posts/<%= post.slug %>/delete"><button class="danger">ลบโพสต์</button>
+                <form method="post" action="/posts/<%= post.slug %>/delete" style="display:inline" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้? การลบนี้ไม่สามารถย้อนกลับได้');">
+                  <button class="danger">ลบโพสต์</button>
                 </form>
-                <% } else if (currentUser) { %>
-                  <a class="button" href="/posts/<%= post.slug %>/report">รายงาน</a>
-                  <% } %>
+              <% } else if (currentUser) { %>
+                <a class="button" href="/posts/<%= post.slug %>/report">รายงาน</a>
+              <% } %>
             </div>
             <% if (currentUser) { %>
               <button id="save-post-btn" data-slug="<%= post.slug %>">
