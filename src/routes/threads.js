@@ -6,7 +6,9 @@ import { requireAuth } from '../middleware/auth.js';
 const router = express.Router();
 
 router.get('/community', async (req,res)=>{
-  const threads = await Thread.find().sort({createdAt:-1}).populate('author');
+  const threads = await Thread.find({ deleted: { $ne: true } }) //เพิ่มตรงนี้
+                             .sort({createdAt:-1})
+                             .populate('author');
   res.render('threads/index', {threads});
 });
 
@@ -18,9 +20,12 @@ router.post('/threads', requireAuth, async (req,res)=>{
   res.redirect('/threads/'+th._id);
 });
 
-router.get('/threads/:id', async (req,res)=>{
-  const th = await Thread.findById(req.params.id).populate('author').populate('replies.author');
+router.get('/threads/:id', requireAuth, async (req,res)=>{
+  const th = await Thread.findById(req.params.id)
+                         .populate('author')
+                         .populate('replies.author');
   if (!th) return res.status(404).send('Not found');
+  if (th.deleted && req.session.user.role !== 'admin') return res.status(404).send('Not found');
   res.render('threads/show', {thread: th});
 });
 
@@ -62,8 +67,12 @@ router.post('/threads/:id/delete', requireAuth, async (req,res)=>{
   if (!th) return res.status(404).send('Not found');
   if (th.author.toString() !== req.session.user.id && req.session.user.role!=='admin') 
     return res.status(403).send('Forbidden');
-  await Thread.deleteOne({_id: th._id});
-  res.redirect('/community');
+  // Soft delete
+  th.deleted = true;
+  th.deletedAt = new Date();
+  await th.save();
+
+  res.redirect('/community'); //list threads จะไม่ดึง deleted
 });
 
 export default router;
