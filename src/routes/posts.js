@@ -6,6 +6,22 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  const q = req.query.q || '';
+  const tag = req.query.tag || '';
+  let filter = {};
+  if (q) {
+    filter.title = { $regex: q, $options: 'i' }; // ค้นหาจาก title (ไม่สนตัวพิมพ์เล็ก/ใหญ่)
+  }
+  if (tag) {
+    filter.tags = tag;
+  }
+  const posts = await Post.find(filter).populate('author').sort({createdAt:-1});
+  console.log('filter:', filter);
+  console.log('posts:', posts);
+  res.render('home', { posts, q, tag, currentUser: req.session.user });
+});
+
 // create form
 router.get('/posts/new', requireAuth, (req,res)=>{
   res.render('posts/new');

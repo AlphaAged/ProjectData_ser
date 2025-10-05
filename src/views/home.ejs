@@ -13,6 +13,36 @@
   <h1>ยินดีต้อนรับสู่ CP KKU Study Notes</h1>
   <p class="muted">แพลตฟอร์มแบ่งปันสรุปและความรู้สำหรับนักศึกษา</p>
 </div>
+
+
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+    <div>
+      <% if ((typeof q !== 'undefined' && q) || (typeof tag !== 'undefined' && tag)) { %>
+        <h3 style="margin:0;">ผลลัพธ์การค้นหา <%= q ? `"${q}"` : '' %> <%= tag ? `[${tag}]` : '' %></h3>
+      <% } else { %>
+        <h3 style="margin:0;">โพสต์ล่าสุด</h3>
+      <% } %>
+    </div>
+    <form class="row" method="get" action="/" style="gap:0.5rem;">
+      <input name="q" placeholder="คำค้น" value="<%= typeof q !== 'undefined' ? q : '' %>"/>
+      <select name="tag">
+        <option value="">หมวดหมู่ทั้งหมด</option>
+        <% 
+          const selectedTag = typeof tag !== 'undefined' ? tag : '';
+          ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=>{ 
+        %>
+          <option value="<%= t %>" <%= selectedTag===t?'selected':'' %>><%= t %></option>
+        <% }) %>
+      </select>
+      <button>ค้นหา</button>
+    </form>
+  </div>
+
+  <% if ((typeof q !== 'undefined' && q) || (typeof tag !== 'undefined' && tag)) { %>
+    <% if (posts.length === 0) { %>
+      <p class="muted">ไม่พบผลลัพธ์</p>
+    <% } %>
+  <% } %>
 <div class="grid">
   <% posts.forEach(p=>{ %>
     <div class="card-container">
@@ -21,6 +51,18 @@
       <div class="pad">
         <h3 class="ellipsis"><%= p.title %></h3>
         <p class="muted">by <%= p.author?.username %> · ♥ <%= p.likes.length %> · 👁️ <%= p.views %></p>
+         <!-- <p class="muted">
+            by <%= p.author?.username %> · 
+            <button 
+              type="button" 
+              class="like-btn" 
+              data-slug="<%= p.slug %>">
+              ♥ <span class="like-count"><%= p.likes.length %></span>
+            </button>
+            · 👁️ <%= p.views %>
+          </p> -->
+
+
         <div class="tags">
           <% (p.tags||[]).forEach(t=>{ %><span class="tag"><%= t %></span><% }) %>
         </div>
@@ -37,5 +79,26 @@
   </svg>
 </a>
 </a>
+<!-- 
+<script>
+document.querySelectorAll('.like-btn').forEach(btn => {
+  btn.addEventListener('click', async function() {
+    const slug = this.dataset.slug;
+    const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
+    if (res.ok) {
+      const data = await res.json();
+      // อัปเดตจำนวนไลค์บนปุ่ม
+      this.querySelector('.like-count').textContent = data.likes;
+      // เปลี่ยนสีหรือสถานะปุ่มถ้าต้องการ
+      if(data.liked) {
+        this.style.color = 'red';
+      } else {
+        this.style.color = '';
+      }
+    }
+  });
+});
+</script> -->
+
 </body>
 </html>
