@@ -1,42 +1,105 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>โพสต์ที่บันทึกแล้ว</title>
   <link rel="stylesheet" href="/style.css">
+  <style>
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    ul li.saved-post {
+      background-color: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px !important;
+      display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .saved-post img.cover-md {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+
+    }
+
+    .unsave-btn {
+      padding: 8px 12px;
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      align-self: flex-end;
+    }
+
+    h2 {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
+
 <body>
 
-<main class="container">
-  <h2>โพสต์ที่บันทึกไว้</h2>
+  <main class="container">
+    <h2 style="text-align: center;">โพสต์ที่บันทึกไว้</h2>
 
-  <% if (savedPosts.length === 0) { %>
-    <p class="muted">คุณยังไม่ได้บันทึกโพสต์ใด ๆ</p>
-  <% } else { %>
-    <ul class="saved-posts">
-      <% savedPosts.forEach(post => { %>
-        <li class="saved-post">
-          <% if (post.coverImage) { %>
-            <img src="<%= post.coverImage %>" class="cover-md"/>
-          <% } %>
-          <h3><a href="/posts/<%= post.slug %>"><%= post.title %></a></h3>
-          <p class="muted">
-            โดย <%= post.author?.username %> · ♥ <%= post.likes.length %> · 👁️ <%= post.views %>
-          </p>
-          <div class="tags">
-            <% (post.tags || []).forEach(tag => { %>
-              <span class="tag"><%= tag %></span>
+    <% if (savedPosts.length===0) { %>
+      <p class="muted">คุณยังไม่ได้บันทึกโพสต์ใด ๆ</p>
+      <% } else { %>
+        <ul class="saved-posts">
+          <% savedPosts.forEach(post=> { %>
+            <a href="/posts/<%= post.slug %>">
+              <li class="saved-post">
+                <% if (post.coverImage) { %>
+                  <img src="<%= post.coverImage %>" class="cover-md" />
+                  <% } %>
+                    <h3 ><a href="/posts/<%= post.slug %>">
+                        <%= post.title %>
+                      </a></h3>
+                    <p class="muted meta-line">
+                      by <%= post.author?.username %> 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16"
+                          aria-hidden="true">
+                          <path fill-rule="evenodd"
+                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                        </svg>
+                        <%= post.likes.length %>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill" viewBox="0 0 16 16"
+                            aria-hidden="true">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                            <path
+                              d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                          </svg>
+                          <%= post.views %>
+                    </p>
+                    <div class="tags meta-line">
+                      <% (post.tags || []).forEach(tag=> { %>
+                        <span class="tag">
+                          <%= tag %>
+                        </span>
+                        <% }) %>
+                    </div>
+
+                    <button type="button" class="unsave-btn" data-slug="<%= post.slug %>">ยกเลิกบันทึก</button>
+              </li>
+            </a>
             <% }) %>
-          </div>
-         
-            <button type="button" class="unsave-btn" data-slug="<%= post.slug %>">ยกเลิกบันทึก</button>
-      
-        </li>
-      <% }) %>
-    </ul>
-  <% } %>
-</main>
-<script src="/js/save-post.js"></script>
+        </ul>
+        <% } %>
+  </main>
+  <script src="/js/save-post.js"></script>
 </body>
+
 </html>

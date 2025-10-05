@@ -37,9 +37,10 @@ a:hover {
   top: 0;
   font-weight: 500;
   font-size: 1.1rem;
-  z-index: 1100; /* keep header above cards and other content */
+  z-index: 1100;
+  /* keep header above cards and other content */
   /* small shadow to separate from content when overlapping */
-  box-shadow: 0 2px 6px rgba(11,35,55,0.06);
+  box-shadow: 0 2px 6px rgba(11, 35, 55, 0.06);
 }
 
 .topbar a:hover {
@@ -122,6 +123,7 @@ a:hover {
   background: #dbeafe;
   border-radius: 12px;
 }
+
 .post-show .cover-xl {
   max-height: none;
 }
@@ -140,6 +142,52 @@ a:hover {
 .muted {
   color: #6b7280;
   font-size: .9em;
+}
+
+.search-btn {
+  padding: 8px 14px;
+  background: #0d63a5;
+  color: white;
+  border: none;
+  font-family: "Kanit", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* inline SVGs should match text size and align nicely */
+.icon-inline {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.12em;
+  /* nudge to better align with text baseline */
+  fill: currentColor;
+}
+
+/* meta lines for cards: author and stats on separate lines with tight spacing */
+.meta-line {
+  line-height: 2;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: .35rem
+}
+
+.meta-line.author {
+  font-size: .92rem;
+  color: #4b5563
+}
+
+.meta-line.stats {
+  font-size: .9rem;
+  color: #6b7280
+}
+
+.meta-line .stat-num {
+  margin-right: .2rem
+}
+
+.meta-line .dot {
+  margin: 0 .35rem
 }
 
 .tags .tag {
@@ -264,9 +312,7 @@ button,
 }
 
 /* search page */
-.search-page-grid {
-  margin: 10px 0;
-}
+
 
 .search-control {
   display: flex;
@@ -365,6 +411,7 @@ button,
   gap: 10px;
   margin-top: 12px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .action-btn {
@@ -394,6 +441,8 @@ button,
   text-decoration: none;
 
 }
+
+
 
 /* Generic icon + text button to keep icons and labels visually balanced */
 .icon-btn {

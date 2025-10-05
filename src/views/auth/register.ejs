@@ -1,22 +1,93 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    .register-wrapper {
+      max-width: 380px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border: 1px solid #D0E7F5;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding-bottom: 100px;
+    }
+
+    .register-form,
+    .register-form * {
+      box-sizing: border-box;
+    }
+
+    .register-form label {
+      display: flex;
+      flex-direction: column;
+      gap: .4rem;
+      margin: 0 0 1rem 0;
+      padding: 0;
+    }
+
+    .register-form input {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 10px;
+      line-height: 1.4;
+      appearance: none;
+    }
+
+    .register-form {
+      overflow: hidden;
+    }
+
+    .register-btn {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      background-color: #0d63a5;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .register-btn:hover {
+      background-color: #0b5480;
+    }
+  </style>
 </head>
+
 <body>
 
-<main class="container">
-<h2>สมัครสมาชิก</h2>
-<% if (typeof error !== 'undefined'){ %><div class="alert"><%= error %></div><% } %>
-<form method="post">
-  <label>ชื่อผู้ใช้ <input name="username" required/></label>
-  <label>อีเมล <input name="email" type="email" required/></label>
-  <label>รหัสผ่าน <input name="password" type="password" required/></label>
-  <button>สมัครสมาชิก</button>
-</form>
-</main>
+  <main class="container">
+    <div class="register-wrapper">
+      <div class="register-form">
+
+        <h2 style="text-align: center;">สมัครสมาชิก</h2>
+        <% if (typeof error !=='undefined' ){ %>
+          <div class="alert">
+            <%= error %>
+          </div>
+          <% } %>
+            <form method="post">
+              <label>ชื่อผู้ใช้ <input placeholder="กรุณากรอกชื่อผู้ใช้" name="username" required /></label>
+              <label>อีเมล <input placeholder="กรุณากรอกอีเมล" name="email" type="email" required /></label>
+              <label>รหัสผ่าน <input placeholder="กรุณากรอกรหัสผ่าน" name="password" type="password" required /></label>
+              <label for="button"></label>
+              <button class="register-btn">สมัครสมาชิก</button>
+              <p style="text-align: center;">มีบัญชีผู้ใช้แล้ว? <a href="/login">เข้าสู่ระบบ</a></p>
+            </form>
+      </div>
+    </div>
+  </main>
 </body>
+
 </html>
