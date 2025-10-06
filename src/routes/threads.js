@@ -76,19 +76,61 @@ router.post('/threads/:id/replies', requireAuth, async (req, res) => {
   res.redirect('/threads/' + th._id);
 });
 
+// like
 router.post('/threads/:id/like', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
+  if (!th) return res.status(404).send('Not found');
+
   const u = req.session.user.id;
-  const i = th.likes.findIndex(id => id.toString() === u);
-  if (i >= 0) th.likes.splice(i, 1); else th.likes.push(u);
+  const i = th.likes.findIndex(id => String(id) === String(u));
+  let liked;
+  if (i >= 0) { th.likes.splice(i, 1); liked = false; }
+  else       { th.likes.push(u);       liked = true; }
+
   await th.save();
+
+  // ถ้าเป็น AJAX ให้ตอบ JSON (หน้า show.ejs รอแบบนี้)
+  if (req.accepts('json')) return res.json({ liked, likes: th.likes.length });
+
+  // เผื่อกรณีปุ่มแบบปกติ (มี noscript)
   res.redirect('/threads/' + th._id);
 });
 
+// edit
+router.get('/threads/:id/edit', requireAuth, async (req, res) => {
+  const th = await Thread.findById(req.params.id).populate('author');
+  if (!th) return res.status(404).send('Not found');
+
+  // อนุญาตเฉพาะเจ้าของกระทู้หรือ admin
+  if (String(th.author._id) !== String(req.session.user.id) && req.session.user.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+
+  res.render('threads/edit', { thread: th, title: 'แก้ไขหัวข้อ' });
+});
+
+// บันทึกการแก้ไข
+router.post('/threads/:id', requireAuth, async (req, res) => {
+  const th = await Thread.findById(req.params.id).populate('author');
+  if (!th) return res.status(404).send('Not found');
+
+  if (String(th.author._id) !== String(req.session.user.id) && req.session.user.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+
+  th.title = (req.body.title || '').trim();
+  th.body  = (req.body.body  || '').trim();
+  await th.save();
+
+  res.redirect('/threads/' + th._id);
+});
+
+// report
 router.get('/threads/:id/report', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
   res.render('threads/report', { thread: th });
 });
+
 router.post('/threads/:id/report', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
   th.reports.push({ reporter: req.session.user.id, reasonTitle: req.body.title, reasonBody: req.body.body });
