@@ -1,5 +1,6 @@
 import express from 'express';
 import User from '../models/User.js';
+import Post from '../models/Post.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -34,11 +35,21 @@ router.post('/logout', (req,res)=>{
 });
 
 // แสดงโปรไฟล์
-router.get('/profile', async (req,res)=>{
+router.get('/profile', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
+
   const user = await User.findById(req.session.user.id);
-  res.render('auth/profile', {user, message:null});
+
+  const posts = await Post.find({
+      author: req.session.user.id,
+      deleted: { $ne: true } // กรองโพสต์ที่ถูกลบออก
+  })
+  .sort({ createdAt: -1 })
+  .populate('author', 'username email');
+
+  res.render('auth/profile', { user, posts, message: null });
 });
+
 
 // แสดงฟอร์มแก้ไขโปรไฟล์
 router.get('/edit-profile', async (req,res)=>{
