@@ -486,7 +486,7 @@
         <div class="actions">
           <% if (currentUser && !(String(currentUser.id)===String(thread.author._id) || currentUser.role==='admin' )) {
             %>
-            <button class="action report-btn" type="button" title="รายงาน">
+            <button id="report-open" class="action report-btn" type="button" title="รายงาน">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-flag" viewBox="0 0 16 16">
                             <path
