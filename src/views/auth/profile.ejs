@@ -60,6 +60,30 @@
           </div>
     </div>
 
+    <div class="cards">
+    <% if(posts && posts.length > 0){ %>
+      <h2>โพสต์ของคุณ</h2>
+    <% } %>
+    <% posts.forEach(p=>{ %>
+        <a class="card" href="/posts/<%= p.slug %>">
+          <% if (p.coverImage){ %><img
+            src="<%= p.coverImage %>"
+            class="cover"
+          /><% } %>
+          <div class="pad">
+            <h3 class="ellipsis"><%= p.title %></h3>
+            <p class="muted">
+              by <%= p.author?.username %> · ♥ <%= p.likes.length %> · 👁️ <%=
+              p.views %>
+            </p>
+            <div class="tags">
+              <% (p.tags||[]).forEach(t=>{ %><span class="tag"><%= t %></span><%
+              }) %>
+            </div>
+          </div>
+        </a>
+        <% }) %>
+      </div>
   </main>
 
 </body>
