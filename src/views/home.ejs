@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/style.css" />
   <style>
     .like-btn.liked {
-      color: red;
+      color: #DE3163;
     }
 
     .like-btn {
@@ -18,6 +18,37 @@
       font-size: 1.1em;
       margin-left: 4px;
       vertical-align: middle;
+    }
+
+    .title-wrapper {
+      display: flex;
+      justify-content: space-between;
+      /* ดัน title ไปซ้าย เวลาไปขวา */
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-wrapper h3 {
+      flex: 1;
+      /* ให้กินพื้นที่เหลือ */
+      margin: 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      /* กันขึ้นบรรทัดใหม่ */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      /* ถ้าเกิน → ... */
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: #6b7280;
+      /* เทาอ่อน */
+      white-space: nowrap;
+      /* ห้ามตัดบรรทัด */
+      flex-shrink: 0;
+      /* ไม่ให้ย่อเวลา */
     }
   </style>
 </head>
@@ -75,9 +106,14 @@
                     <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover" />
                       <% } %>
                         <div class="pad">
-                          <h3 class="ellipsis meta-line">
-                            <%= p.title %>
-                          </h3>
+                          <div class="title-wrapper">
+                            <h3 class="ellipsis meta-line">
+                              <%= p.title %>
+                            </h3>
+                            <span class="post-time" data-time="<%= new Date(p.createdAt).toISOString() %>"></span>
+
+                          </div>
+
                           <p class="muted meta-line author">
                             by <%= p.author?.username %>
                           </p>
@@ -99,9 +135,9 @@
                                   <span class="stat-num like-count">
                                     <%= p.likes.length %>
                                   </span>
-                                                                    <span class="dot">·</span>
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" style="color: #4b5563;"
-                                    class="bi bi-chat-fill"  viewBox="0 0 16 16" >
+                                  <span class="dot">·</span>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                                    style="color: #4b5563;" class="bi bi-chat-fill" viewBox="0 0 16 16">
                                     <path
                                       d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
                                   </svg>
@@ -109,8 +145,8 @@
                                     <%= p.comments ? p.comments.length : 0 %>
                                   </span>
                                   <span class="dot">·</span>
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill" style="color: #4b5563;"
-                                    viewBox="0 0 16 16" aria-hidden="true">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill"
+                                    style="color: #4b5563;" viewBox="0 0 16 16" aria-hidden="true">
                                     <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
                                     <path
                                       d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
@@ -168,6 +204,40 @@
         });
       });
     });
+
+    (function () {
+      function timeAgo(input) {
+        const date = new Date(input);
+        const diffSec = Math.round((Date.now() - date.getTime()) / 1000);
+        const abs = Math.abs(diffSec);
+        if (abs < 45) return diffSec >= 0 ? "เมื่อสักครู่" : "อีกสักครู่";
+        const units = [
+          { s: 31536000, k: "ปี" },
+          { s: 2592000, k: "เดือน" },
+          { s: 604800, k: "สัปดาห์" },
+          { s: 86400, k: "วัน" },
+          { s: 3600, k: "ชั่วโมง" },
+          { s: 60, k: "นาที" },
+          { s: 1, k: "วินาที" },
+        ];
+        for (const u of units) {
+          if (abs >= u.s) {
+            const n = Math.floor(abs / u.s);
+            return diffSec >= 0 ? `${n} ${u.k}` : ` ${n} ${u.k}`;
+          }
+        }
+        return "เมื่อสักครู่";
+      }
+
+      function updateAll() {
+        document.querySelectorAll('.post-time[data-time]').forEach(el => {
+          el.textContent = timeAgo(el.getAttribute('data-time'));
+        });
+      }
+
+      updateAll();
+      setInterval(updateAll, 60000); // อัปเดตทุก 1 นาที
+    })();
   </script>
 </body>
 
