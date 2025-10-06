@@ -10,6 +10,270 @@
     .like-btn.liked {
       color: red;
     }
+
+    .title-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-wrapper h1 {
+      flex: 1;
+      margin: 0;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .post-time {
+      font-size: 0.8rem;
+      color: #6b7280;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .post-show .cover {
+      height: 100vh;
+      background: #dbeafe;
+      border-radius: 12px;
+    }
+
+    .post-show .cover-xl {
+      max-height: none;
+    }
+
+    .actions-btn {
+      display: flex;
+      flex-shrink: 0;
+    }
+
+    .actions-btn .edit-btn,
+    .actions-btn .del-btn {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-left: 4px;
+      border: 1px solid #0d63a5;
+      background: #e0f2fe;
+      color: #0d63a5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .actions-btn .del-btn {
+      border: 1px solid #dc2626;
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .actions-btn .edit-btn:hover {
+      background: #bae6fd;
+    }
+
+    .actions-btn .del-btn:hover {
+      background: #fecaca;
+    }
+
+    svg {
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+
+    .actions-container {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .like-btn,
+    .report-btn,
+    .save-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .like-btn {
+      background: white;
+      border-color: #0d63a5;
+      color: #0d63a5;
+    }
+
+    .save-btn {
+      background: #e0f2fe !important;
+      border-color: #38bdf8 !important;
+      color: #0369a1 !important;
+    }
+
+    .like-btn.liked {
+      background: #fde2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+
+    .save-btn.saved {
+      background: #e0f2fe !important;
+      border-color: #38bdf8 !important;
+      color: #0369a1 !important;
+    }
+
+    .comment-container {
+      margin-top: 1.25rem;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: .5rem;
+    }
+
+    .comment-header h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .comment-count {
+      color: #6b7280;
+      font-size: .9rem;
+    }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      /* เรียงแนวตั้ง: textarea บน, ปุ่มล่าง */
+      gap: .5rem;
+      align-items: stretch;
+      /* textarea กว้างเต็ม */
+      margin-bottom: .75rem;
+    }
+
+    .comment-form textarea {
+      flex: 1;
+      resize: vertical;
+      min-height: 72px;
+      padding: .6rem .75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .comment-form textarea:focus {
+      border-color: #0d63a5;
+      box-shadow: 0 0 0 3px rgba(13, 99, 165, .15);
+    }
+
+    .comment-form button {
+      align-self: flex-end;
+      /* ปุ่มไปชิดขวาใต้กล่องคอมเมนต์ */
+      white-space: nowrap;
+      padding: .55rem .9rem;
+      border-radius: 8px;
+      border: 1px solid #0d63a5;
+      background: #0d63a5;
+      color: #fff;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .comment-form button:hover {
+      filter: brightness(.95);
+    }
+
+
+
+    .comments {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+
+    .comment-item {
+      padding: .5rem .25rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      color: #6b7280;
+      font-size: .9rem;
+      margin-bottom: .25rem;
+    }
+
+    .comment-author,
+    .comment-author a {
+      color: #0d63a5;
+      font-weight: 600;
+    }
+
+    .comment-time {
+      white-space: nowrap;
+    }
+
+    .comment-body {
+      line-height: 1.55;
+      word-wrap: anywhere;
+    }
+
+    .comment-empty {
+      padding: .5rem 0;
+    }
+
+    .small {
+      font-size: .9rem;
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      background: #6b7280;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .like-btn svg,
+    .like-btn path,
+    .save-btn svg,
+    .save-btn path,
+    .report-btn svg,
+    .report-btn path {
+      fill: currentColor !important;
+    }
+
+    .report-btn-wrapper {
+      margin-left: auto;
+    }
+
+    .report-btn {
+      border: 1px solid #ef4444;
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .post-show {
+      max-width: 1000px;
+    }
   </style>
 </head>
 
@@ -20,16 +284,69 @@
       <article class="post">
         <% if (post.coverImage){ %><img src="<%= post.coverImage %>" class="cover-xl" />
           <% } %>
-            <h1>
-              <%= post.title %>
-            </h1>
-            <p class="muted">
-              โดย <%= post.author?.username %> · 
-              ♥ <span class="like-count"><%= post.likes.length %></span> 
-              · 💬 <span class="comment-count"><%= post.comments.length %></span>
-              · 👁️ <%= post.views %>
+            <div class="title-wrapper">
+              <h1 style="color: #0d63a5;">
+                <%= post.title %>
+              </h1>
+              <% if (currentUser) { %>
+                <% if (String(currentUser.id)===String(post.author._id) || currentUser.role==='admin' ) { %>
+                  <div class="actions-btn">
+                    <a class="edit-btn" href="/posts/<%= post.slug %>/edit">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                      </svg>
+                      แก้ไข
+                    </a>
+                    <form method="post" action="/posts/<%= post.slug %>/delete" style="display:inline"
+                      onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้? การลบนี้ไม่สามารถย้อนกลับได้');">
+                      <button class="danger del-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-trash3" viewBox="0 0 16 16">
+                          <path
+                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                        </svg>
+                        ลบโพสต์
+                      </button>
+                    </form>
+                  </div>
+                  <% } %>
+                    <% } %>
+            </div>
+            <p class="muted meta-line">
+              โดย <%= post.author?.username %> ·
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16"
+                  aria-hidden="true" style="color: #4b5563;">
+                  <path fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+
+                <span class="like-count">
+                  <%= post.likes.length %>
+                </span>
+                · <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                  style="color: #4b5563;" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
+                </svg>
+                <span class="comment-count">
+                  <%= post.comments.length %>
+                </span>
+                ·
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill" style="color: #4b5563;"
+                  viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                </svg>
+                <%= post.views %>
             </p>
-            <div class="tags">
+            <p class="post-time meta-line">
+              โพสต์เมื่อ <%= new Date(post.createdAt).toLocaleString() %>
+            </p>
+            <div class="tags meta-line">
               <% (post.tags||[]).forEach(t=>{ %><span class="tag">
                   <%= t %>
                 </span>
@@ -38,110 +355,185 @@
             <p>
               <%= post.body %>
             </p>
-            <div class="row">
-              <button 
-                type="button" 
-                class="like-btn<%= (currentUser && post.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>" 
-                data-slug="<%= post.slug %>"
-              >
-                ♥ ถูกใจ
+            <div class="actions-container">
+              <!-- ปุ่มถูกใจ -->
+              <button type="button"
+                class="like-btn<%= (currentUser && post.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>"
+                data-slug="<%= post.slug %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+                ถูกใจ
               </button>
-              <% if (currentUser && (String(currentUser.id) === String(post.author._id) || currentUser.role === 'admin')) { %>
-                <a class="button" href="/posts/<%= post.slug %>/edit">แก้ไข</a>
-                <form method="post" action="/posts/<%= post.slug %>/delete" style="display:inline" onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้? การลบนี้ไม่สามารถย้อนกลับได้');">
-                <button class="danger">ลบโพสต์</button>
-                </form>
-              <% } else if (currentUser) { %>
-              <a class="button" href="/posts/<%= post.slug %>/report">รายงาน</a>
-              <% } %>
+              <!-- ปุ่มบันทึก/ยกเลิกบันทึก -->
+              <% if (currentUser) { %>
+                <button id="save-post-btn" data-slug="<%= post.slug %>"
+                  class="save-btn <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'saved' : '' %>">
 
-            </div>
-            <% if (currentUser) { %>
-              <button id="save-post-btn" data-slug="<%= post.slug %>">
-                <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'ยกเลิกบันทึก'
-                  : 'บันทึกโพสต์' %>
-              </button>
-              <% } %>
-                <hr />
-                <h3>คอมเมนต์</h3>
-                <form id="comment-form" method="post" action="/posts/<%= post.slug %>/comments">
-                  <textarea name="body" rows="3" required id="comment-textarea"></textarea>
-                  <button type="submit">ส่งคอมเมนต์</button>
-                </form>
-                <ul class="comments" id="comments-list">
-                  <% post.comments.forEach(c=>{ %>
-                    <li><b><%= c.author?.username %></b> <span class="muted"><%= new Date(c.createdAt).toLocaleString() %></span><br />
-                      <%= c.body %>
-                    </li>
-                  <% }) %>
-                </ul>
-                <% if (!currentUser) { %>
-                  <p class="muted">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
+                  <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'ยกเลิกบันทึก'
+                    : 'บันทึกโพสต์' %>
+
+                </button>
                 <% } %>
+
+                  <!-- ถ้าเป็นเจ้าของโพสต์หรือ admin จะไม่เห็นปุ่มรายงาน -->
+                  <% if (currentUser && (String(currentUser.id)===String(post.author._id) || currentUser.role==='admin'
+                    )) { %>
+                    <!-- ไม่ต้องมีปุ่ม report -->
+                    <% } else if (currentUser) { %>
+                      <div class="report-btn-wrapper">
+                        <a class="report-btn" href="/posts/<%= post.slug %>/report">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-flag" viewBox="0 0 16 16">
+                            <path
+                              d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
+                          </svg>
+                          รายงาน
+                        </a>
+                      </div>
+                      <% } %>
+            </div>
+
+            <div class="comment-container">
+              <div class="comment-header">
+                <h3 style="color: #0369a1;">คอมเมนต์</h3>
+                <span class="comment-count">
+                  <%= post.comments?.length || 0 %> รายการ
+                </span>
+              </div>
+
+              <form id="comment-form" method="post" action="/posts/<%= post.slug %>/comments" class="comment-form">
+                <textarea name="body" rows="3" required id="comment-textarea"
+                  placeholder="พิมพ์ความคิดเห็นของคุณ..."></textarea>
+                <button class="sendcmt-btn" type="submit" <%=currentUser ? '' : 'disabled' %>>ส่งคอมเมนต์</button>
+              </form>
+
+              <% if (!currentUser) { %>
+                <p class="muted small">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
+                <% } %>
+
+                  <ul class="comments" id="comments-list">
+                    <% if (post.comments && post.comments.length) { %>
+                      <% post.comments.forEach(c=> { %>
+                        <li class="comment-item">
+                          <div class="comment-meta">
+                            <b class="comment-author">
+                              <%= c.author?.username || 'ผู้ใช้' %>
+                            </b>
+                            <span class="dot">·</span>
+                            <span class="muted">
+                              <%= new Date(c.createdAt).toLocaleString() %>
+                            </span>
+                          </div>
+                          <div class="comment-body">
+                            <%= c.body %>
+                          </div>
+                        </li>
+                        <% }) %>
+                          <% } else { %>
+                            <% } %>
+                  </ul>
+            </div>
       </article>
     </div>
   </main>
 </body>
 <script src="/js/save-post.js"></script>
 <script>
-document.querySelectorAll('.like-btn').forEach(btn => {
-  btn.addEventListener('click', async function(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    const slug = this.dataset.slug;
-    const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
-    if (res.ok) {
-      const data = await res.json();
-      document.querySelector('.like-count').textContent = data.likes;
-      if(data.liked) {
-        this.classList.add('liked');
-      } else {
-        this.classList.remove('liked');
-      }
-    }
-  });
-});
-
-// AJAX comment submit
-const commentForm = document.getElementById('comment-form');
-const commentTextarea = document.getElementById('comment-textarea');
-const commentsList = document.getElementById('comments-list');
-if (commentForm && commentTextarea && commentsList) {
-  commentTextarea.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      commentForm.dispatchEvent(new Event('submit', {cancelable:true}));
-    }
-  });
-  commentForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const body = commentTextarea.value.trim();
-    if (!body) return;
-    const btn = commentForm.querySelector('button[type=submit]');
-    btn.disabled = true;
-    try {
-      const res = await fetch(commentForm.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ body })
-      });
+  document.querySelectorAll('.like-btn').forEach(btn => {
+    btn.addEventListener('click', async function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      const slug = this.dataset.slug;
+      const res = await fetch(`/posts/${slug}/like`, { method: 'POST' });
       if (res.ok) {
-        // Add new comment to list (optimistic, or reload from server if you want)
-        const now = new Date();
-        const username = '<%= currentUser?.username %>';
-        const html = `<li><b>${username}</b> <span class="muted">${now.toLocaleString()}</span><br />${body}</li>`;
-        commentsList.insertAdjacentHTML('beforeend', html);
-        commentTextarea.value = '';
-        // Update comment count in meta
-        const commentCountSpan = document.querySelector('.comment-count');
-        if (commentCountSpan) {
-          commentCountSpan.textContent = (parseInt(commentCountSpan.textContent, 10) + 1).toString();
+        const data = await res.json();
+        document.querySelector('.like-count').textContent = data.likes;
+        if (data.liked) {
+          this.classList.add('liked');
+        } else {
+          this.classList.remove('liked');
         }
       }
-    } finally {
-      btn.disabled = false;
-    }
+    });
   });
-}
+
+  // AJAX comment submit
+  // --- helper ป้องกัน XSS ---
+  function escapeHtml(s) {
+    return String(s ?? '')
+      .replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;').replaceAll('"', '&quot;')
+      .replaceAll("'", "&#39;");
+  }
+
+  // AJAX comment submit
+  const commentForm = document.getElementById('comment-form');
+  const commentTextarea = document.getElementById('comment-textarea');
+  const commentsList = document.getElementById('comments-list');
+
+  if (commentForm && commentTextarea && commentsList) {
+    // Enter = ส่งคอมเมนต์ (Shift+Enter = ขึ้นบรรทัดใหม่)
+    commentTextarea.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        commentForm.dispatchEvent(new Event('submit', { cancelable: true }));
+      }
+    });
+
+    commentForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const body = commentTextarea.value.trim();
+      if (!body) return;
+
+      const btn = commentForm.querySelector('button[type=submit]');
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(commentForm.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ body })
+        });
+
+        if (!res.ok) return;
+
+        // ถ้า backend ส่งคอมเมนต์กลับมาใช้ของจริง; ไม่งั้นใช้ now/username ฝั่ง client
+        let data = null;
+        try { data = await res.json(); } catch (_) { }
+        const username = escapeHtml((data && data.comment && data.comment.author && data.comment.author.username)
+          || `<%= currentUser?.username || 'ผู้ใช้' %>`);
+        const createdAt = (data && data.comment && data.comment.createdAt)
+          ? new Date(data.comment.createdAt)
+          : new Date();
+
+        // สร้างโครง <li> ให้เหมือนใน EJS (มีคลาส comment-author แน่ ๆ)
+        const li = document.createElement('li');
+        li.className = 'comment-item';
+        li.innerHTML = `
+          <div class="comment-meta">
+            <b class="comment-author">${username}</b>
+            <span class="dot"></span>
+            <span class="muted">${createdAt.toLocaleString("th-TH")}</span>
+          </div>
+          <div class="comment-body">${escapeHtml(body)}</div>
+        `;
+        commentsList.insertAdjacentElement('afterbegin', li); // โชว์คอมเมนต์ใหม่บนสุด
+
+        // ล้างฟอร์ม + อัปเดตจำนวน
+        commentTextarea.value = '';
+        const commentCountSpan = document.querySelector('.comment-count');
+        if (commentCountSpan) {
+          const n = parseInt(commentCountSpan.textContent, 10) || 0;
+          commentCountSpan.textContent = (n + 1) + ' รายการ';
+        }
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
 </script>
+
 </html>
