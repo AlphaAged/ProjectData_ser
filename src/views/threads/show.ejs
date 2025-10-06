@@ -1,43 +1,613 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    :root {
+      --brand: #0d63a5;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #fff;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 12px
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      overflow: hidden
+    }
+
+    .post-header {
+      padding: 16px 16px 0
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 8px
+    }
+
+    .title {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.35;
+      color: var(--brand);
+    }
+
+    .meta {
+      color: var(--muted);
+      margin: .25rem 0 .75rem;
+      font-size: .95rem
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: .75rem
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+      border: 1px solid #bae6fd;
+      background: #e0f2fe;
+      color: #075985
+    }
+
+    .post-body {
+      padding: 0 16px 6px;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      color: #111827
+    }
+
+    .toolbar {
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .actions {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      color: #4b5563
+    }
+
+    .action {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      background: none;
+      border: none;
+    }
+
+    .action[disabled] {
+      opacity: .6;
+      cursor: not-allowed
+    }
+
+    .action svg {
+      width: 18px;
+      height: 18px
+    }
+
+    .action svg path {
+      fill: currentColor
+    }
+
+    .actions-btn .edit-btn,
+    .actions-btn .del-btn {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      margin-left: 2px;
+      border: 1px solid #0d63a5;
+      background: #e0f2fe;
+      color: #0d63a5;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .actions-btn .del-btn {
+      border: 1px solid #dc2626;
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .actions-btn .edit-btn:hover {
+      background: #bae6fd;
+    }
+
+    .actions-btn .del-btn:hover {
+      background: #fecaca;
+    }
+
+    .actions-btn svg {
+      margin-right: 4px;
+    }
+
+
+    #like-btn.liked {
+      color: #b91c1c;
+        }
+
+    .owner-actions {
+      display: flex;
+      gap: 8px
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      color: #374151;
+      text-decoration: none
+    }
+
+    .btn:hover {
+      background: #eef2f7
+    }
+
+    .btn.primary {
+      border-color: var(--brand);
+      background: var(--brand);
+      color: #fff
+    }
+
+    .btn.danger {
+      border-color: #dc2626;
+      background: #fee2e2;
+      color: #b91c1c
+    }
+
+    .composer-wrap {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      background: #f1f5f9;
+    }
+
+    .composer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 8px 10px
+    }
+
+    .composer input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 1rem
+    }
+
+    .composer button {
+      border: none;
+      background: var(--brand);
+      color: #fff;
+      border-radius: 20px;
+      padding: 10px 24px;
+      cursor: pointer
+    }
+
+    .composer button:disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      cursor: not-allowed
+    }
+
+    .comments-sec {
+      border-top: 1px solid var(--border);
+      background: #fff
+    }
+
+    .comments-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      color: #111827
+    }
+
+    .comments-list {
+      list-style: none;
+      margin: 0;
+      padding: 0 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px
+    }
+
+    .comment {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px
+    }
+
+    .comment:first-child {
+      border-top: none;
+      padding-top: 0
+    }
+
+    .comment-meta {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 4px
+    }
+
+    .comment-author {
+      color: var(--brand);
+      font-weight: 600
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, .35);
+      z-index: 50
+    }
+
+    .modal.open {
+      display: flex
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .15)
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .modal-body {
+      padding: 14px
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      padding: 0 14px 14px
+    }
+
+    .modal-close {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer
+    }
+
+    .modal .field {
+      margin-bottom: 10px
+    }
+
+    .modal input[type="text"],
+    .modal textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .modal input[type="text"]:focus,
+    .modal textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(13, 99, 165, .12)
+    }
+
+    .report-btn{
+            padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    
+    .report-btn {
+      border: 1px solid #FCD34D;
+      /* amber-300 */
+      background: #FFF7ED;
+      /* amber-50 */
+      color: #92400E;
+      /* amber-800 */
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+    }
+
+        .report-btn:hover {
+      background: #FFEDD5;
+      /* orange-100 */
+      border-color: #F59E0B;
+      /* amber-500 */
+      color: #7C2D12;
+      /* amber-900 */
+    }
+
+    
+ 
+  </style>
 </head>
+
 <body>
+  <main class="page">
+    <section class="card">
+      <!-- header -->
+      <div class="post-header">
+        <div class="title-row">
+          <h1 class="title">
+            <%= thread.title %>
+          </h1>
 
-<main class="container">
-<h2><%= thread.title %></h2>
-<p class="muted">โดย <%= thread.author?.username %></p>
-<p><%= thread.body %></p>
-<div class="row">
-  <form method="post" action="/threads/<%= thread._id %>/like"><button>ถูกใจ</button></form>
+          <% if (currentUser && (String(currentUser.id)===String(thread.author._id) || currentUser.role==='admin' )) {
+            %>
+            <div class="actions-btn owner-actions">
+              <a class="edit-btn" href="/threads/<%= thread._id %>/edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                      </svg>
+                แก้ไข
+              </a>
+              <form method="post" action="/threads/<%= thread._id %>/delete"
+                onsubmit="return confirm('แน่ใจว่าจะลบกระทู้นี้?');">
+                <button class="del-btn" type="submit">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-trash3" viewBox="0 0 16 16">
+                          <path
+                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                        </svg>
+                  ลบ
+                </button>
+              </form>
+            </div>
+            <% } %>
+        </div>
 
-  <% if (currentUser && (currentUser.id === String(thread.author._id) || currentUser.role==='admin')){ %>
-    <form method="post" action="/threads/<%= thread._id %>/delete">
-      <button class="danger">ลบกระทู้</button>
-    </form>
-  <% } else if (currentUser) { %>
-    <a class="button" href="/threads/<%= thread._id %>/report">รายงาน</a>
-  <% } %>
-</div>
+        <p class="meta">
+          โดย <%= (thread.author && thread.author.username) ? thread.author.username : 'ผู้ใช้' %>
+            · <%= new Date(thread.createdAt).toLocaleString('th-TH', { dateStyle:'medium', timeStyle:'short' }) %>
+        </p>
 
-<hr/>
-<h3>คำตอบ</h3>
-<ul class="comments">
-  <% thread.replies.forEach(r=>{ %>
-    <li><b><%= r.author?.username %></b> <span class="muted"><%= new Date(r.createdAt).toLocaleString() %></span><br/><%= r.body %></li>
-  <% }) %>
-</ul>
-<% if (currentUser){ %>
-<form method="post" action="/threads/<%= thread._id %>/replies">
-  <textarea name="body" rows="3" required></textarea>
-  <button>ตอบ</button>
-</form>
-<% } %>
-</main>
+        <!-- <% var program=(thread.author && thread.author.program)?thread.author.program:''; var year=(thread.author &&
+          thread.author.year)?thread.author.year:''; var progYear='' ; if(program) progYear=program; if(year)
+          progYear=progYear ? (progYear + ' · ปี ' + year) :
+          ('ปี ' + year);
+        %>
+        <% if (progYear) { %>
+          <div class="chips"><span class="chip"><%= progYear %></span></div>
+        <% } %> -->
+      </div>
 
+      <!-- body -->
+      <div class="post-body">
+        <%= thread.body %>
+      </div>
+
+      <!-- action bar -->
+      <div class="toolbar">
+        <div class="actions">
+          <% if (currentUser) { %>
+            <form id="like-form" method="post" action="/threads/<%= thread._id %>/like">
+              <button id="like-btn" type="submit"
+                class="action <%= (thread.likes && thread.likes.map(function(id){return String(id)}).indexOf(String(currentUser.id))>=0) ? ' liked' : '' %>"
+                aria-label="ถูกใจ">
+                <svg viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+                <span id="like-count" >
+                  <%= (thread.likes && thread.likes.length) ? thread.likes.length : 0 %>
+                </span>
+              </button>
+            </form>
+            <% } else { %>
+              <span class="action" disabled title="ต้องเข้าสู่ระบบก่อน">
+                <svg viewBox="0 0 16 16">
+                  <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+                <span>
+                  <%= (thread.likes && thread.likes.length) ? thread.likes.length : 0 %>
+                </span>
+              </span>
+              <% } %>
+
+                <span class="action" title="คอมเมนต์">
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path
+                      d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
+                  </svg>
+                  <span>
+                    <%= (thread.replies && thread.replies.length) ? thread.replies.length : 0 %>
+                  </span>
+                </span>
+
+                <span class="action" title="จำนวนดู">
+                  <svg viewBox="0 0 16 16" aria-hidden="true">
+                    <path
+                      d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                  </svg>
+                  <span>
+                    <%= (typeof thread.views==='number' ) ? thread.views : 0 %>
+                  </span>
+                </span>
+        </div>
+
+        <div class="actions">
+          <% if (currentUser && !(String(currentUser.id)===String(thread.author._id) || currentUser.role==='admin' )) {
+            %>
+            <button class="action report-btn" type="button" title="รายงาน">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-flag" viewBox="0 0 16 16">
+                            <path
+                              d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
+                          </svg>
+              <span>รายงาน</span>
+            </button>
+            <noscript><a class="btn" href="/threads/<%= thread._id %>/report">รายงาน</a></noscript>
+            <% } %>
+        </div>
+      </div>
+
+      <!-- composer bar -->
+      <div class="composer-wrap">
+        <% if (currentUser){ %>
+          <form class="composer" method="post" action="/threads/<%= thread._id %>/replies">
+            <input type="text" name="body" required placeholder="พิมพ์ความคิดเห็นของคุณ..." />
+            <button class="sendcmt-btn"  type="submit" aria-label="ส่ง">ส่ง</button>
+          </form>
+          <% } else { %>
+            <div class="composer">
+              <input type="text" placeholder="เข้าสู่ระบบเพื่อแสดงความคิดเห็น" disabled />
+              <button type="button" disabled>ส่ง</button>
+            </div>
+            <% } %>
+      </div>
+
+      <!-- comments -->
+      <div class="comments-sec">
+        <div class="comments-head">
+          <strong>Comments</strong>
+        </div>
+        <ul class="comments-list">
+          <% if (thread.replies && thread.replies.length) { %>
+            <% for (var i=0;i<thread.replies.length;i++){ var r=thread.replies[i]; var rName=(r.author &&
+              r.author.username)?r.author.username:'ผู้ใช้'; %>
+              <li class="comment">
+                <div class="comment-meta">
+                  <span class="comment-author">
+                    <%= rName %>
+                  </span>
+                  · <%= new Date(r.createdAt).toLocaleString('th-TH',{dateStyle:'medium',timeStyle:'short'}) %>
+                </div>
+                <div class="comment-body">
+                  <%= r.body %>
+                </div>
+              </li>
+              <% } %>
+                <% } else { %>
+                  <li class="comment muted">ยังไม่มีความคิดเห็น</li>
+                  <% } %>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- Report modal -->
+  <% if (currentUser && !(String(currentUser.id)===String(thread.author._id) || currentUser.role==='admin' )) { %>
+    <div id="report-modal" class="modal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="report-title">
+        <div class="modal-head">
+          <strong id="report-title">รายงานกระทู้</strong>
+          <button style="color: #374151;" id="report-close" class="modal-close" type="button">ปิด</button>
+        </div>
+        <form method="post" action="/threads/<%= thread._id %>/report">
+          <div class="modal-body">
+            <div class="field">
+              <label for="r-title">หัวข้อเหตุผล</label>
+              <input id="r-title" name="title" type="text" required placeholder="เช่น สแปม/เนื้อหาไม่เหมาะสม">
+            </div>
+            <div class="field">
+              <label for="r-body">รายละเอียด</label>
+              <textarea id="r-body" name="body" rows="5" required placeholder="อธิบายเพิ่มเติม..."></textarea>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button style="color: #374151;" type="button" id="report-cancel" class="modal-close">ยกเลิก</button>
+            <button type="submit" class="btn primary">ส่งรายงาน</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <% } %>
+
+      <script>
+        // AJAX like (ใช้ /threads/:id/like และ update ตัวเลขทันที)
+        (function () {
+          var form = document.getElementById('like-form');
+          var btn = document.getElementById('like-btn');
+          var cnt = document.getElementById('like-count');
+          if (!form || !btn || !cnt) return;
+          form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            btn.disabled = true;
+            try {
+              const res = await fetch(form.action, { method: 'POST', headers: { 'Accept': 'application/json' } });
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              const data = await res.json();
+              cnt.textContent = data.likes;
+              if (data.liked) { btn.classList.add('liked'); } else { btn.classList.remove('liked'); }
+            } catch (err) { console.error(err); }
+            finally { btn.disabled = false; }
+          });
+        })();
+
+        // Report modal
+        (function () {
+          var open = document.getElementById('report-open');
+          var modal = document.getElementById('report-modal');
+          if (!open || !modal) return;
+          var closeBtn = document.getElementById('report-close');
+          var cancelBtn = document.getElementById('report-cancel');
+          function openM() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
+          function closeM() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+          open.addEventListener('click', openM);
+          if (closeBtn) closeBtn.addEventListener('click', closeM);
+          if (cancelBtn) cancelBtn.addEventListener('click', closeM);
+          modal.addEventListener('click', function (e) { if (e.target === modal) closeM(); });
+          document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeM(); });
+        })();
+      </script>
 </body>
+
 </html>
