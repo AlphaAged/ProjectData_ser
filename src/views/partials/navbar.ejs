@@ -14,9 +14,9 @@
 
   <div class="nav-right">
     <% if (currentUser) { %>
-      <form action="/logout" method="post" style="display:inline">
-        <button class="linklike">ออกจากระบบ</button>
-      </form>
+<form action="/logout" method="post" style="display:inline">
+  <button type="submit" class="linklike logout-btn">ออกจากระบบ</button>
+</form>
       <a href="/profile" class="<%= currentPath.startsWith('/profile') ? 'active' : '' %>">โปรไฟล์ (<%=
           currentUser.username %>)</a>
       <% } else { %>
@@ -41,9 +41,9 @@
     <% if (currentUser.role==='admin' ) { %>
       <a href="/admin">แอดมิน</a>
       <% } %>
-        <form action="/logout" method="post" style="display:inline">
-          <button class="linklike">ออกจากระบบ</button>
-        </form>
+<form action="/logout" method="post" style="display:inline">
+  <button type="submit" class="linklike logout-btn">ออกจากระบบ</button>
+</form>
         <a href="/profile" class="<%= currentPath.startsWith('/profile') ? 'active' : '' %>">โปรไฟล์ (<%=
             currentUser.username %>)</a>
         <% } else { %>

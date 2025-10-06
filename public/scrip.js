@@ -29,3 +29,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// ออกจากระบบ
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.logout-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault(); // กันไม่ให้ฟอร์มส่งทันที
+        const ok = confirm('ต้องการออกจากระบบหรือไม่?');
+        if (ok) {
+          const form = btn.closest('form');
+          if (form) form.submit(); // ส่งฟอร์มถ้าผู้ใช้กดตกลง
+        }
+        // ถ้ากดยกเลิก ก็ไม่ทำอะไรต่อ
+      });
+    });
+  });
