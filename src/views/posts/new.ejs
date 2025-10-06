@@ -8,23 +8,100 @@
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
 </head>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .newpost-form {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border: 1px solid #D0E7F5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .newpost-form div {
+    margin: 10px 0;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+  }
+
+  textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+    border-radius: 4px;
+    resize: none;
+  }
+
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+  }
+
+  .post-btn {
+    background-color: #0d63a5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .cancel-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid #D0E7F5;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .cancel-btn:hover {
+    background-color: #e3f4ff;
+  }
+
+  .post-btn:hover {
+    background-color: #084d73;
+  }
+
+  .post-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+main.container {
+  display: flex;
+  justify-content: center;      /* จัดกลางแนวนอน */
+  align-items: center;          /* จัดกลางแนวตั้ง */
+}
+
+</style>
 
 <body>
-  
+
 
   <main class="container">
-    <h2 class="d-flex justify-content-center ">สร้างโพสต์สรุป</h2>
-    <div class="d-flex justify-content-center align-items-center min-vh-50">
       <div class="preference" style="max-width: 800px; width: 100%;">
-        <form method="post" action="/posts" enctype="multipart/form-data">
-
-
+        <form class="newpost-form" method="post" action="/posts" enctype="multipart/form-data">
+          <h2 style="text-align: center;" class="d-flex justify-content-center ">สร้างโพสต์สรุป</h2>
 
           <div class="mb-3">
             <label for="objectname" class="form-label fs-5">ชื่อเรื่อง</label>
             <input name="title" class="form-control" id="NoteTitle" placeholder="Note Title" required>
           </div>
-
           <div class="mb-3">
             <label for="objectdes" class="form-label fs-5">เนื้อหา</label>
             <textarea name="body" rows="8" class="form-control" id="description" placeholder="description"
@@ -63,23 +140,23 @@
                 const reader = new FileReader();
                 reader.onload = function (e) {
                   preview.src = e.target.result;
-                  preview.classList.remove("d-none"); 
+                  preview.classList.remove("d-none");
                 }
                 reader.readAsDataURL(input.files[0]);
               } else {
                 preview.src = "#";
-                preview.classList.add("d-none"); 
+                preview.classList.add("d-none");
               }
             }
           </script>
 
-          <div class="d-flex justify-content-end mt-3">
-            <button type="submit" class="btn btn-primary">โพสต์</button>
+          <div class="post-button">
+            <a class="cancel-btn" href="/" >ยกเลิก</a>
+            <button type="submit" class="post-btn">โพสต์</button>
           </div>
 
         </form>
       </div>
-    </div>
 
   </main>
 
