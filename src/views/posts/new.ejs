@@ -75,7 +75,11 @@
   .post-btn:hover {
     background-color: #084d73;
   }
-
+  label{
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
   .post-button {
     display: flex;
     justify-content: flex-end;
@@ -84,15 +88,14 @@
 
 main.container {
   display: flex;
-  justify-content: center;      /* จัดกลางแนวนอน */
-  align-items: center;          /* จัดกลางแนวตั้ง */
+  justify-content: center;   
+  align-items: center;   
+  max-width: 660px;       
 }
 
 </style>
 
 <body>
-
-
   <main class="container">
       <div class="preference" style="max-width: 800px; width: 100%;">
         <form class="newpost-form" method="post" action="/posts" enctype="multipart/form-data">
