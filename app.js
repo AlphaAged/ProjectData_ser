@@ -39,7 +39,15 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 
-
+// simple HTML escaping function for EJS templates  (usage: <%= escapeHtml(variable) %> )
+// prevents XSS attacks
+app.use((req, res, next) => {
+  res.locals.escapeHtml = (s) => String(s ?? '')
+    .replaceAll('&','&amp;').replaceAll('<','&lt;')
+    .replaceAll('>','&gt;').replaceAll('"','&quot;')
+    .replaceAll("'",'&#39;');
+  next();
+});
 
 app.use(session({
   secret: process.env.SESSION_SECRET || 'devsecret',

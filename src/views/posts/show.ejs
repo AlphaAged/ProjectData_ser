@@ -27,6 +27,11 @@
       text-overflow: ellipsis;
     }
 
+    .post {
+      border: #cfe7ff 1px solid;
+      box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+    }
+
     .post-time {
       font-size: 0.8rem;
       color: #6b7280;
@@ -192,8 +197,6 @@
       filter: brightness(.95);
     }
 
-
-
     .comments {
       list-style: none;
       padding: 0;
@@ -205,7 +208,7 @@
 
     .comment-item {
       padding: .5rem .25rem;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 1px solid #d1d5db;
     }
 
     .comment-item:last-child {
@@ -272,7 +275,17 @@
     }
 
     .post-show {
-      max-width: 1000px;
+      max-width: 700px;
+      margin: auto;
+    }
+
+    .post-body {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      line-height: 1.75;
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -352,9 +365,11 @@
                 </span>
                 <% }) %>
             </div>
-            <p>
-              <%= post.body %>
-            </p>
+
+            <div class="post-body">
+              <%- escapeHtml(post.body).replace(/\r?\n/g,'<br>') %>
+            </div>
+
             <div class="actions-container">
               <!-- ปุ่มถูกใจ -->
               <button type="button"
