@@ -12,7 +12,7 @@ router.get('/community', async (req, res) => {
   if (q) {
     filter.$or = [
       { title: { $regex: q, $options: 'i' } },
-      { body:  { $regex: q, $options: 'i' } },
+      { body: { $regex: q, $options: 'i' } },
     ];
   }
 
@@ -33,13 +33,35 @@ router.post('/threads', requireAuth, async (req, res) => {
   res.redirect('/threads/' + th._id);
 });
 
+
+
 router.get('/threads/:id', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id)
     .populate('author')
     .populate('replies.author');
   if (!th) return res.status(404).send('Not found');
   if (th.deleted && req.session.user.role !== 'admin') return res.status(404).send('Not found');
+
+  // นับ view
+  th.views = (typeof th.views === 'number' ? th.views : 0) + 1;
+  await th.save();
   res.render('threads/show', { thread: th });
+});
+
+router.post('/threads/:id', requireAuth, async (req, res) => {
+  const th = await Thread.findById(req.params.id).populate('author');
+  if (!th) return res.status(404).send('Not found');
+  if (String(th.author._id) !== String(req.session.user.id) && req.session.user.role !== 'admin') {
+    return res.status(403).send('Forbidden');
+  }
+
+  const title = (req.body.title || '').trim();
+  const body  = (req.body.body  || '').trim();
+  if (title) th.title = title;
+  if (body)  th.body  = body;
+
+  await th.save();
+  res.redirect('/threads/' + th._id);
 });
 
 router.post('/threads/:id/replies', requireAuth, async (req, res) => {
