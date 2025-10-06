@@ -18,14 +18,19 @@ router.get('/', async (req,res)=>{
 
 
   // นับรายงานคงค้าง
-  const pendingReportsPosts = await Post.aggregate([
-    { $project: { cnt: { $size: '$reports' } } }
-  ]);
-  const pendingReportsThreads = await Thread.aggregate([
-    { $project: { cnt: { $size: '$reports' } } }
-  ]);
-  const totalReports = pendingReportsPosts.reduce((a,b)=>a+b.cnt,0) +
-                       pendingReportsThreads.reduce((a,b)=>a+b.cnt,0);
+// นับรายงานคงค้างเฉพาะที่ status != 'resolved'
+const pendingReportsPosts = await Post.aggregate([
+  { $unwind: "$reports" }, // แยกรายงานแต่ละอัน
+  { $match: { "reports.status": { $ne: "resolved" } } }
+]);
+
+const pendingReportsThreads = await Thread.aggregate([
+  { $unwind: "$reports" },
+  { $match: { "reports.status": { $ne: "resolved" } } }
+]);
+
+const totalReports = pendingReportsPosts.length + pendingReportsThreads.length;
+
 
   res.render('admin/dashboard', {
     users: usersCount,
@@ -47,21 +52,19 @@ router.post('/users/:id/role', async (req,res)=>{
   res.redirect('/admin/users');
 });
 router.post('/users/:id/delete', async (req,res)=>{
-  // ลบโพสต์และกระทู้ของ user ก่อนลบ user
-  await Promise.all([
-    Post.deleteMany({author: req.params.id}),
-    Thread.deleteMany({author: req.params.id}),
-    User.deleteOne({_id:req.params.id})
-  ]);
+  await User.deleteOne({_id:req.params.id});
   res.redirect('/admin/users');
 });
 
 // admin report and update report status
 router.get('/reports', requireAuth, async (req,res) => {
-  const posts = await Post.find();    
-  const threads = await Thread.find(); 
+  // ดึงโพสต์ทั้งหมด ไม่กรอง deleted
+  const posts = await Post.find().sort({ createdAt: -1 }).populate('author');
+  const threads = await Thread.find().sort({ createdAt: -1 }).populate('author');
+  
   res.render('admin/reports', { posts, threads, currentUser: req.session.user });
 });
+
 router.get('/reports/:type/:itemId/:reportIdx', requireAuth, async (req,res) => {
   const { type, itemId, reportIdx } = req.params;
   let report, originalItem;

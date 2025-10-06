@@ -9,7 +9,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const q = req.query.q || '';
   const tag = req.query.tag || '';
-  let filter = {};
+
+  //ไม่เอาโพสต์ที่ถูกลบ
+  let filter = { deleted: { $ne: true } };
   if (q) {
     filter.title = { $regex: q, $options: 'i' }; // ค้นหาจาก title (ไม่สนตัวพิมพ์เล็ก/ใหญ่)
   }
