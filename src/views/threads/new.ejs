@@ -152,7 +152,7 @@
             <span class="counter" id="title-count">0/120</span>
           </div>
           <input id="title" name="title" type="text" required maxlength="120"
-            placeholder="พิมพ์หัวข้อให้ชัดเจน เช่น “ไก่กับไข่อะไรเกิดก่อนกัน”" />
+            placeholder="พิมพ์หัวข้อให้ชัดเจน เช่น “ขอแนวอ่านโครงสร้างข้อมูล”" />
         </div>
 
         <!-- รายละเอียด -->
@@ -184,6 +184,13 @@
       const form = $('#thread-form');
       const submit = $('#submit-btn');
 
+      // เคาน์เตอร์ + เงื่อนไขขั้นต่ำ
+      function updateCounters() {
+        tCount.textContent = (title.value || '').length + '/120';
+        bCount.textContent = (body.value || '').length + ' ตัวอักษร';
+        const ok = (title.value.trim().length >= 1) && (body.value.trim().length >= 1);
+        submit.disabled = !ok;
+      }
 
       // autosize textarea
       function autosize(el) {
