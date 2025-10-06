@@ -1,7 +1,7 @@
 <nav class="navbar">
   <div class="nav-left">
     <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">หน้าหลัก</a>
-    <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a>
+    <!-- <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a> -->
     <a href="/community" class="<%= currentPath.startsWith('/community') ? 'active' : '' %>">พูดคุย</a>
 
     <% if (currentUser) { %>
@@ -32,7 +32,7 @@
   <div class="side-menu" id="sideMenu">
   <button class="close-btn" id="closeBtn">&times;</button>
   <a href="/" class="<%= currentPath === '/' ? 'active' : '' %>">หน้าหลัก</a>
-  <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a>
+  <!-- <a href="/search" class="<%= currentPath.startsWith('/search') ? 'active' : '' %>">ค้นหาสรุป</a> -->
   <a href="/community" class="<%= currentPath.startsWith('/community') ? 'active' : '' %>">พูดคุย</a>
 
   <% if (currentUser) { %>

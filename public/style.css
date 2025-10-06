@@ -186,10 +186,6 @@ a:hover {
   margin-right: .2rem
 }
 
-.meta-line .dot {
-  margin: 0 .35rem
-}
-
 .tags .tag {
   display: inline-block;
   background: #eaf5ff;
