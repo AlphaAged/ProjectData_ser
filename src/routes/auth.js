@@ -39,12 +39,17 @@ router.get('/profile', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
 
   const user = await User.findById(req.session.user.id);
-  const posts = await Post.find({ author: req.session.user.id })
-                          .sort({ createdAt: -1 })
-                          .populate('author', 'username email');
+
+  const posts = await Post.find({
+      author: req.session.user.id,
+      deleted: { $ne: true } // กรองโพสต์ที่ถูกลบออก
+  })
+  .sort({ createdAt: -1 })
+  .populate('author', 'username email');
 
   res.render('auth/profile', { user, posts, message: null });
 });
+
 
 // แสดงฟอร์มแก้ไขโปรไฟล์
 router.get('/edit-profile', async (req,res)=>{
