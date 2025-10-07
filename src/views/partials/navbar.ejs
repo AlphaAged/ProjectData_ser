@@ -41,7 +41,7 @@
     <% if (currentUser.role==='admin' ) { %>
       <a href="/admin">แอดมิน</a>
       <% } %>
-        <form action="/logout" method="post" style="display:inline">
+        <form  action="/logout" method="post" style="display:inline">
           <button class="linklike">ออกจากระบบ</button>
         </form>
         <a href="/profile" class="<%= currentPath.startsWith('/profile') ? 'active' : '' %>">โปรไฟล์ (<%=
