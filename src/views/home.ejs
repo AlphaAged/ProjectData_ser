@@ -103,8 +103,15 @@
               <% posts.forEach(p=>{ %>
                 <div class="card-container">
                   <a class="card" href="/posts/<%= p.slug %>">
-                    <% if (p.coverImage){ %><img src="<%= p.coverImage %>" class="cover" />
-                      <% } %>
+                  <% if (p.coverImage) { %>
+                    <img src="<%= p.coverImage %>" class="cover" />
+                  <% } else if (p.pdfFile) { %>
+                    <div class="pdf-preview d-flex flex-column justify-content-center align-items-center"
+                      style="height: 10px; background: #f8f9fa; border-radius: 10px;">
+                      <span class="text-muted fs-5">📄 <%= p.title %>.pdf</span>
+
+                    </div>
+                    <% } %>
                         <div class="pad">
                           <div class="title-wrapper">
                             <h3 class="ellipsis meta-line">
