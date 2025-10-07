@@ -145,3 +145,27 @@ router.post('/threads/:id/delete', requireAuth, async (req, res) => {
 });
 
 export default router;
+
+//ลบปัญหาจริง
+//ลบรายงานจริง (ใช้ Post / Thread โดยตรง)
+router.post('/reports/:type/:itemId/:reportIdx/delete', async (req, res) => {
+  const { type, itemId, reportIdx } = req.params;
+
+  try {
+    let item;
+    if (type === 'post') item = await Post.findById(itemId);
+    else if (type === 'thread') item = await Thread.findById(itemId);
+    else return res.status(400).send('404 Not Found');
+
+    if (!item) return res.status(404).send('ไม่พบรายการต้นทาง');
+
+    //ลบ report ออกจาก array ตาม index
+    item.reports.splice(reportIdx, 1);
+    await item.save();
+
+    res.redirect('/admin/reports');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('เกิดข้อผิดพลาดในการลบรายงาน');
+  }
+});
