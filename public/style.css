@@ -382,24 +382,7 @@ button,
   pointer-events: none;
 }
 
-/* profile css */
-.profile-wrapper {
-  max-width: 500px;
-  margin: 0 auto 20px;
-  background: white;
-  border: 1px solid #D0E7F5;
-  border-radius: 12px;
-  padding: 20px;
-}
 
-/* profile action buttons: align icon and label */
-.profile-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
 
 .action-btn {
   display: inline-flex;
@@ -463,70 +446,7 @@ button,
   font-size: .95rem;
 }
 
-/* edit-profile form styles */
-.profile-form {
-  max-width: 700px;
-  margin: 18px auto 60px;
-  background: white;
-  padding: 18px;
-  border: 1px solid #e6eef5;
-  border-radius: 12px;
-}
 
-.profile-form .form-row {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.profile-form .form-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-form label {
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.profile-form input,
-.profile-form select,
-.profile-form textarea {
-  border: 1px solid #cfe7ff;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-.profile-form textarea {
-  resize: vertical
-}
-
-.profile-form .form-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 12px;
-}
-
-.profile-form .linklike {
-  background: transparent;
-  border: 1px solid #cfe7ff;
-  padding: 8px 12px;
-  border-radius: 10px;
-  color: #0d63a5;
-}
-
-.profile-form .linklike:hover {
-  text-decoration: none;
-  background: #eef7ff;
-}
-
-
-.profile-form .button {
-  padding: 8px 14px
-}
 
 /* ขนาดเล็กลงบนจอมือถือ */
 @media (max-width: 480px) {
