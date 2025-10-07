@@ -311,8 +311,18 @@
   <main class="container">
     <div class="post-show">
       <article class="post">
-        <% if (post.coverImage){ %><img src="<%= post.coverImage %>" class="cover-xl" />
+        <% if (post.coverImage) { %>
+
+          <img src="<%= post.coverImage %>" alt="cover" style="max-width:300px;">
           <% } %>
+
+          <% if (post.pdfFile) { %>
+              <div class="pdf-preview" style="margin-top: 1rem;">
+                <iframe src="<%= post.pdfFile %>" width="100%" height="600px"
+                  style="border: 1px solid #ccc; border-radius: 10px;">
+                </iframe>
+              </div>
+              <% } %>
             <div class="title-wrapper">
               <h1 style="color: #0d63a5;">
                 <%= post.title %>
