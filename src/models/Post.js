@@ -20,6 +20,8 @@ const PostSchema = new mongoose.Schema({
   body: {type:String, required:true},
   tags: [{type:String, enum:['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free']}],
   coverImage: String,
+  pdfFile: String,                                  // ไฟล์pdf 
+  pdfName: { type: String, default: null },         // ชื่อไฟลpdf
   author: {type: mongoose.Schema.Types.ObjectId, ref:'User', required:true},
   likes: [{type: mongoose.Schema.Types.ObjectId, ref:'User'}],
   views: {type:Number, default:0},
