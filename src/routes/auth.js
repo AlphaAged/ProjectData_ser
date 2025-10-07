@@ -34,60 +34,75 @@ router.post('/logout', (req,res)=>{
   req.session.destroy(()=> res.redirect('/'));
 });
 
-// แสดงโปรไฟล์
-router.get('/profile', async (req, res) => {
-  if (!req.session.user) return res.redirect('/login');
+// ✅ ใช้ requireAuth และดึง posts ทุกครั้ง + รับ message จาก query
+router.get('/profile', requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.session.user.id).lean();
 
-  const user = await User.findById(req.session.user.id);
-
-  const posts = await Post.find({
+    const posts = await Post.find({
       author: req.session.user.id,
-      deleted: { $ne: true } // กรองโพสต์ที่ถูกลบออก
-  })
-  .sort({ createdAt: -1 })
-  .populate('author', 'username email');
+      deleted: { $ne: true }
+    })
+    .sort({ createdAt: -1 })
+    .populate('author', 'username')
+    .lean();
 
-  res.render('auth/profile', { user, posts, message: null });
+    res.render('auth/profile', {
+      user,
+      posts,
+      message: req.query.msg || null
+    });
+  } catch (err) {
+    next(err);
+  }
 });
-
 
 // แสดงฟอร์มแก้ไขโปรไฟล์
-router.get('/edit-profile', async (req,res)=>{
-  if (!req.session.user) return res.redirect('/login');
-  const user = await User.findById(req.session.user.id);
- res.render('auth/edit-profile', { user, message: null });// 👈 เปลี่ยนไป render edit-profile.ejs
+router.get('/edit-profile', requireAuth, async (req,res, next)=>{
+  try {
+    const user = await User.findById(req.session.user.id).lean();
+    res.render('auth/edit-profile', { user, message: null });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// อัปเดตโปรไฟล์
-router.post('/edit-profile', async (req,res)=>{
-  if (!req.session.user) return res.redirect('/login');
-  const user = await User.findById(req.session.user.id);
+// ✅ แก้: อัปเดตเสร็จ redirect ไป /profile พร้อมข้อความ แทนการ render ตรงๆ
+router.post('/edit-profile', requireAuth, async (req,res, next)=>{
+  try {
+    const {username,email,program,year,bio} = req.body;
 
-  const {username,email,program,year,bio} = req.body;
-  user.username = username;
-  user.email = email;
-  user.program = program;
-  user.year = year;
-  user.bio = bio;
+    const user = await User.findByIdAndUpdate(
+      req.session.user.id,
+      { username, email, program, year, bio },
+      { new: true }
+    );
 
-  await user.save();
+    // อัปเดต session ด้วย (เท่าที่ต้องใช้)
+    req.session.user.username = user.username;
+    req.session.user.email = user.email;
 
-  // อัปเดต session ด้วย
-  req.session.user.username = username;
-  req.session.user.email = email;
-
-  res.render('auth/profile', {user, message:'อัปเดตโปรไฟล์แล้ว'});
+    // ส่งข้อความแจ้งไปทาง query
+    res.redirect('/profile?msg=' + encodeURIComponent('อัปเดตโปรไฟล์แล้ว'));
+  } catch (err) {
+    next(err);
+  }
 });
 
-// บันทึก/ยกเลิกบันทึกโพสต์
-router.get('/saved-posts', requireAuth, async (req, res) => {
-  const user = await User.findById(req.session.user.id).populate({
-    path: 'savePosts',
-    populate: { path: 'author' } // ดึง author ของแต่ละ post
-  });
+// รายการที่บันทึก
+router.get('/saved-posts', requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findById(req.session.user.id)
+      .populate({ path: 'savePosts', populate: { path: 'author', select:'username' } })
+      .lean();
 
-  res.render('auth/saved-posts', { savedPosts: user.savePosts, currentUser: req.session.user });
+    // กรองโพสต์ที่ถูกลบออก เผื่อมี
+    const savedPosts = (user.savePosts || []).filter(p => !p.deleted);
+
+    res.render('auth/saved-posts', { savedPosts, currentUser: req.session.user });
+  } catch (err) {
+    next(err);
+  }
 });
-
 
 export default router;
