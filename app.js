@@ -114,7 +114,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.get('/__test-db-full', async (req, res, next) => {
+app.get('/Dbfull', async (req, res, next) => {
   try {
     const fake = new Error('QueryExceededMemoryLimitNoDiskUseAllowed');
     fake.code = 292;
