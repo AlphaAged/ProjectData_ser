@@ -30,12 +30,50 @@ router.get('/posts/new', requireAuth, (req, res) => {
 });
 
 // create
-router.post('/posts', requireAuth, upload.single('cover'), async (req, res) => {
-  const { title, body, tags } = req.body;
-  const coverImage = req.file ? '/uploads/' + req.file.filename : null;
-  const post = await Post.create({ title, body, tags: Array.isArray(tags) ? tags : [tags], coverImage, author: req.session.user.id });
-  res.redirect('/posts/' + post.slug);
-});
+router.post(              // ไฟล์รูปภาพเป็น base64  เเละ เก็บ pdf ได้
+  '/posts',
+  requireAuth,
+  upload.fields([
+    { name: 'cover', maxCount: 1 },
+    { name: 'pdf', maxCount: 1 },
+  ]),
+  async (req, res) => {
+    const { title, body, tags } = req.body;
+
+    let coverImage = null;
+    let pdfFile = null;
+
+
+    if (req.files['cover']) {
+      const file = req.files['cover'][0];
+      if (file.mimetype.startsWith('image/')) {
+        coverImage = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      } else if (file.mimetype === 'application/pdf') {
+        pdfFile = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      }
+    }
+
+
+
+    if (req.files['pdf']) {
+      const file = req.files['pdf'][0];
+      pdfFile = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
+      var pdfName = file.originalname;
+    }
+
+    const post = await Post.create({
+      title,
+      body,
+      tags: Array.isArray(tags) ? tags : [tags],
+      coverImage,
+      pdfFile,
+      pdfName,
+      author: req.session.user.id,
+    });
+
+    res.redirect('/posts/' + post.slug);
+  }
+);
 
 // detail
 router.get('/posts/:slug', async (req, res) => {
@@ -99,18 +137,46 @@ router.get('/posts/:slug/edit', requireAuth, async (req, res) => {
   if (post.author.toString() !== req.session.user.id) return res.status(403).send('Forbidden');
   res.render('posts/edit', { post });
 });
-router.post('/posts/:slug', requireAuth, upload.single('cover'), async (req, res) => {
-  const post = await Post.findOne({ slug: req.params.slug });
-  if (!post) return res.status(404).send('Not found');
-  if (post.author.toString() !== req.session.user.id) return res.status(403).send('Forbidden');
-  const { title, body, tags } = req.body;
-  if (title) post.title = title;
-  if (body) post.body = body;
-  post.tags = Array.isArray(tags) ? tags : [tags];
-  if (req.file) post.coverImage = '/uploads/' + req.file.filename;
-  await post.save();
-  res.redirect('/posts/' + post.slug);
-});
+router.post(                 // เเก้ไขโพสได้ทั้งรูปภาพ เเละ pdf
+  '/posts/:slug',
+  requireAuth,
+  upload.fields([{ name: 'cover', maxCount: 1 }]),
+  async (req, res) => {
+    try {
+      const post = await Post.findOne({ slug: req.params.slug });
+      if (!post) return res.status(404).send('Not found');
+      if (post.author.toString() !== req.session.user.id)
+        return res.status(403).send('Forbidden');
+
+      const { title, body, tags } = req.body;
+      if (title) post.title = title;
+      if (body) post.body = body;
+      post.tags = Array.isArray(tags) ? tags : [tags];
+
+      
+      if (req.files && req.files['cover']) {
+        const file = req.files['cover'][0];
+        const mime = file.mimetype;
+
+        if (mime.startsWith('image/')) {
+          post.coverImage = `data:${mime};base64,${file.buffer.toString('base64')}`;
+          post.pdfFile = null;
+          post.pdfName = null;
+        } else if (mime === 'application/pdf') {
+          post.pdfFile = `data:${mime};base64,${file.buffer.toString('base64')}`;
+          post.pdfName = file.originalname; 
+          post.coverImage = null;
+        }
+      }
+
+      await post.save();
+      res.redirect('/posts/' + post.slug);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('เกิดข้อผิดพลาดในการแก้ไขโพสต์');
+    }
+  }
+);
 
 // delete or report button
 //soft delete แทนการลบจริง

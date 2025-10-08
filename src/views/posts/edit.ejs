@@ -7,168 +7,185 @@
   <title>CP KKU Study Notes</title>
   <link rel="stylesheet" href="/style.css" />
   <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    .editpost-form {
-      max-width: 800px;
-      margin: auto;
-      padding: 30px 50px;
-      background: white;
-      border: 1px solid #D0E7F5;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
-    .editpost-form div {
-      margin: 10px 0;
-    }
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #D0E7F5;
-    }
-
-    textarea {
-      width: 100%;
-      height: 150px;
-      padding: 12px 20px;
-      box-sizing: border-box;
-      border: 1px solid #D0E7F5;
-      border-radius: 4px;
-      resize: none;
-    }
-
-    select {
-      width: 100%;
-      box-sizing: border-box;
-      border: 1px solid #D0E7F5;
-    }
-
-    .edit-btn {
-      background-color: #0d63a5;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .cancel-btn {
-      background-color: white;
-      color: black;
-      padding: 10px 20px;
-      border: 1px solid #D0E7F5;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-right: 10px;
-    }
-
-    .cancel-btn:hover {
-      background-color: #e3f4ff;
-    }
-
-    .edit-btn:hover {
-      background-color: #084d73;
-    }
-
-    label {
-      font-weight: bold;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .button-container {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 20px;
-    }
-
-    main.container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-  </style>
 </head>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  .newpost-form {
+    max-width: 800px;
+    margin: auto;
+    padding: 30px 50px;
+    background: white;
+    border: 1px solid #D0E7F5;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .newpost-form div {
+    margin: 10px 0;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+  }
+
+  textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+    border-radius: 4px;
+    resize: none;
+  }
+
+  select {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #D0E7F5;
+  }
+
+  .post-btn {
+    background-color: #0d63a5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .cancel-btn {
+    background-color: white;
+    color: black;
+    padding: 10px 20px;
+    border: 1px solid #D0E7F5;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+
+  .cancel-btn:hover {
+    background-color: #e3f4ff;
+  }
+
+  .post-btn:hover {
+    background-color: #084d73;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .post-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  main.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 660px;
+  }
+</style>
 
 <body>
 
-
   <main class="container">
-      <div class="preference" style="max-width: 800px; width: 100%;">
-        <form class="editpost-form" method="post" action="/posts/<%= post.slug %>" enctype="multipart/form-data">
-          <h2 style="text-align: center;" class="d-flex justify-content-center">แก้ไขโพสต์</h2>
-          <div class="mb-3">
-            <label class="form-label fs-5">ชื่อเรื่อง</label>
-            <input name="title" class="form-control" value="<%= post.title %>" required>
-          </div>
+    <div class="preference" style="max-width: 800px; width: 100%;">
+      <form class="newpost-form" method="post" action="/posts/<%= post.slug %>" enctype="multipart/form-data">
+        <h2 style="text-align: center;" class="d-flex justify-content-center">แก้ไขโพสต์</h2>
 
-          <div class="mb-3">
-            <label class="form-label fs-5">เนื้อหา</label>
-            <textarea name="body" rows="8" class="form-control" required><%= post.body %></textarea>
-          </div>
+        <div class="mb-3">
+          <label class="form-label fs-5">ชื่อเรื่อง</label>
+          <input name="title" class="form-control" value="<%= post.title %>" required>
+        </div>
 
-          <div class="mb-3">
-            <label class="form-label fs-5">แท็ก</label>
-            <select name="tags" class="form-select" required>
-              <% ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=> {
-                %>
-                <option value="<%= t %>" <%=post.tags.includes(t)?'selected':'' %>>
-                  <%= t %>
-                </option>
-                <% }) %>
-            </select>
-          </div>
+        <div class="mb-3">
+          <label class="form-label fs-5">เนื้อหา</label>
+          <textarea name="body" rows="8" class="form-control" required><%= post.body %></textarea>
+        </div>
 
-          <div class="mb-3">
-            <label class="form-label fs-5">ภาพหน้าปก</label>
-            <input type="file" name="cover" class="form-control" accept="image/*" onchange="previewImage(event)">
-          </div>
+        <div class="mb-3">
+          <label class="form-label fs-5">แท็ก</label>
+          <select name="tags" class="form-select" required>
+            <% ['CS','AI','IT','CY','GIS','Physics','Chemistry','Biology','Math','English','GE','Free'].forEach(t=> { %>
+              <option value="<%= t %>" <%= post.tags.includes(t)?'selected':'' %>><%= t %></option>
+            <% }) %>
+          </select>
+        </div>
 
-          <div class="text-center mt-3">
-            <% if (post.cover) { %>
-              <img id="coverPreview" src="<%= post.cover %>" class="img-fluid rounded shadow-sm"
-                style="max-height: 300px;" />
-              <% } else { %>
-                <img id="coverPreview" src="#" alt="Preview" class="img-fluid rounded shadow-sm d-none"
-                  style="max-height: 300px;" />
-                <% } %>
-          </div>
+        <div class="mb-3">
+          <label class="form-label fs-5">ภาพหน้าปก / ไฟล์ PDF</label>
+          <input type="file" name="cover" class="form-control" accept="image/*,application/pdf"
+            onchange="previewFile(event)">
+        </div>
 
-          <script>
-            function previewImage(event) {
-              const input = event.target;
-              const preview = document.getElementById("coverPreview");
+        <!-- Preview -->
+        <div class="text-center mt-3">
+          <% if (post.cover && post.cover.endsWith('.pdf')) { %>
+            <div id="pdfPreview">
+              <p class="text-muted">ไฟล์ PDF ปัจจุบัน: <%= post.cover %></p>
+            </div>
+          <% } else if (post.cover) { %>
+            <img id="coverPreview" src="<%= post.cover %>" alt="Current Cover"
+              class="img-fluid rounded shadow-sm" style="max-height: 300px;" />
+          <% } else { %>
+            <img id="coverPreview" src="#" alt="Preview" class="img-fluid rounded shadow-sm d-none"
+              style="max-height: 300px;" />
+            <div id="pdfPreview" class="mt-2 d-none">
+              <p class="text-muted">เลือกไฟล์ PDF แล้ว (ดูตัวอย่างไม่ได้ในหน้านี้)</p>
+            </div>
+          <% } %>
+        </div>
 
-              if (input.files && input.files[0]) {
+        <script>
+          function previewFile(event) {
+            const input = event.target;
+            const previewImg = document.getElementById("coverPreview");
+            const pdfPreview = document.getElementById("pdfPreview");
+
+            if (input.files && input.files[0]) {
+              const file = input.files[0];
+              const fileType = file.type;
+
+              if (fileType.startsWith("image/")) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                  preview.src = e.target.result;
-                  preview.classList.remove("d-none");
+                  previewImg.src = e.target.result;
+                  previewImg.classList.remove("d-none");
+                  pdfPreview.classList.add("d-none");
                 }
-                reader.readAsDataURL(input.files[0]);
+                reader.readAsDataURL(file);
+              } else if (fileType === "application/pdf") {
+                previewImg.classList.add("d-none");
+                pdfPreview.classList.remove("d-none");
               } else {
-                preview.src = "#";
-                preview.classList.add("d-none");
+                previewImg.classList.add("d-none");
+                pdfPreview.classList.add("d-none");
               }
             }
-          </script>
+          }
+        </script>
 
-          <div class="button-container d-flex justify-content-end mt-3">
-            <a class="cancel-btn" href="/posts/<%= post.slug %>">ยกเลิก</a>
-            <button type="submit" class="edit-btn btn btn-success">แก้ไข</button>
-          </div>
+        <div class="post-button">
+          <a class="cancel-btn" href="/">ยกเลิก</a>
+          <button type="submit" class="post-btn">บันทึก</button>
+        </div>
 
-        </form>
-      </div>
+      </form>
+    </div>
   </main>
-
 
 </body>
 

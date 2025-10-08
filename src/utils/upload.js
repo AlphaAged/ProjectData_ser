@@ -16,12 +16,9 @@ if (!fs.existsSync(uploadPath)) {
   console.log('📂 Upload folder exists:', uploadPath);
 }
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadPath),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + '-' + Math.random().toString(36).slice(2, 7) + ext);
-  }
-});
+const storage = multer.memoryStorage();
+
+const upload = multer({ storage });
+
 
 export default multer({ storage });
