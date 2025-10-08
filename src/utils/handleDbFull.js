@@ -4,7 +4,8 @@ import { purgeAllExceptAdminUsers } from './cleanup.js';
 function looksLikeDbFull(err) {
   const msg = (err?.message || '').toLowerCase();
   return (
-    err?.code === 292 ||                          
+    err?.code === 292 ||                                
+    msg.includes('queryexceededmemorylimit') ||
     msg.includes('no disk use allowed') ||
     msg.includes('quota') ||
     msg.includes('exceeded') ||
@@ -16,10 +17,11 @@ export async function handleDatabaseFullError(err) {
   if (!looksLikeDbFull(err)) throw err;
 
   if (process.env.ENABLE_DB_PURGE !== 'true') {
-    console.error('DB full detected, but purge is DISABLED. Set ENABLE_DB_PURGE=true to allow cleanup.');
+    console.error(' DB full detected but purge DISABLED. Set ENABLE_DB_PURGE=true');
     throw err;
   }
-  console.warn('Database limit exceeded. Starting destructive cleanup (preserve admin users)…');
+
+  console.warn('DB limit exceeded → destructive cleanup (preserve admin users)…');
   await purgeAllExceptAdminUsers();
-  console.info('Cleanup completed (non-admin users & other collections removed).');
+  console.info('Cleanup completed.');
 }

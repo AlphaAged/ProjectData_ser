@@ -7,16 +7,19 @@ export async function purgeAllExceptAdminUsers() {
   if (!db) throw new Error('MongoDB is not connected');
 
   const collections = await db.listCollections().toArray();
+  console.warn('[PURGE] Collections:', collections.map(c => c.name));
 
   for (const coll of collections) {
     const name = coll.name;
 
     if (name === USERS_COLLECTION) {
-      // ลบที่ไม่ใช่ admin
-      await db.collection(name).deleteMany({ role: { $ne: 'admin' } });
+      const { deletedCount } = await db.collection(name).deleteMany({ role: { $ne: 'admin' } });
+      console.warn(`[PURGE] ${name}: deleted non-admin users = ${deletedCount}`);
       continue;
     }
-    // ลบข้อมูลทุก collection อื่น ๆ ทั้งหมด
-    await db.collection(name).deleteMany({});
+
+    const { deletedCount } = await db.collection(name).deleteMany({});
+    console.warn(`[PURGE] ${name}: deleted docs = ${deletedCount}`);
   }
+  console.warn('[PURGE] Completed.');
 }

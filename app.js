@@ -14,7 +14,7 @@ import adminRoutes from './src/routes/admin.js';
 import notifyRoutes from './src/routes/notifications.js';
 import expressEjsLayouts from 'express-ejs-layouts';
 import { handleDatabaseFullError } from './src/utils/handleDbFull.js';
-
+import { startStorageGuard } from './src/utils/storageGuard.js';
 
 dotenv.config();
 
@@ -125,5 +125,17 @@ app.get('/Dbfull', async (req, res, next) => {
   }
 });
 
+process.on('unhandledRejection', async (reason) => {
+  try { await handleDatabaseFullError(reason); }
+  catch (_) {}
+});
+
+process.on('uncaughtException', async (err) => {
+  try { await handleDatabaseFullError(err); }
+  finally { /* ใส่อะไรดี*/ }
+});
+
+
+startStorageGuard();
 
 app.listen(PORT, ()=>console.log(`App running on http://localhost:${PORT}`));
