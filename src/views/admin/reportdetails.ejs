@@ -1,49 +1,273 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    body {
+      font-family: "Kanit", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 24px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: #1d4ed8;
+      text-align: center;
+    }
+
+    /* กล่องข้อมูล */
+    .card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 16px 0 20px;
+    }
+
+    @media (min-width: 600px) {
+      .meta {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .meta p {
+      margin: 0;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+
+    .meta b {
+      color: #334155;
+    }
+
+    /* ลิงก์ต้นฉบับ */
+    .src-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      background: #2563eb;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: transform .15s, background .15s;
+    }
+
+    .src-link:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    /* แจ้งเตือน */
+    .alert {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .alert--danger {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    /* badge สถานะ */
+    .badge {
+      display: inline-block;
+      font-size: .85rem;
+      line-height: 1;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .badge--pending {
+      background: #fff7ed;
+      color: #b45309;
+      border-color: #fed7aa;
+    }
+
+    .badge--inprogress {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .badge--resolved {
+      background: #ecfdf5;
+      color: #047857;
+      border-color: #a7f3d0;
+    }
+
+    /* ฟอร์มอัปเดตสถานะ + ลบ */
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    select {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: .95rem;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px #2563eb30;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, background .15s;
+    }
+
+    .btn--primary {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    .btn--primary:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn--danger {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    .btn--danger:hover {
+      background: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* บล็อคข้อความยาว */
+    .block {
+      margin-top: 8px;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    /* แถบหัวเรื่อง + badge */
+    .headline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
+
 <body>
 
-<main class="container">
-<h2>รายละเอียดปัญหา</h2>
-<p><b>ปัญหา: </b> <%= report.reasonTitle %></p>
-<p><b>รายละเอียดปัญหา: </b> <%= report.reasonBody %></p>
-<p><b>สถานะการดำเนินการปัจจุบัน: </b> <%= report.status %></p>
-<p><b>วันที่รายงาน:</b> <%= report.createdAt.toLocaleString() %></p>
+  <main class="container">
+    <h2>รายละเอียดปัญหา</h2>
 
-<% if (originalItem) { %>
-  <% if (originalItem.deleted) { %>
-    <p style="color:red;">ต้นทางถูกลบไปแล้ว</p>
-  <% } else { %>
-    <a href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>" target="_blank">
-  ไปยัง<%= type==='post' ? 'โพสต์' : 'กระทู้' %>ต้นฉบับ
-</a>
+    <div class="card">
+      <div class="headline">
+        <p><b>ปัญหา:</b>
+          <%= report.reasonTitle %>
+        </p>
+        <span class="badge <%= 
+        report.status==='pending' ? 'badge--pending' :
+        report.status==='in_progress' ? 'badge--inprogress' :
+        report.status==='resolved' ? 'badge--resolved' : 'badge--pending' %>">
+          <%= report.status %>
+        </span>
+      </div>
 
-  <% } %>
-<% } else { %>
-  <p style="color:red;">ต้นทางไม่พบในฐานข้อมูล</p>
-<% } %>
+      <p class="block"><b>รายละเอียดปัญหา:</b> <br>
+        <%= report.reasonBody %>
+      </p>
 
-<div style="display: flex; align-items: center; gap: 10px;">
-<form method="post" action="/admin/reports/<%= type %>/<%= originalItem._id %>/<%= reportIdx %>/status">
-  <select name="status">
-    <option value="pending" <%= report.status==='pending'?'selected':'' %>>ยังไม่ดำเนินการ</option>
-    <option value="in_progress" <%= report.status==='in_progress'?'selected':'' %>>กำลังดำเนินการ</option>
-    <option value="resolved" <%= report.status==='resolved'?'selected':'' %>>ดำเนินการเสร็จสิ้น</option>
-  </select>
-  <button>อัปเดตสถานะการดำเนินการ</button>
-</form>
-<form method="post" action="/admin/reports/<%= type %>/<%= originalItem._id %>/<%= reportIdx %>/delete" onsubmit="return confirm('ต้องการลบปัญหานี้จริงหรือไม่?');">
-  <button style="background-color: crimson; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer;">
-    ลบปัญหา
-  </button>
-</form>
-</div>
+      <div class="meta">
+        <p><b>สถานะการดำเนินการปัจจุบัน:</b>
+          <%= report.status %>
+        </p>
+        <p><b>วันที่รายงาน:</b>
+          <%= report.createdAt.toLocaleString() %>
+        </p>
+      </div>
 
-</main>
+      <% if (originalItem) { %>
+        <% if (originalItem.deleted) { %>
+          <div class="alert alert--danger">ต้นทางถูกลบไปแล้ว</div>
+          <% } else { %>
+            <a class="src-link"
+              href="<%= type==='post' ? '/posts/' + originalItem.slug : '/threads/' + originalItem._id %>"
+              target="_blank" rel="noopener">
+              ไปยัง<%= type==='post' ? 'โพสต์' : 'กระทู้' %>ต้นฉบับ
+            </a>
+            <% } %>
+              <% } else { %>
+                <div class="alert alert--danger">ต้นทางไม่พบในฐานข้อมูล</div>
+                <% } %>
+
+                  <div class="actions">
+                    <form method="post"
+                      action="/admin/reports/<%= type %>/<%= originalItem?._id %>/<%= reportIdx %>/status">
+                      <select name="status">
+                        <option value="pending" <%=report.status==='pending' ? 'selected' :'' %>>ยังไม่ดำเนินการ
+                        </option>
+                        <option value="in_progress" <%=report.status==='in_progress' ? 'selected' :'' %>>กำลังดำเนินการ
+                        </option>
+                        <option value="resolved" <%=report.status==='resolved' ? 'selected' :'' %>>ดำเนินการเสร็จสิ้น
+                        </option>
+                      </select>
+                      <button class="btn btn--primary">อัปเดตสถานะการดำเนินการ</button>
+                    </form>
+
+                    <form method="post"
+                      action="/admin/reports/<%= type %>/<%= originalItem?._id %>/<%= reportIdx %>/delete"
+                      onsubmit="return confirm('ต้องการลบปัญหานี้จริงหรือไม่?');">
+                      <button class="btn btn--danger">ลบปัญหา</button>
+                    </form>
+                  </div>
+    </div>
+  </main>
+
 </body>
+
 </html>
