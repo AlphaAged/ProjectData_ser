@@ -1,44 +1,155 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
-  <!-- css ตรงนี้คือไปที่คลาส list อ่านแล้ว blur --> 
+  <link rel="stylesheet" href="/style.css" />
   <style>
     .list li.read {
-  opacity: 0.6;
-  filter: blur(0.4px); 
-}
+      opacity: 0.6;
+      filter: blur(0.4px);
+    }
 
+    .container form {
+      display: flex;
+      justify-content: flex-end;
+      /* ดันไปด้านขวา */
+      margin-bottom: 12px;
+      /* เว้นระยะด้านล่างจาก list */
+    }
+
+    .container form button {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid #0d63a5;
+      background: #0d63a5;
+      color: #fff;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+
+    .container form button:hover {
+      filter: brightness(.95);
+    }
+
+
+    /* กล่องรายการ */
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 14px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .list .notification {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      background: #fff;
+      transition: background .15s, box-shadow .15s, transform .15s;
+    }
+
+    .list .notification:hover {
+      background: #f9fafb;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .05);
+      transform: translateY(-1px);
+    }
+
+    /* จุดสถานะ unread */
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #dc2626;
+      /* แดง = ยังไม่อ่าน */
+      flex-shrink: 0;
+    }
+
+    /* ลิงก์ + ข้อความ */
+    .notification-link {
+      flex: 1;
+      text-decoration: none;
+      color: #0f172a;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .notification .muted {
+      color: #6b7280;
+      font-size: .9rem;
+      white-space: nowrap;
+    }
+
+    /* สถานะอ่านแล้ว: เบาลง+เบลอเล็กน้อย */
+    .list li.read {
+      opacity: .6;
+      filter: blur(.4px);
+    }
+
+    /* ปุ่ม mark-all */
+    .mark-all-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid #2563eb;
+      background: #2563eb;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+
+    .mark-all-btn:hover {
+      filter: brightness(.96);
+    }
+
+    /* ให้จุดเปลี่ยนสีเมื่ออ่านแล้ว */
+    .notification.read .dot {
+      background: #9ca3af;
+    }
+
+    /* เทา = อ่านแล้ว */
   </style>
 </head>
+
 <body>
-<main class="container">
-<h2>กล่องแจ้งเตือนของฉัน</h2>
-<form method="post" action="/notifications/mark-all-read"><button>ทำเครื่องหมายว่าอ่านแล้วทั้งหมด</button></form>
+  <main class="container">
+    <h2 style="color:#0f3d7a;">กล่องแจ้งเตือนของฉัน</h2>
+    <form method="post" action="/notifications/mark-all-read"><button>ทำเครื่องหมายว่าอ่านแล้วทั้งหมด</button></form>
 
-<ul class="list">
-  <% notifications.forEach(n => { %>
-    <li class="notification <%= n.read ? 'read' : '' %>" data-id="<%= n._id %>">
-      <a href="<%= n.link %>" class="notification-link"><%= n.message %></a>
-      <span class="muted"><%= new Date(n.createdAt).toLocaleString() %></span>
-    </li>
-  <% }) %>
-</ul>
+    <ul class="list">
+      <% notifications.forEach(n=> { %>
+        <li class="notification <%= n.read ? 'read' : '' %>" data-id="<%= n._id %>">
+          <a href="<%= n.link %>" class="notification-link">
+            <%= n.message %>
+          </a>
+          <span class="muted">
+            <%= new Date(n.createdAt).toLocaleString() %>
+          </span>
+        </li>
+        <% }) %>
+    </ul>
 
-<script>
-document.querySelectorAll('.notification-link').forEach(link => {
-  link.addEventListener('click', async (e) => {
-    const li = e.target.closest('.notification');
-    const id = li.dataset.id;
-    //ส่งrequest ไป mark ว่าอ่านแล้ว
-    await fetch(`/notifications/${id}/mark-read`, { method: 'POST' });
-    li.classList.add('read'); //class read คืออ่านแล้ว
-  });
-});
-</script>
-
+    <script>
+      document.querySelectorAll('.notification-link').forEach(link => {
+        link.addEventListener('click', async (e) => {
+          const li = e.target.closest('.notification');
+          const id = li.dataset.id;
+          //ส่งrequest ไป mark ว่าอ่านแล้ว
+          await fetch(`/notifications/${id}/mark-read`, { method: 'POST' });
+          li.classList.add('read'); //class read คืออ่านแล้ว
+        });
+      });
+    </script>
+  </main>
 </body>
+
 </html>

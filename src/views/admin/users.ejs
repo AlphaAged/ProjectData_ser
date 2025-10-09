@@ -1,37 +1,151 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CP KKU Study Notes</title>
-  <link rel="stylesheet" href="/style.css"/>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* รีเซ็ตเบื้องต้น */
+    body {
+      font-family: "Kanit", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8fafc;
+      color: #333;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0d63a5;
+    }
+
+    /* ตาราง */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .table th,
+    .table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table th {
+      background: #0d63a5;
+      color: #fff;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .table tr:hover {
+      background: #f1f5f9;
+      transition: 0.2s;
+    }
+
+    /* ฟอร์มในคอลัมน์ action */
+    .row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ปุ่ม */
+    button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    /* ปุ่มอันตราย */
+    button.danger {
+      background: #dc2626;
+    }
+
+    button.danger:hover {
+      background: #b91c1c;
+    }
+
+    /* select */
+    select {
+      padding: 5px 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px #2563eb30;
+    }
+  </style>
 </head>
+
 <body>
 
-<main class="container">
-<h2>จัดการผู้ใช้</h2>
-<table class="table">
-  <tr><th>ชื่อผู้ใช้</th><th>อีเมล</th><th>บทบาท</th><th>จัดการ</th></tr>
-  <% users.forEach(u=>{ %>
-    <tr>
-      <td><%= u.username %></td>
-      <td><%= u.email %></td>
-      <td><%= u.role %></td>
-      <td class="row">
-        <form method="post" action="/admin/users/<%= u._id %>/role">
-          <select name="role">
-            <option value="user" <%= u.role==='user'?'selected':'' %>>user</option>
-            <option value="admin" <%= u.role==='admin'?'selected':'' %>>admin</option>
-          </select>
-          <button>อัปเดต</button>
-        </form>
-        <form method="post" action="/admin/users/<%= u._id %>/delete" onsubmit="return confirm('ลบผู้ใช้นี้?')">
-          <button class="danger">ลบ</button>
-        </form>
-      </td>
-    </tr>
-  <% }) %>
-</table>
-</main>
+  <main class="container">
+    <h2>จัดการผู้ใช้</h2>
+    <table class="table">
+      <tr>
+        <th>ชื่อผู้ใช้</th>
+        <th>อีเมล</th>
+        <th>บทบาท</th>
+        <th>จัดการ</th>
+      </tr>
+      <% users.forEach(u=>{ %>
+        <tr>
+          <td>
+            <%= u.username %>
+          </td>
+          <td>
+            <%= u.email %>
+          </td>
+          <td>
+            <%= u.role %>
+          </td>
+          <td class="row">
+            <form method="post" action="/admin/users/<%= u._id %>/role">
+              <select name="role">
+                <option value="user" <%=u.role==='user' ?'selected':'' %>>user</option>
+                <option value="admin" <%=u.role==='admin' ?'selected':'' %>>admin</option>
+              </select>
+              <button>อัปเดต</button>
+            </form>
+            <form method="post" action="/admin/users/<%= u._id %>/delete" onsubmit="return confirm('ลบผู้ใช้นี้?')">
+              <button class="danger">ลบ</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+    </table>
+  </main>
 </body>
+
 </html>
