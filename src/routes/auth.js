@@ -183,6 +183,8 @@ router.post('/user/:id/follow', requireAuth, async (req, res) => {
     await currentUser.save();
     await targetUser.save();
 
+    req.session.user.following = currentUser.following;
+
     res.json({ following, followersCount: targetUser.followers.length });
   } catch (err) {
     console.error(err);
