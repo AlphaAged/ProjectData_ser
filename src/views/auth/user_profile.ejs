@@ -238,15 +238,13 @@
         <section class="profile-card">
           <div class="header-row">
             <h2>โปรไฟล์ของ <%= user.username %></h2>
-            <a id="follow-btn" class="action-btn" href="#" data-user-id="<%= user._id %>">
-            <span id="follow-text">
-                <% if (currentUser && currentUser.following && currentUser.following.includes(user._id)) { %>
-                ติดตามแล้ว
+            <button id="follow-btn" class="action-btn" data-user-id="<%= user._id %>">
+                <% if (currentUser && currentUser.following && currentUser.following.some(id => id.toString() === user._id.toString())) { %>
+                    ติดตามแล้ว
                 <% } else { %>
-                กดติดตาม
+                    กดติดตาม
                 <% } %>
-            </span>
-            </a>
+            </button>
           </div>
 
           <!-- chips: program/year -->
@@ -384,27 +382,29 @@
 </body>
 
 <script>
-  const followBtn = document.getElementById('follow-btn');
-  const followText = document.getElementById('follow-text');
+const followBtn = document.getElementById('follow-btn');
 
-  followBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
+followBtn.addEventListener('click', async () => {
     const userId = followBtn.dataset.userId;
 
     try {
-      const res = await fetch(`/user/${userId}/follow`, { method: 'POST' });
-      const data = await res.json();
+        const res = await fetch(`/user/${userId}/follow`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
 
-      if (data.following) {
-        followText.textContent = 'ติดตามแล้ว';
-      } else {
-        followText.textContent = 'กดติดตาม';
-      }
+        const data = await res.json();
+
+        if (data.following) {
+            followBtn.textContent = 'ติดตามแล้ว';
+        } else {
+            followBtn.textContent = 'กดติดตาม';
+        }
+
     } catch (err) {
-      console.error(err);
+        console.error(err);
     }
-  });
+});
 </script>
 
 </html>
