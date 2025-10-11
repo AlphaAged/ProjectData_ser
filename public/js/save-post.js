@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ปุ่ม save/un-save ในหน้าโพสต์
-  const btn = document.getElementById("save-post-btn");
-  if (btn) {
+  // ปุ่มเมื่อกดบันทึกดโพสจะเข้ามาในนี้ const btn = document.getElementById("save-post-btn");
+  if (btn) {  
     btn.addEventListener("click", async (e) => {
       e.preventDefault();
       const slug = btn.dataset.slug;
@@ -29,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // แทนการ loop ตรงๆ เพื่อรองรับ element ที่อาจถูก generate หลังโหลด
   document.addEventListener("click", async (e) => {
     const unsaveBtn = e.target.closest(".unsave-btn");
+    //กดยกเเลิกการบันทึก
     if (!unsaveBtn) return;
 
     e.preventDefault();

@@ -75,6 +75,8 @@ app.use('/', threadRoutes);
 app.use('/admin', adminRoutes);
 
 // Home
+
+//รับ api จาก post
 import Post from './src/models/Post.js';
 app.get('/', async (req,res)=>{
   const posts = await Post.find({ deleted: false }).sort({createdAt:-1}).limit(12).populate('author');
@@ -83,6 +85,7 @@ app.get('/', async (req,res)=>{
 
 
 // Search by tag & keyword
+
 app.get('/search', async (req,res)=>{
   const {q, tag} = req.query;
   const filter = {};

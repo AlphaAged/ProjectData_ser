@@ -1,11 +1,13 @@
 import mongoose from 'mongoose';
 
+//เก็บข้อความตอบกลับในกระทู้
 const ReplySchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   body: String,
   createdAt: { type: Date, default: Date.now }
 });
 
+//เก็บข้อมูลกระทู้
 const ThreadSchema = new mongoose.Schema({
   title: { type: String, required: true },
   body: { type: String, required: true },
