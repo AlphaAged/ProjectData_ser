@@ -6,14 +6,15 @@ document.addEventListener("DOMContentLoaded", () => {
       sideMenu.style.right = "-250px";
     }
   });
+  // เกี่ยวกับการเปิดปิด side bar
   const burger = document.getElementById("burger");
   const sideMenu = document.getElementById("sideMenu");
   const closeBtn = document.getElementById("closeBtn");
-
+  //เมื่อกดทำมารเลื่อนเมนูมาจากทางขวา
   burger.addEventListener("click", () => {
     sideMenu.style.right = "0";
   });
-
+  //เมื่อปิดจะเลื่อนกลับไป
   closeBtn.addEventListener("click", () => {
     sideMenu.style.right = "-250px";
   });

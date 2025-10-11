@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>โปรไฟล์ · CP KKU Study Notes</title>
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    :root {
+      --brand: #0d63a5;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    .profile-wrapper {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px
+    }
+
+    .profile-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      padding: 16px 16px 12px;
+      margin-bottom: 16px;
+    }
+
+    .my-posts {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      padding: 16px 16px 12px;
+      margin-bottom: 16px;
+    }
+
+    .my-threads {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      padding: 16px 16px 12px;
+      margin-bottom: 16px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px
+    }
+
+    .header-row h2 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: #0f3d7a
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0 10px
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      border: 1px solid #bae6fd;
+      background: #e0f2fe;
+      color: #075985
+    }
+
+    .profile-info p {
+      margin: .25rem 0
+    }
+
+    .label {
+      color: var(--muted)
+    }
+
+    .bio {
+      line-height: 1.6
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px
+    }
+
+    .action-btn {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+
+      text-decoration: none
+    }
+
+    #follow-btn {
+      border: 1px solid #F59E0B;
+      /* amber-300 */
+      background: #FFF7ED;
+      /* amber-50 */
+      color: #92400E !important;
+      /* amber-800 */
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+    }
+
+    #follow-btn:hover {
+      background: #FFEDD5;
+      /* orange-100 */
+      border-color: #F59E0B;
+      /* amber-500 */
+      color: #7C2D12;
+      /* amber-900 */
+    }
+
+    #edit-btn {
+      background: #e0f2fe !important;
+      border-color: #38bdf8 !important;
+      color: #0369a1 !important;
+    }
+
+    #edit-btn:hover {
+      background: #bae6fd !important;
+    }
+
+
+    .alert {
+      margin: 10px 0;
+      padding: 10px 12px;
+      border: 1px solid #fde68a;
+      background: #fef9c3;
+      border-radius: 10px
+    }
+
+    /* cards grid (ใช้สไตล์เดิมของโปรเจ็กต์ได้) */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 10px
+    }
+
+    .card {
+      display: block;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .04)
+    }
+
+    .cover {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block
+    }
+
+    .pad {
+      padding: 12px
+    }
+
+    .ellipsis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin: 0 0 6px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px
+    }
+
+    .tag {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      border-radius: 999px;
+      font-size: .75rem;
+      padding: 2px 8px
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      background: #fff
+    }
+
+    .icon {
+      width: 14px;
+      height: 14px;
+      vertical-align: middle;
+      margin-right: 4px
+    }
+  </style>
+</head>
+
+<body>
+  <main class="profile-wrapper">
+
+    <!-- Banner / alert -->
+    <% if (message){ %>
+      <div class="alert">
+        <%= message %>
+      </div>
+      <% } %>
+
+        <!-- Profile card -->
+        <section class="profile-card">
+          <div class="header-row">
+            <h2>โปรไฟล์ของ <%= user.username %></h2>
+            <button id="follow-btn" class="action-btn" data-user-id="<%= user._id %>">
+                <% if (currentUser && currentUser.following && currentUser.following.some(id => id.toString() === user._id.toString())) { %>
+                    ติดตามแล้ว
+                <% } else { %>
+                    กดติดตาม
+                <% } %>
+            </button>
+          </div>
+
+          <!-- chips: program/year -->
+          <div class="chips">
+            <% if (user.program){ %><span class="chip">
+                <%= user.program %>
+              </span>
+              <% } %>
+                <% if (user.year){ %><span class="chip">ปี <%= user.year %></span>
+                  <% } %>
+          </div>
+
+          <div class="profile-info">
+            <p><span class="label">ชื่อผู้ใช้:</span> <strong>
+                <%= user.username %>
+              </strong></p>
+            <p><span class="label">อีเมล:</span>
+              <%= user.email %>
+            </p>
+            <p><span class="label">สาขา/โปรแกรม:</span>
+              <%= user.program || '-' %>
+            </p>
+            <p><span class="label">ชั้นปี:</span>
+              <%= user.year || '-' %>
+            </p>
+            <p class="label" style="margin-top:8px">แนะนำตัว</p>
+            <div class="bio">
+              <%= user.bio || '-' %>
+            </div>
+          </div>
+        </section>
+
+        <!-- posts -->
+        <section class="my-posts">
+          <% if (posts && posts.length> 0){ %>
+            <h2 style="margin:8px 0; color: #075985;">โพสต์ของ <%= user.username %></h2>
+            <div class="cards">
+              <% posts.forEach(p=>{ %>
+                <a class="card" href="/posts/<%= p.slug %>">
+                  <% if (p.coverImage){ %>
+                    <img src="<%= p.coverImage %>" class="cover" alt="cover">
+                    <% } %>
+                      <div class="pad">
+                        <h3 class="ellipsis">
+                          <%= p.title %>
+                        </h3>
+                        <p class="muted">
+                          by <%= p.author?.username || 'ผู้ใช้' %>
+                            ·
+                            <!-- heart -->
+                            <svg class="icon" viewBox="0 0 16 16">
+                              <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>
+                            <%= Array.isArray(p.likes) ? p.likes.length : 0 %>
+                              ·
+                              <!-- eye -->
+                              <svg class="icon" viewBox="0 0 16 16">
+                                <path
+                                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                              </svg>
+                              <%= typeof p.views==='number' ? p.views : 0 %>
+                        </p>
+                        <div class="tags">
+                          <% (p.tags||[]).forEach(t=>{ %>
+                            <span class="tag">
+                              <%= t %>
+                            </span>
+                            <% }) %>
+                        </div>
+                      </div>
+                </a>
+                <% }) %>
+            </div>
+            <% } else { %>
+              <div class="empty">
+                ยังไม่มีโพสต์ของ <%= user.username %>
+              </div>
+              <% } %>
+        </section>
+
+
+        <!-- Threads -->
+        <section class="my-threads">
+          <% if (threads && threads.length> 0) { %>
+            <h2 style="margin:8px 0; color:#075985;">กระทู้ของ <%= user.username %></h2>
+            <div class="cards">
+              <% threads.forEach(t=> { %>
+                <a class="card" href="/threads/<%= t._id %>">
+                  <% if (t.coverImage) { %>
+                    <img src="<%= t.coverImage %>" class="cover" alt="cover">
+                    <% } %>
+                      <div class="pad">
+                        <h3 class="ellipsis">
+                          <%= t.title %>
+                        </h3>
+                        <p class="muted">
+                          by <%= t.author?.username || 'ผู้ใช้' %>
+                            ·
+                            <!-- heart -->
+                            <svg class="icon" viewBox="0 0 16 16">
+                              <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>
+                            <%= Array.isArray(t.likes) ? t.likes.length : 0 %>
+                              ·
+                              <!-- eye -->
+                              <svg class="icon" viewBox="0 0 16 16">
+                                <path
+                                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                              </svg>
+                              <%= typeof t.views==='number' ? t.views : 0 %>
+                        </p>
+
+                        <% if (t.tags && t.tags.length> 0) { %>
+                          <div class="tags">
+                            <% t.tags.forEach(tag=> { %>
+                              <span class="tag">
+                                <%= tag %>
+                              </span>
+                              <% }) %>
+                          </div>
+                          <% } %>
+                      </div>
+                </a>
+                <% }) %>
+            </div>
+            <% } else { %>
+              <div class="empty">
+                ยังไม่มีกระทู้ของ <%= user.username %>
+              </div>
+              <% } %>
+        </section>
+
+
+  </main>
+</body>
+
+<script>
+const followBtn = document.getElementById('follow-btn');
+
+followBtn.addEventListener('click', async () => {
+    const userId = followBtn.dataset.userId;
+
+    try {
+        const res = await fetch(`/user/${userId}/follow`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await res.json();
+
+        if (data.following) {
+            followBtn.textContent = 'ติดตามแล้ว';
+        } else {
+            followBtn.textContent = 'กดติดตาม';
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+});
+</script>
+
+</html>

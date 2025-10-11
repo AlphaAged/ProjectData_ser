@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
 import slugify from 'slugify';
 
+//เก็บความคิดเห็นของโพสต์
 const CommentSchema = new mongoose.Schema({
   author: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
   body: String,
   createdAt: {type:Date, default:Date.now}
 });
 
+//เก็บรายงานของโพสต์
 const ReportSchema = new mongoose.Schema({
   reporter: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
   reasonTitle: String,
@@ -15,6 +17,7 @@ const ReportSchema = new mongoose.Schema({
   createdAt: {type:Date, default:Date.now}
 });
 
+//เก็บข้อมูลโพสต์
 const PostSchema = new mongoose.Schema({
   title: {type:String, required:true},
   body: {type:String, required:true},
@@ -31,6 +34,7 @@ const PostSchema = new mongoose.Schema({
   deleted: { type: Boolean, default: false } // <-- เพิ่มตรงนี้
 }, {timestamps:true});
 
+//ทำให้ url อ่านง่าย // สร้าง slug จาก title และ ตัวเลขสุ่ม 5 ตัว
 PostSchema.pre('save', function(next){
   if (!this.slug) {
     this.slug = slugify(`${this.title}-${Math.random().toString(36).slice(2,7)}`, {lower:true, strict:true});
@@ -38,4 +42,5 @@ PostSchema.pre('save', function(next){
   next();
 });
 
+//สร้างโมเดลชื่อ Post
 export default mongoose.model('Post', PostSchema);
