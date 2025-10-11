@@ -18,6 +18,8 @@ const UserSchema = new mongoose.Schema({
   program: String,
   year: String,
   bio: String,
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }], 
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   notifications: [NotificationSchema],
    savePosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
 }, {timestamps:true});

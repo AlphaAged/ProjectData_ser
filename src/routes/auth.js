@@ -1,6 +1,7 @@
 import express from 'express';
 import User from '../models/User.js';
 import Post from '../models/Post.js';
+import Thread from '../models/Thread.js';
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -37,7 +38,9 @@ router.post('/logout', (req,res)=>{
 // ✅ ใช้ requireAuth และดึง posts ทุกครั้ง + รับ message จาก query
 router.get('/profile', requireAuth, async (req, res, next) => {
   try {
-    const user = await User.findById(req.session.user.id).lean();
+    const user = await User.findById(req.session.user.id)
+    .populate('following', 'username program year bio')
+    .lean();
 
     const posts = await Post.find({
       author: req.session.user.id,
@@ -47,9 +50,54 @@ router.get('/profile', requireAuth, async (req, res, next) => {
     .populate('author', 'username')
     .lean();
 
+    const threads = await Thread.find({ 
+      author: req.session.user.id,
+      deleted: { $ne: true } 
+    })
+    .sort({ createdAt: -1 })
+    .populate('author', 'username')
+    .lean();
+
+
     res.render('auth/profile', {
       user,
       posts,
+      threads,
+      following: user.following || [],
+      message: req.query.msg || null
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+//ดูโปรไฟล์คนอื่น
+router.get('/user/:username', requireAuth, async (req, res, next) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).lean();
+    if (!user) return res.status(404).render('404', { message: 'ไม่พบบัญชีผู้ใช้นี้' });
+
+    const posts = await Post.find({
+      author: user._id,
+      deleted: { $ne: true }
+    })
+    .sort({ createdAt: -1 })
+    .populate('author', 'username')
+    .lean();
+
+    const threads = await Thread.find({
+      author: user._id,
+      deleted: { $ne: true }
+    })
+    .sort({ createdAt: -1 })
+    .populate('author', 'username')
+    .lean();
+
+    //render หน้าโปรไฟล์คนอื่น
+    res.render('auth/user_profile', {
+      user,
+      posts,
+      threads,
       message: req.query.msg || null
     });
   } catch (err) {
@@ -104,5 +152,52 @@ router.get('/saved-posts', requireAuth, async (req, res, next) => {
     next(err);
   }
 });
+
+//follow
+router.post('/user/:id/follow', requireAuth, async (req, res) => {
+  try {
+    const targetUser = await User.findById(req.params.id);
+    if (!targetUser) return res.status(404).json({ error: 'User not found' });
+
+    const currentUser = await User.findById(req.session.user.id);
+
+    // ป้องกันติดตามตัวเอง
+    if (currentUser._id.equals(targetUser._id)) {
+      return res.status(400).json({ error: 'ไม่สามารถติดตามตัวเองได้' });
+    }
+
+    let following = false;
+
+    //unfollow
+    const index = currentUser.following.findIndex(id => id.equals(targetUser._id));
+    if (index >= 0) {
+      currentUser.following.splice(index, 1);
+      targetUser.followers = targetUser.followers.filter(id => !id.equals(currentUser._id));
+      following = false;
+    } else {
+      currentUser.following.push(targetUser._id);
+      targetUser.followers.push(currentUser._id);
+      following = true;
+    }
+
+    await currentUser.save();
+    await targetUser.save();
+
+    req.session.user.following = currentUser.following;
+
+    res.json({ following, followersCount: targetUser.followers.length });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/user/:username', requireAuth, async (req, res) => {
+  const user = await User.findOne({ username: req.params.username }).lean();
+  const currentUser = await User.findById(req.session.user.id).lean();
+
+  res.render('auth/user_profile', { user, currentUser });
+});
+
 
 export default router;

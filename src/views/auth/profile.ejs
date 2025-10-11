@@ -37,6 +37,23 @@
       margin-bottom: 16px;
     }
 
+    .my-threads {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      padding: 16px 16px 12px;
+      margin-bottom: 16px;
+    }
+    .my-following {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+      padding: 16px 16px 12px;
+      margin-bottom: 16px;
+    }
+
     .header-row {
       display: flex;
       justify-content: space-between;
@@ -327,6 +344,85 @@
                   style="color:var(--brand);text-decoration:underline">สร้างโพสต์แรก</a>
               </div>
               <% } %>
+        </section>
+
+
+        <!-- My Threads -->
+        <section class="my-threads">
+          <% if (threads && threads.length> 0) { %>
+            <h2 style="margin:8px 0; color:#075985;">กระทู้ของฉัน</h2>
+            <div class="cards">
+              <% threads.forEach(t=> { %>
+                <a class="card" href="/threads/<%= t._id %>">
+                  <% if (t.coverImage) { %>
+                    <img src="<%= t.coverImage %>" class="cover" alt="cover">
+                    <% } %>
+                      <div class="pad">
+                        <h3 class="ellipsis">
+                          <%= t.title %>
+                        </h3>
+                        <p class="muted">
+                          by <%= t.author?.username || 'ผู้ใช้' %>
+                            ·
+                            <!-- heart -->
+                            <svg class="icon" viewBox="0 0 16 16">
+                              <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                            </svg>
+                            <%= Array.isArray(t.likes) ? t.likes.length : 0 %>
+                              ·
+                              <!-- eye -->
+                              <svg class="icon" viewBox="0 0 16 16">
+                                <path
+                                  d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                              </svg>
+                              <%= typeof t.views==='number' ? t.views : 0 %>
+                        </p>
+
+                        <% if (t.tags && t.tags.length> 0) { %>
+                          <div class="tags">
+                            <% t.tags.forEach(tag=> { %>
+                              <span class="tag">
+                                <%= tag %>
+                              </span>
+                              <% }) %>
+                          </div>
+                          <% } %>
+                      </div>
+                </a>
+                <% }) %>
+            </div>
+            <% } else { %>
+              <div class="empty">
+                ยังไม่มีกระทู้ที่คุณตั้งไว้ —
+                <a href="/threads/new" style="color:var(--brand);text-decoration:underline">
+                  ตั้งกระทู้แรก
+                </a>
+              </div>
+              <% } %>
+        </section>
+
+        <!--   My Following -->
+        <section class="my-following">
+          <% if (following && following.length > 0) { %>
+            <h2 style="margin:8px 0; color: #075985;">ผู้ใช้ที่ฉันติดตาม</h2>
+            <div class="cards">
+              <% following.forEach(f => { %>
+                <a class="card" href="/user/<%= f.username %>">
+                  <div class="pad">
+                    <h3 class="ellipsis">
+                      ชื่อผู้ใช้: <%= f.username %><br>
+                      สาขา/โปรแกรม: <%= f.program %><br>
+                      ชั้นปี: <%= f.year %>
+                    </h3>
+                  </div>
+                </a>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="empty">
+              ยังไม่ได้ติดตามผู้ใช้ใด — 
+            </div>
+          <% } %>
         </section>
 
   </main>

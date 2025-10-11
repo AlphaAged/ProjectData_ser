@@ -49,7 +49,8 @@ router.get('/threads/:id', requireAuth, async (req, res) => {
   // นับ view
   th.views = (typeof th.views === 'number' ? th.views : 0) + 1;
   await th.save();
-  res.render('threads/show', { thread: th });
+  const isOwner = req.session.user ? th.author._id.toString() === req.session.user.id : false;
+  res.render('threads/show', { thread: th, isOwner });
 });
 
 router.post('/threads/:id', requireAuth, async (req, res) => {
