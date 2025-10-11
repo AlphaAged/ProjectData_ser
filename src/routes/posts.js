@@ -6,6 +6,7 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+// หน้าแรก: แสดงโพสต์ทั้งหมด พร้อมฟังก์ชันค้นหา
 router.get('/', async (req, res) => {
   const q = req.query.q || '';
   const tag = req.query.tag || '';
@@ -15,16 +16,18 @@ router.get('/', async (req, res) => {
   if (q) {
     filter.title = { $regex: q, $options: 'i' }; // ค้นหาจาก title (ไม่สนตัวพิมพ์เล็ก/ใหญ่)
   }
+  //ถ้ามี tag มา ให้กรองโพสต์ที่มี tag นั้น
   if (tag) {
     filter.tags = tag;
   }
+  // ดึงโพสต์ที่ตรงกับเงื่อนไขการค้นหา พร้อมข้อมูลผู้เขียน
   const posts = await Post.find(filter).populate('author').sort({ createdAt: -1 });
   console.log('filter:', filter);
   console.log('posts:', posts);
   res.render('home', { posts, q, tag, currentUser: req.session.user });
 });
 
-// create form
+//สร้างโพสต์ใหม่
 router.get('/posts/new', requireAuth, (req, res) => {
   res.render('posts/new');
 });
@@ -43,7 +46,7 @@ router.post(              // ไฟล์รูปภาพเป็น base64  
     let coverImage = null;
     let pdfFile = null;
 
-
+    // ถ้ามีการอัปโหลดไฟล์รูปภาพหรือ PDF
     if (req.files['cover']) {
       const file = req.files['cover'][0];
       if (file.mimetype.startsWith('image/')) {
@@ -54,13 +57,14 @@ router.post(              // ไฟล์รูปภาพเป็น base64  
     }
 
 
-
+    // ถ้ามีการอัปโหลดไฟล์ PDF
     if (req.files['pdf']) {
       const file = req.files['pdf'][0];
       pdfFile = `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
       var pdfName = file.originalname;
     }
 
+    // สร้างโพสต์ใหม่ในฐานข้อมูล
     const post = await Post.create({
       title,
       body,
@@ -71,11 +75,12 @@ router.post(              // ไฟล์รูปภาพเป็น base64  
       author: req.session.user.id,
     });
 
+    // redirect ไปที่หน้าโพสต์ใหม่
     res.redirect('/posts/' + post.slug);
   }
 );
 
-// detail
+// ดูโพสต์
 router.get('/posts/:slug', async (req, res) => {
   const post = await Post.findOne({ slug: req.params.slug, deleted: false })
     .populate('author')
@@ -88,6 +93,7 @@ router.get('/posts/:slug', async (req, res) => {
     return res.redirect('/');
   }
 
+  // เพิ่มยอดวิว
   post.views += 1;
   await post.save();
   const isOwner = req.session.user ? post.author._id.toString() === req.session.user.id : false;
@@ -108,21 +114,21 @@ router.post('/posts/:slug/like', requireAuth, async (req, res) => {
     liked = true;
   }
   await post.save();
-  // notify owner
+  //แจ้งเตือนไปยังเจ้าของโพสต์
   if (u !== post.author.toString()) {
     const owner = await User.findById(post.author);
     owner.notifications.unshift({ type: 'like', message: `${req.session.user.username} ถูกใจโพสต์ของคุณ`, link: `/posts/${post.slug}` });
     await owner.save();
   }
-  res.json({ liked, likes: post.likes.length }); // <-- ต้องใช้บรรทัดนี้!
+  res.json({ liked, likes: post.likes.length });
 });
 
-// comment
+// คอมเมนต์
 router.post('/posts/:slug/comments', requireAuth, async (req, res) => {
   const post = await Post.findOne({ slug: req.params.slug });
   post.comments.push({ author: req.session.user.id, body: req.body.body });
   await post.save();
-  // notify owner
+  // แจ้งเตือนไปยังเจ้าของโพสต์
   if (req.session.user.id !== post.author.toString()) {
     const owner = await User.findById(post.author);
     owner.notifications.unshift({ type: 'comment', message: `${req.session.user.username} คอมเมนต์โพสต์ของคุณ`, link: `/posts/${post.slug}` });
@@ -131,7 +137,7 @@ router.post('/posts/:slug/comments', requireAuth, async (req, res) => {
   res.redirect('/posts/' + post.slug);
 });
 
-// edit owner
+// แก้ไขโพสต์ (เฉพาะเจ้าของโพสต์)
 router.get('/posts/:slug/edit', requireAuth, async (req, res) => {
   const post = await Post.findOne({ slug: req.params.slug });
   if (!post) return res.status(404).send('Not found');
@@ -143,22 +149,24 @@ router.post(                 // เเก้ไขโพสได้ทั้ง
   requireAuth,
   upload.fields([{ name: 'cover', maxCount: 1 }]),
   async (req, res) => {
+    // ตรวจสอบว่าโพสต์มีอยู่และผู้ใช้เป็นเจ้าของโพสต์
     try {
       const post = await Post.findOne({ slug: req.params.slug });
       if (!post) return res.status(404).send('Not found');
       if (post.author.toString() !== req.session.user.id)
         return res.status(403).send('Forbidden');
-
+      // อัปเดตข้อมูลโพสต์
       const { title, body, tags } = req.body;
       if (title) post.title = title;
       if (body) post.body = body;
       post.tags = Array.isArray(tags) ? tags : [tags];
-
-      
+    
+      // ถ้ามีการอัปโหลดไฟล์รูปภาพหรือ PDF
       if (req.files && req.files['cover']) {
         const file = req.files['cover'][0];
         const mime = file.mimetype;
 
+        // ถ้าอัปไฟล์ใหม่: เป็นรูป → เคลียร์ PDF, เป็น PDF → เคลียร์รูป
         if (mime.startsWith('image/')) {
           post.coverImage = `data:${mime};base64,${file.buffer.toString('base64')}`;
           post.pdfFile = null;
@@ -193,6 +201,7 @@ router.post('/posts/:slug/delete', requireAuth, async (req, res) => {
   res.redirect('/');
 });
 
+// report post
 router.get('/posts/:slug/report', requireAuth, async (req, res) => {
   const post = await Post.findOne({ slug: req.params.slug });
   if (!post) return res.status(404).send('Not found');
@@ -205,7 +214,7 @@ router.post('/posts/:slug/report', requireAuth, async (req, res) => {
   res.redirect('/posts/' + post.slug);
 });
 
-// toggle save post แบบ AJAX
+// บันทึกโพสต์/ยกเลิกบันทึกโพสต์ (แบบ AJAX)
 router.post('/posts/:slug/save', requireAuth, async (req, res) => {
   const user = await User.findById(req.session.user.id);
   const post = await Post.findOne({ slug: req.params.slug });

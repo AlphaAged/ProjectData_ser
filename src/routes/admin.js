@@ -7,9 +7,10 @@ import { requireAdmin, requireAuth } from '../middleware/auth.js'; //ขอใ�
 
 const router = express.Router();
 
+//ต้องเป็นแอดมินเท่านั้นถึงจะเข้าถึงได้
 router.use(requireAdmin);
 
-// dashboard summary
+//นับจำนวนผู้ใช้/โพสต์/กระทู้ที่ยังไม่ลบ
 router.get('/', async (req,res)=>{
   const usersCount = await User.countDocuments();
   const postsCount = await Post.countDocuments({ deleted: false });
@@ -31,7 +32,7 @@ const pendingReportsThreads = await Thread.aggregate([
 
 const totalReports = pendingReportsPosts.length + pendingReportsThreads.length;
 
-
+ //ส่งข้อมูลไปที่ admin dashboard
   res.render('admin/dashboard', {
     users: usersCount,
     posts: postsCount,
@@ -40,7 +41,7 @@ const totalReports = pendingReportsPosts.length + pendingReportsThreads.length;
   });
 });
 
-// manage users
+// ดูรายชื่อผู้ใช้ / เปลี่ยน role / ลบผู้ใช้ แล้ว redirect กลับ
 router.get('/users', async (req,res)=>{
   const users = await User.find().sort({createdAt:-1});
   res.render('admin/users', {users});
@@ -65,6 +66,7 @@ router.get('/reports', requireAuth, async (req,res) => {
   res.render('admin/reports', { posts, threads, currentUser: req.session.user });
 });
 
+//อัพเดตสถานะรายงาน
 router.get('/reports/:type/:itemId/:reportIdx', requireAuth, async (req,res) => {
   const { type, itemId, reportIdx } = req.params;
   let report, originalItem;
@@ -86,38 +88,41 @@ router.get('/reports/:type/:itemId/:reportIdx', requireAuth, async (req,res) => 
   res.render('admin/reportdetails', { report, originalItem, type, reportIdx, currentUser: req.session.user });
 });
 
-
+//เปลี่ยนสถานะรายงาน
 router.post('/reports/:type/:itemId/:reportIdx/status', async (req, res) => {
   const { type, itemId, reportIdx } = req.params;
   const {status} = req.body; 
 
+  // ตรวจสอบสถานะที่ส่งมา
   let item;
   if (type === 'post') item = await Post.findById(itemId);
   else if (type === 'thread') item = await Thread.findById(itemId);
 
+    // ตรวจสอบว่ามี item หรือไม่
   if (!item) return res.status(404).send('Item not found');
 
   const report = item.reports[reportIdx];
   if (!report) return res.status(404).send('Report not found');
-
+  // อัพเดตสถานะรายงาน
   report.status = status;
   await item.save();
   res.redirect('/admin/reports');
 });
 
+//ลบโพสต์/กระทู้ (จริง) โดยเจ้าของโพสต์/กระทู้หรือแอดมิน
 router.post('/:id/delete', requireAuth, async (req, res) => {
   const thread = await Thread.findById(req.params.id);
   if (!thread) return res.status(404).send('Thread not found');
-
+  // ตรวจสอบว่าเป็นเจ้าของโพสต์/กระทู้หรือแอดมิน
   if (String(thread.author) !== req.session.user.id && req.session.user.role !== 'admin') {
     return res.status(403).send('Forbidden');
   }
-
+  //ลบจริง
   await Thread.deleteOne({_id: req.params.id});
   res.redirect('/community');
 });
 
-// admin can delete any post/thread
+//ลบโพสต์(soft delete) โดยเจ้าของโพสต์หรือแอดมิน
 router.post('/posts/:slug/delete', async (req,res)=>{
   const p = await Post.findOne({slug:req.params.slug});
   if (!p) return res.status(404).send('Post not found');
@@ -128,11 +133,11 @@ router.post('/posts/:slug/delete', async (req,res)=>{
 
   res.redirect('/admin/reports');
 });
-
+//ลบกระทู้ (soft delete) โดยเจ้าของกระทู้หรือแอดมิน
 router.post('/threads/:id/delete', requireAuth, async (req, res) => {
   const thread = await Thread.findById(req.params.id);
   if (!thread) return res.status(404).send('Thread not found');
-
+  // ตรวจสอบว่าเป็นเจ้าของโพสต์/กระทู้หรือแอดมิน
   if (String(thread.author) !== req.session.user.id && req.session.user.role !== 'admin') {
     return res.status(403).send('Forbidden');
   }

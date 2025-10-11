@@ -26,4 +26,5 @@ const ThreadSchema = new mongoose.Schema({
   deletedAt: Date                                //เพิ่มลบ
 }, { timestamps: true });
 
+//ส่งออกให้ใช้โมเดลชื่อ Thread
 export default mongoose.model('Thread', ThreadSchema);

@@ -6,6 +6,7 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+//แสดงฟอร์มสมัครสมาชิก
 router.get('/register', (req,res)=> res.render('auth/register'));
 router.post('/register', async (req,res)=>{
   try {
@@ -20,6 +21,7 @@ router.post('/register', async (req,res)=>{
   }
 });
 
+//แสดงฟอร์มล็อกอิน
 router.get('/login', (req,res)=> res.render('auth/login'));
 router.post('/login', async (req,res)=>{
   const {email, password} = req.body;
@@ -31,17 +33,18 @@ router.post('/login', async (req,res)=>{
   res.redirect('/');
 });
 
+//ออกจากระบบ
 router.post('/logout', (req,res)=>{
   req.session.destroy(()=> res.redirect('/'));
 });
 
-// ✅ ใช้ requireAuth และดึง posts ทุกครั้ง + รับ message จาก query
+//ดูโปรไฟล์ตัวเอง
 router.get('/profile', requireAuth, async (req, res, next) => {
   try {
     const user = await User.findById(req.session.user.id)
     .populate('following', 'username program year bio')
     .lean();
-
+    //ดึงโพสต์และกระทู้ที่ยังไม่ลบของผู้ใช้คนนี้
     const posts = await Post.find({
       author: req.session.user.id,
       deleted: { $ne: true }
@@ -49,7 +52,6 @@ router.get('/profile', requireAuth, async (req, res, next) => {
     .sort({ createdAt: -1 })
     .populate('author', 'username')
     .lean();
-
     const threads = await Thread.find({ 
       author: req.session.user.id,
       deleted: { $ne: true } 
@@ -58,7 +60,7 @@ router.get('/profile', requireAuth, async (req, res, next) => {
     .populate('author', 'username')
     .lean();
 
-
+    //render หน้าโปรไฟล์ตัวเอง
     res.render('auth/profile', {
       user,
       posts,
@@ -115,7 +117,7 @@ router.get('/edit-profile', requireAuth, async (req,res, next)=>{
   }
 });
 
-// ✅ แก้: อัปเดตเสร็จ redirect ไป /profile พร้อมข้อความ แทนการ render ตรงๆ
+//แก้: อัปเดตเสร็จ redirect ไป /profile พร้อมข้อความ แทนการ render ตรงๆ
 router.post('/edit-profile', requireAuth, async (req,res, next)=>{
   try {
     const {username,email,program,year,bio} = req.body;
@@ -192,6 +194,7 @@ router.post('/user/:id/follow', requireAuth, async (req, res) => {
   }
 });
 
+//ดูโปรไฟล์คนอื่น
 router.get('/user/:username', requireAuth, async (req, res) => {
   const user = await User.findOne({ username: req.params.username }).lean();
   const currentUser = await User.findById(req.session.user.id).lean();

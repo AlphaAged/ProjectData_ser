@@ -1,17 +1,14 @@
 import express from 'express';
-
-//รับ api จาก model
 import Thread from '../models/Thread.js';
-//รับ api จาก model
 import User from '../models/User.js';
-//ตรวจสอบการ login
 import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
+// หน้า community: แสดงกระทู้ทั้งหมด พร้อมฟังก์ชันค้นหา
 router.get('/community', async (req, res) => {
   const q = (req.query.q || '').trim();
-
+  //ไม่เอากระทู้ที่ถูกลบ
   const filter = { deleted: { $ne: true } };
   if (q) {
     filter.$or = [
@@ -19,7 +16,7 @@ router.get('/community', async (req, res) => {
       { body: { $regex: q, $options: 'i' } },
     ];
   }
-
+  // ดึงกระทู้ที่ตรงกับเงื่อนไขการค้นหา พร้อมข้อมูลผู้เขียน
   const threads = await Thread.find(filter)
     .sort({ createdAt: -1 })                 // จะใช้ updatedAt ก็ได้
     .populate('author', 'username program year')
@@ -28,9 +25,9 @@ router.get('/community', async (req, res) => {
   res.render('threads/index', { threads, q });
 });
 
-
+  // สร้างกระทู้ใหม่
 router.get('/threads/new', requireAuth, (req, res) => res.render('threads/new'));
-
+  // create
 router.post('/threads', requireAuth, async (req, res) => {
   const { title, body } = req.body;
   const th = await Thread.create({ title, body, author: req.session.user.id });
@@ -38,7 +35,7 @@ router.post('/threads', requireAuth, async (req, res) => {
 });
 
 
-
+  // ดูกระทู้
 router.get('/threads/:id', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id)
     .populate('author')
@@ -53,22 +50,27 @@ router.get('/threads/:id', requireAuth, async (req, res) => {
   res.render('threads/show', { thread: th, isOwner });
 });
 
+//แก้ไขกระทู้
 router.post('/threads/:id', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id).populate('author');
   if (!th) return res.status(404).send('Not found');
   if (String(th.author._id) !== String(req.session.user.id) && req.session.user.role !== 'admin') {
     return res.status(403).send('Forbidden');
   }
-
+  // อนุญาตให้แก้ไข title และ body เท่านั้น
   const title = (req.body.title || '').trim();
   const body  = (req.body.body  || '').trim();
   if (title) th.title = title;
   if (body)  th.body  = body;
 
+  // บันทึกการเปลี่ยนแปลง
+
   await th.save();
   res.redirect('/threads/' + th._id);
 });
 
+
+// ตอบกระทู้
 router.post('/threads/:id/replies', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
   th.replies.push({ author: req.session.user.id, body: req.body.body });
@@ -101,7 +103,7 @@ router.post('/threads/:id/like', requireAuth, async (req, res) => {
   res.redirect('/threads/' + th._id);
 });
 
-// edit
+// แก้ไขกระทู้ (หน้าแก้ไข)
 router.get('/threads/:id/edit', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id).populate('author');
   if (!th) return res.status(404).send('Not found');
@@ -130,7 +132,7 @@ router.post('/threads/:id', requireAuth, async (req, res) => {
   res.redirect('/threads/' + th._id);
 });
 
-// report
+// รายงานกระทู้
 router.get('/threads/:id/report', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
   res.render('threads/report', { thread: th });
@@ -143,7 +145,7 @@ router.post('/threads/:id/report', requireAuth, async (req, res) => {
   res.redirect('/threads/' + th._id);
 });
 
-// delete or report button
+// ลบกระทู้ (soft delete) โดยเจ้าของกระทู้หรือแอดมิน
 router.post('/threads/:id/delete', requireAuth, async (req, res) => {
   const th = await Thread.findById(req.params.id);
   if (!th) return res.status(404).send('Not found');

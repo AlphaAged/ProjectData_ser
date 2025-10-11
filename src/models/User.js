@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
+  //เก็บการแจ้งเตือน
 const NotificationSchema = new mongoose.Schema({
   type: {type: String, enum: ['comment','reply','admin','like'], required:true},
   message: String,
@@ -9,6 +10,7 @@ const NotificationSchema = new mongoose.Schema({
   createdAt: {type:Date, default:Date.now}
 });
 
+  //เก็บข้อมูลผู้ใช้
 const UserSchema = new mongoose.Schema({
   username: {type:String, unique:true, required:true},
   email: {type:String, unique:true, required:true},
@@ -24,11 +26,15 @@ const UserSchema = new mongoose.Schema({
    savePosts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
 }, {timestamps:true});
 
+//ตั้งรหัสผ่าน โดยจะเก็บโดยการ hash รหัสผ่าน 10 ครั้งก่อนเก็บลงฐานข้อมูล
 UserSchema.methods.setPassword = async function(password){
   this.passwordHash = await bcrypt.hash(password, 10);
 }
+//ตรวจสอบรหัสผ่าน
 UserSchema.methods.validatePassword = function(password){
   return bcrypt.compare(password, this.passwordHash);
 }
 
+
+//ส่งออกให้ใช้โมเดลชื่อ User
 export default mongoose.model('User', UserSchema);

@@ -6,10 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const slug = btn.dataset.slug;
 
       try {
+        //การเรียก api ไปยัง server
         const res = await fetch(`/posts/${slug}/save`, {
           method: "POST",
           headers: { "Content-Type": "application/json" }
         });
+
+        //ตรวจสอบการตอบกลับจาก server
         const data = await res.json();
 
         if (data.saved) {
@@ -23,28 +26,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }});
 
-  // ...existing code...
-  // ปุ่ม unsave ในหน้า saved-posts — ใช้ event delegation และ logging
-  // แทนการ loop ตรงๆ เพื่อรองรับ element ที่อาจถูก generate หลังโหลด
+  //เมื่อกด ยกเลิกการบันทึก
   document.addEventListener("click", async (e) => {
     const unsaveBtn = e.target.closest(".unsave-btn");
-    //กดยกเเลิกการบันทึก
-    if (!unsaveBtn) return;
 
+    // ถ้าไม่ใช่ปุ่มยกเลิกการบันทึก ให้ข้าม
+    if (!unsaveBtn) return;
+    //กันรีเฟรชหน้า
     e.preventDefault();
     const slug = unsaveBtn.dataset.slug;
     console.log("unsave clicked", { slug });
 
+    // ตรวจสอบว่ามี slug หรือไม่ถ้าไม่มีให้หยุดทำงาน
     if (!slug) {
       console.error("unsave-btn missing data-slug");
       return;
     }
 
+    //ส่งapiไปยังเซิร์ฟเวอร์เพื่อยกเลิกการบันทึกโพสต์ //เหมือนกับข้างบนแค่ยกเลิกบันทึก
     try {
       const res = await fetch(`/posts/${slug}/save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "same-origin" // ถ้าเซิร์ฟเวอร์ต้องการคุกกี้/เซสชัน
+        credentials: "same-origin"
       });
 
       if (!res.ok) {
