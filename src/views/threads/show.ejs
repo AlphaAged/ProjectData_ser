@@ -372,6 +372,11 @@
       /* amber-900 */
     }
 
+    .author-link:hover {
+      color: #F59E0B;
+    }
+
+
     
  
   </style>
@@ -416,9 +421,17 @@
         </div>
 
         <p class="meta">
-          โดย <%= (thread.author && thread.author.username) ? thread.author.username : 'ผู้ใช้' %>
-            · <%= new Date(thread.createdAt).toLocaleString('th-TH', { dateStyle:'medium', timeStyle:'short' }) %>
+          โดย 
+          <% if (thread.author && thread.author.username) { %>
+            <a href="<%= isOwner ? '/profile' : '/user/' + thread.author.username %>" class="author-link">
+              <%= thread.author.username %>
+            </a>
+          <% } else { %>
+            ผู้ใช้
+          <% } %>
+          · <%= new Date(thread.createdAt).toLocaleString('th-TH', { dateStyle:'medium', timeStyle:'short' }) %>
         </p>
+
 
         <!-- <% var program=(thread.author && thread.author.program)?thread.author.program:''; var year=(thread.author &&
           thread.author.year)?thread.author.year:''; var progYear='' ; if(program) progYear=program; if(year)

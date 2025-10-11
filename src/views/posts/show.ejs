@@ -75,7 +75,7 @@
       color: #dc2626;
     }
 
-    .save-btn {
+     .save-btn {
       background: #e0f2fe !important;
       border-color: #38bdf8 !important;
       color: #0369a1 !important;
@@ -120,7 +120,7 @@
       color: #0d63a5;
     }
 
-
+   
     .like-btn.liked {
       background: #fde2e2;
       border-color: #fca5a5;
@@ -303,90 +303,9 @@
       line-height: 1.75;
       font-size: 1rem;
     }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, .35);
-      z-index: 50;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-card {
-      width: 100%;
-      max-width: 520px;
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
-    }
-
-    .modal-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 14px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    .modal-body {
-      padding: 14px;
-    }
-
-    .modal-actions {
-      display: flex;
-      gap: 8px;
-      justify-content: flex-end;
-      padding: 0 14px 14px;
-    }
-
-    .modal-close {
-      background: #fff;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 6px 10px;
-      cursor: pointer;
-    }
-
-    .modal .field {
-      margin-bottom: 10px;
-    }
-
-    .modal input[type="text"],
-    .modal textarea {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 10px;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    .modal input[type="text"]:focus,
-    .modal textarea:focus {
-      border-color: #0d63a5;
-      box-shadow: 0 0 0 3px rgba(13, 99, 165, .12);
-    }
-
-    /* ปุ่มส่งในโมดอลให้แมตช์สไตล์ */
-    .btn {
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      color: #374151;
-    }
-
-    .btn.primary {
-      border-color: #0d63a5;
-      background: #0d63a5;
-      color: #fff;
+    
+    .author-link:hover {
+      color: #F59E0B;
     }
   </style>
 </head>
@@ -396,204 +315,174 @@
   <main class="container">
     <div class="post-show">
       <article class="post">
-        <% if (post.coverImage) { %>
-
-          <img src="<%= post.coverImage %>" alt="cover" style="max-width:300px;">
+        <% if (post.coverImage){ %><img src="<%= post.coverImage %>" class="cover-xl" />
           <% } %>
-
-            <% if (post.pdfFile) { %>
-              <div class="pdf-preview" style="margin-top: 1rem;">
-                <iframe src="<%= post.pdfFile %>" width="100%" height="600px"
-                  style="border: 1px solid #ccc; border-radius: 10px;">
-                </iframe>
-              </div>
+            <div class="title-wrapper">
+              <h1 style="color: #0d63a5;">
+                <%= post.title %>
+              </h1>
+              <% if (currentUser) { %>
+                <% if (String(currentUser.id)===String(post.author._id) || currentUser.role==='admin' ) { %>
+                  <div class="actions-btn">
+                    <a class="edit-btn" href="/posts/<%= post.slug %>/edit">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path
+                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                        <path fill-rule="evenodd"
+                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                      </svg>
+                      แก้ไข
+                    </a>
+                    <form method="post" action="/posts/<%= post.slug %>/delete" style="display:inline"
+                      onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้? การลบนี้ไม่สามารถย้อนกลับได้');">
+                      <button class="danger del-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                          class="bi bi-trash3" viewBox="0 0 16 16">
+                          <path
+                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                        </svg>
+                        ลบโพสต์
+                      </button>
+                    </form>
+                  </div>
+                  <% } %>
+                    <% } %>
+            </div>
+            <p class="muted meta-line">
+              <p class="muted meta-line">
+              โดย 
+              <% if (post.author && post.author.username) { %>
+                <a href="<%= isOwner ? '/profile' : '/user/' + post.author.username %>" class="author-link">
+                  <%= post.author.username %>
+                </a>
+              <% } else { %>
+                ผู้ใช้
               <% } %>
-                <div class="title-wrapper">
-                  <h1 style="color: #0d63a5;">
-                    <%= post.title %>
-                  </h1>
-                  <% if (currentUser) { %>
-                    <% if (String(currentUser.id)===String(post.author._id) || currentUser.role==='admin' ) { %>
-                      <div class="actions-btn">
-                        <a class="edit-btn" href="/posts/<%= post.slug %>/edit">
+              ·
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16"
+                  aria-hidden="true" style="color: #4b5563;">
+                  <path fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+
+                <span class="like-count">
+                  <%= post.likes.length %>
+                </span>
+                · <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
+                  style="color: #4b5563;" class="bi bi-chat-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
+                </svg>
+                <span class="comment-count">
+                  <%= post.comments.length %>
+                </span>
+                ·
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill" style="color: #4b5563;"
+                  viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                </svg>
+                <%= post.views %>
+            </p>
+            <p class="post-time meta-line">
+              โพสต์เมื่อ <%= new Date(post.createdAt).toLocaleString() %>
+            </p>
+            <div class="tags meta-line">
+              <% (post.tags||[]).forEach(t=>{ %><span class="tag">
+                  <%= t %>
+                </span>
+                <% }) %>
+            </div>
+
+            <div class="post-body">
+              <%- escapeHtml(post.body).replace(/\r?\n/g,'<br>') %>
+            </div>
+
+            <div class="actions-container">
+              <!-- ปุ่มถูกใจ -->
+              <button type="button"
+                class="like-btn<%= (currentUser && post.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>"
+                data-slug="<%= post.slug %>">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-heart-fill" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                    d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                </svg>
+                ถูกใจ
+              </button>
+              <!-- ปุ่มบันทึก/ยกเลิกบันทึก -->
+              <% if (currentUser) { %>
+                <button id="save-post-btn" data-slug="<%= post.slug %>"
+                  class="save-btn <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'saved' : '' %>">
+
+                  <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'ยกเลิกบันทึก'
+                    : 'บันทึกโพสต์' %>
+
+                </button>
+                <% } %>
+
+                  <!-- ถ้าเป็นเจ้าของโพสต์หรือ admin จะไม่เห็นปุ่มรายงาน -->
+                  <% if (currentUser && (String(currentUser.id)===String(post.author._id) || currentUser.role==='admin'
+                    )) { %>
+                    <!-- ไม่ต้องมีปุ่ม report -->
+                    <% } else if (currentUser) { %>
+                      <div class="report-btn-wrapper">
+                        <a class="report-btn" href="/posts/<%= post.slug %>/report">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-pencil-square" viewBox="0 0 16 16">
+                            class="bi bi-flag" viewBox="0 0 16 16">
                             <path
-                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                            <path fill-rule="evenodd"
-                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                              d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
                           </svg>
-                          แก้ไข
+                          รายงาน
                         </a>
-                        <form method="post" action="/posts/<%= post.slug %>/delete" style="display:inline"
-                          onsubmit="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบโพสต์นี้? การลบนี้ไม่สามารถย้อนกลับได้');">
-                          <button class="danger del-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                              class="bi bi-trash3" viewBox="0 0 16 16">
-                              <path
-                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                            </svg>
-                            ลบโพสต์
-                          </button>
-                        </form>
                       </div>
                       <% } %>
-                        <% } %>
-                </div>
-                <p class="muted meta-line">
-                  โดย <%= post.author?.username %> ·
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill" viewBox="0 0 16 16"
-                      aria-hidden="true" style="color: #4b5563;">
-                      <path fill-rule="evenodd"
-                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                    </svg>
+            </div>
 
-                    <span class="like-count">
-                      <%= post.likes.length %>
-                    </span>
-                    · <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor"
-                      style="color: #4b5563;" class="bi bi-chat-fill" viewBox="0 0 16 16">
-                      <path
-                        d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
-                    </svg>
-                    <span class="comment-count">
-                      <%= post.comments.length %>
-                    </span>
-                    ·
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill" style="color: #4b5563;"
-                      viewBox="0 0 16 16" aria-hidden="true">
-                      <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                      <path
-                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                    </svg>
-                    <%= post.views %>
-                </p>
-                <p class="post-time meta-line">
-                  โพสต์เมื่อ <%= new Date(post.createdAt).toLocaleString() %>
-                </p>
-                <div class="tags meta-line">
-                  <% (post.tags||[]).forEach(t=>{ %><span class="tag">
-                      <%= t %>
-                    </span>
-                    <% }) %>
-                </div>
+            <div class="comment-container">
+              <div class="comment-header">
+                <h3 style="color: #0369a1;">คอมเมนต์</h3>
+                <span class="comment-count">
+                  <%= post.comments?.length || 0 %> รายการ
+                </span>
+              </div>
 
-                <div class="post-body">
-                  <%- escapeHtml(post.body).replace(/\r?\n/g,'<br>') %>
-                </div>
+              <form id="comment-form" method="post" action="/posts/<%= post.slug %>/comments" class="comment-form">
+                <textarea name="body" rows="3" required id="comment-textarea"
+                  placeholder="พิมพ์ความคิดเห็นของคุณ..."></textarea>
+                <button class="sendcmt-btn" type="submit" <%=currentUser ? '' : 'disabled' %>>ส่งคอมเมนต์</button>
+              </form>
 
-                <div class="actions-container">
-                  <!-- ปุ่มถูกใจ -->
-                  <button type="button"
-                    class="like-btn<%= (currentUser && post.likes.map(id => String(id)).includes(String(currentUser.id))) ? ' liked' : '' %>"
-                    data-slug="<%= post.slug %>">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                      class="bi bi-heart-fill" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd"
-                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                    </svg>
-                    ถูกใจ
-                  </button>
-                  <!-- ปุ่มบันทึก/ยกเลิกบันทึก -->
-                  <% if (currentUser) { %>
-                    <button id="save-post-btn" data-slug="<%= post.slug %>"
-                      class="save-btn <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'saved' : '' %>">
+              <% if (!currentUser) { %>
+                <p class="muted small">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
+                <% } %>
 
-                      <%= currentUser.savePosts && currentUser.savePosts.includes(String(post._id)) ? 'ยกเลิกบันทึก'
-                        : 'บันทึกโพสต์' %>
-
-                    </button>
-                    <% } %>
-
-                      <!-- ถ้าเป็นเจ้าของโพสต์หรือ admin จะไม่เห็นปุ่มรายงาน -->
-                      <% if (currentUser && (String(currentUser.id)===String(post.author._id) ||
-                        currentUser.role==='admin' )) { %>
-                        <!-- ไม่ต้องมีปุ่ม report -->
-                        <% } else if (currentUser) { %>
-                          <div class="report-btn-wrapper">
-                            <button id="report-open" class="report-btn" type="button" title="รายงาน">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-flag" viewBox="0 0 16 16">
-                                <path
-                                  d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
-                              </svg>
-                              รายงาน
-                            </button>
-                            <noscript><a class="report-btn" href="/posts/<%= post.slug %>/report">รายงาน</a></noscript>
+                  <ul class="comments" id="comments-list">
+                    <% if (post.comments && post.comments.length) { %>
+                      <% post.comments.forEach(c=> { %>
+                        <li class="comment-item">
+                          <div class="comment-meta">
+                            <b class="comment-author">
+                              <%= c.author?.username || 'ผู้ใช้' %>
+                            </b>
+                            <span class="dot">·</span>
+                            <span class="muted">
+                              <%= new Date(c.createdAt).toLocaleString() %>
+                            </span>
                           </div>
-                          <% } %>
-                </div>
-
-                <div class="comment-container">
-                  <div class="comment-header">
-                    <h3 style="color: #0369a1;">คอมเมนต์</h3>
-                    <span class="comment-count">
-                      <%= post.comments?.length || 0 %> รายการ
-                    </span>
-                  </div>
-
-                  <form id="comment-form" method="post" action="/posts/<%= post.slug %>/comments" class="comment-form">
-                    <textarea name="body" rows="3" required id="comment-textarea"
-                      placeholder="พิมพ์ความคิดเห็นของคุณ..."></textarea>
-                    <button class="sendcmt-btn" type="submit" <%=currentUser ? '' : 'disabled' %>>ส่งคอมเมนต์</button>
-                  </form>
-
-                  <% if (!currentUser) { %>
-                    <p class="muted small">ต้องเข้าสู่ระบบเพื่อคอมเมนต์</p>
-                    <% } %>
-
-                      <ul class="comments" id="comments-list">
-                        <% if (post.comments && post.comments.length) { %>
-                          <% post.comments.forEach(c=> { %>
-                            <li class="comment-item">
-                              <div class="comment-meta">
-                                <b class="comment-author">
-                                  <%= c.author?.username || 'ผู้ใช้' %>
-                                </b>
-                                <span class="dot">·</span>
-                                <span class="muted">
-                                  <%= new Date(c.createdAt).toLocaleString() %>
-                                </span>
-                              </div>
-                              <div class="comment-body">
-                                <%= c.body %>
-                              </div>
-                            </li>
-                            <% }) %>
-                              <% } else { %>
-                                <% } %>
-                      </ul>
-                </div>
+                          <div class="comment-body">
+                            <%= c.body %>
+                          </div>
+                        </li>
+                        <% }) %>
+                          <% } else { %>
+                            <% } %>
+                  </ul>
+            </div>
       </article>
     </div>
   </main>
-  <% if (currentUser && !(String(currentUser.id)===String(post.author._id) || currentUser.role==='admin' )) { %>
-    <div id="report-modal" class="modal" aria-hidden="true">
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="report-title">
-        <div class="modal-head">
-          <strong id="report-title">รายงานโพสต์</strong>
-          <button style="color: black !important;" id="report-close" class="modal-close" type="button" aria-label="ปิด">ปิด</button>
-        </div>
-
-        <form method="post" action="/posts/<%= post.slug %>/report">
-          <div class="modal-body">
-            <div class="field">
-              <label for="r-title">หัวข้อเหตุผล</label>
-              <input id="r-title" name="title" type="text" required placeholder="เช่น สแปม/เนื้อหาไม่เหมาะสม">
-            </div>
-            <div class="field">
-              <label for="r-body">รายละเอียด</label>
-              <textarea id="r-body" name="body" rows="5" required placeholder="อธิบายเพิ่มเติม..."></textarea>
-            </div>
-          </div>
-          <div class="modal-actions">
-            <button style="color: black !important;" type="button" id="report-cancel" class="modal-close">ยกเลิก</button>
-            <button type="submit" class="btn primary">ส่งรายงาน</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    <% } %>
 </body>
 <script src="/js/save-post.js"></script>
 <script>
@@ -689,26 +578,6 @@
       }
     });
   }
-</script>
-<script>
-  // Report modal (โพสต์)
-  (function () {
-    var openBtn = document.getElementById('report-open');
-    var modal = document.getElementById('report-modal');
-    if (!openBtn || !modal) return;
-    var closeBtn = document.getElementById('report-close');
-    var cancelBtn = document.getElementById('report-cancel');
-
-    function openM() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
-    function closeM() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
-
-    openBtn.addEventListener('click', openM);
-    if (closeBtn) closeBtn.addEventListener('click', closeM);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeM);
-
-    modal.addEventListener('click', function (e) { if (e.target === modal) closeM(); });
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeM(); });
-  })();
 </script>
 
 </html>

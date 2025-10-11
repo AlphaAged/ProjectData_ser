@@ -90,7 +90,8 @@ router.get('/posts/:slug', async (req, res) => {
 
   post.views += 1;
   await post.save();
-  res.render('posts/show', { post });
+  const isOwner = req.session.user ? post.author._id.toString() === req.session.user.id : false;
+  res.render('posts/show', { post, isOwner });
 });
 
 // like
