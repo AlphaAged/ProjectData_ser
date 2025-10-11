@@ -13,8 +13,6 @@ import threadRoutes from './src/routes/threads.js';
 import adminRoutes from './src/routes/admin.js';
 import notifyRoutes from './src/routes/notifications.js';
 import expressEjsLayouts from 'express-ejs-layouts';
-import { handleDatabaseFullError } from './src/utils/handleDbFull.js';
-import { startStorageGuard } from './src/utils/storageGuard.js';
 
 dotenv.config();
 
@@ -96,49 +94,5 @@ app.get('/search', async (req,res)=>{
   const posts = await Post.find(filter).sort({createdAt:-1}).limit(50).populate('author');
   res.render('search', { title: 'ค้นหาสรุป', posts, q:q||'', tag:tag||'' });
 });
-
-
-//test DB full
-
-
-app.use(async (err, req, res, next) => {
-  try {
-    await handleDatabaseFullError(err);
-    return res.status(503).json({
-      message: 'Database was full and has been cleaned. Please retry your request.',
-    });
-  } catch (e) {
-    return next(err);
-  }
-});
-app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err?.message || err);
-  res.status(500).json({ message: 'Internal server error' });
-});
-
-
-app.get('/Dbfull', async (req, res, next) => {
-  try {
-    const fake = new Error('QueryExceededMemoryLimitNoDiskUseAllowed');
-    fake.code = 292;
-    await handleDatabaseFullError(fake);
-    res.json({ ok: true, note: 'Cleanup simulated (non-admin users & other collections removed)' });
-  } catch (err) {
-    next(err);
-  }
-});
-
-process.on('unhandledRejection', async (reason) => {
-  try { await handleDatabaseFullError(reason); }
-  catch (_) {}
-});
-
-process.on('uncaughtException', async (err) => {
-  try { await handleDatabaseFullError(err); }
-  finally { /* ใส่อะไรดี*/ }
-});
-
-
-startStorageGuard();
 
 app.listen(PORT, ()=>console.log(`App running on http://localhost:${PORT}`));
