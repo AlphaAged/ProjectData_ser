@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // ปุ่มเมื่อกดบันทึกดโพสจะเข้ามาในนี้ const btn = document.getElementById("save-post-btn");
+  // ปุ่มเมื่อกดบันทึกดโพสจะเข้ามาในนี้ 
+const btn = document.getElementById("save-post-btn");
   if (btn) {  
     btn.addEventListener("click", async (e) => {
       e.preventDefault();
