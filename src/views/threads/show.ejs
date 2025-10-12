@@ -155,7 +155,7 @@
 
     #like-btn.liked {
       color: #b91c1c;
-        }
+    }
 
     .owner-actions {
       display: flex;
@@ -338,8 +338,8 @@
       box-shadow: 0 0 0 3px rgba(13, 99, 165, .12)
     }
 
-    .report-btn{
-            padding: 6px 12px;
+    .report-btn {
+      padding: 6px 12px;
       border-radius: 6px;
       font-size: 14px;
       cursor: pointer;
@@ -350,7 +350,7 @@
       align-items: center;
     }
 
-    
+
     .report-btn {
       border: 1px solid #FCD34D;
       /* amber-300 */
@@ -363,7 +363,7 @@
       transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
     }
 
-        .report-btn:hover {
+    .report-btn:hover {
       background: #FFEDD5;
       /* orange-100 */
       border-color: #F59E0B;
@@ -375,10 +375,6 @@
     .author-link:hover {
       color: #F59E0B;
     }
-
-
-    
- 
   </style>
 </head>
 
@@ -396,23 +392,23 @@
             %>
             <div class="actions-btn owner-actions">
               <a class="edit-btn" href="/threads/<%= thread._id %>/edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-pencil-square" viewBox="0 0 16 16">
-                        <path
-                          d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                        <path fill-rule="evenodd"
-                          d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                      </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                  class="bi bi-pencil-square" viewBox="0 0 16 16">
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                </svg>
                 แก้ไข
               </a>
               <form method="post" action="/threads/<%= thread._id %>/delete"
                 onsubmit="return confirm('แน่ใจว่าจะลบกระทู้นี้?');">
                 <button class="del-btn" type="submit">
-                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                          class="bi bi-trash3" viewBox="0 0 16 16">
-                          <path
-                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
-                        </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-trash3" viewBox="0 0 16 16">
+                    <path
+                      d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                  </svg>
                   ลบ
                 </button>
               </form>
@@ -421,15 +417,15 @@
         </div>
 
         <p class="meta">
-          โดย 
+          โดย
           <% if (thread.author && thread.author.username) { %>
             <a href="<%= isOwner ? '/profile' : '/user/' + thread.author.username %>" class="author-link">
               <%= thread.author.username %>
             </a>
-          <% } else { %>
-            ผู้ใช้
-          <% } %>
-          · <%= new Date(thread.createdAt).toLocaleString('th-TH', { dateStyle:'medium', timeStyle:'short' }) %>
+            <% } else { %>
+              ผู้ใช้
+              <% } %>
+                · <%= new Date(thread.createdAt).toLocaleString('th-TH', { dateStyle:'medium', timeStyle:'short' }) %>
         </p>
 
 
@@ -459,7 +455,7 @@
                 <svg viewBox="0 0 16 16" aria-hidden="true">
                   <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
                 </svg>
-                <span id="like-count" >
+                <span id="like-count">
                   <%= (thread.likes && thread.likes.length) ? thread.likes.length : 0 %>
                 </span>
               </button>
@@ -500,11 +496,11 @@
           <% if (currentUser && !(String(currentUser.id)===String(thread.author._id) || currentUser.role==='admin' )) {
             %>
             <button id="report-open" class="action report-btn" type="button" title="รายงาน">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-flag" viewBox="0 0 16 16">
-                            <path
-                              d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
-                          </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag"
+                viewBox="0 0 16 16">
+                <path
+                  d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12 12 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A20 20 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a20 20 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21 21 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21 21 0 0 0 14 7.655V1.222z" />
+              </svg>
               <span>รายงาน</span>
             </button>
             <noscript><a class="btn" href="/threads/<%= thread._id %>/report">รายงาน</a></noscript>
@@ -517,7 +513,7 @@
         <% if (currentUser){ %>
           <form class="composer" method="post" action="/threads/<%= thread._id %>/replies">
             <input type="text" name="body" required placeholder="พิมพ์ความคิดเห็นของคุณ..." />
-            <button class="sendcmt-btn"  type="submit" aria-label="ส่ง">ส่ง</button>
+            <button class="sendcmt-btn" type="submit" aria-label="ส่ง">ส่ง</button>
           </form>
           <% } else { %>
             <div class="composer">
@@ -607,18 +603,48 @@
 
         // Report modal
         (function () {
+          // IIFE: สร้างสcopeปิดเองกันตัวแปรไหลออกสู่ global
           var open = document.getElementById('report-open');
+          // ดึงปุ่ม "รายงาน" ที่จะกดเพื่อเปิดโมดัล
           var modal = document.getElementById('report-modal');
+          // ดึงกล่องโมดัล (overlay + กล่องเนื้อหา)
           if (!open || !modal) return;
+          // ถ้าไม่เจอปุ่มหรือไม่เจอโมดัล ก็หยุดทำงานเพื่อไม่ให้ error
           var closeBtn = document.getElementById('report-close');
+          // ปุ่มปิด (กากบาท/ปิด) บนหัวโมดัล
           var cancelBtn = document.getElementById('report-cancel');
-          function openM() { modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false'); }
-          function closeM() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+          // ปุ่ม "ยกเลิก" ในส่วนปุ่มแอ็กชันล่างของโมดัล
+          function openM() {
+            // ฟังก์ชันเปิดโมดัล
+            modal.classList.add('open');
+            // ใส่คลาส .open เพื่อให้ CSS แสดงโมดัล
+            modal.setAttribute('aria-hidden', 'false');
+            // เพื่อ a11y: บอก reader ว่าตอนนี้โมดัลไม่ถูกซ่อนไว้แล้ว
+          }
+          function closeM() {
+            // ฟังก์ชันปิดโมดัล
+            modal.classList.remove('open');
+            // ลบคลาส .open เพื่อซ่อนโมดัล
+            modal.setAttribute('aria-hidden', 'true');
+            // เพื่อ a11y: บอกว่าโมดัลถูกซ่อนไว้
+          }
           open.addEventListener('click', openM);
+          // คลิกปุ่ม "รายงาน" → เปิดโมดัล
           if (closeBtn) closeBtn.addEventListener('click', closeM);
+          // ถ้ามีปุ่มปิด → คลิกแล้วปิดโมดัล
           if (cancelBtn) cancelBtn.addEventListener('click', closeM);
-          modal.addEventListener('click', function (e) { if (e.target === modal) closeM(); });
-          document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeM(); });
+          // ถ้ามีปุ่มยกเลิก → คลิกแล้วปิดโมดัล
+          modal.addEventListener('click', function (e) {
+            // คลิกที่ overlay (นอกการ์ด) ให้ปิดโมดัล
+            if (e.target === modal) closeM();
+            // เช็คว่าเป้าหมายคลิกคือเลเยอร์นอกสุด (ไม่ใช่การ์ดด้านใน)
+          });
+
+          document.addEventListener('keydown', function (e) {
+            // ฟังปุ่มคีย์บอร์ดทั้งเอกสาร
+            if (e.key === 'Escape' && modal.classList.contains('open')) closeM();
+            // ถ้ากด Esc และโมดัลเปิดอยู่ → ปิดโมดัล
+          });
         })();
       </script>
 </body>

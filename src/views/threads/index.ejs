@@ -14,6 +14,18 @@
       --bg: #fff;
     }
 
+    .title-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .title-wrapper .post-time {
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+
     .wrap {
       max-width: 960px;
       margin: 0 auto;
@@ -305,76 +317,103 @@
         <p class="muted">ไม่พบผลลัพธ์สำหรับ “<%= _q %>”</p>
         <% } %>
 
-          <section class="feed" aria-label="community feed">
-            <% var SHOW_EXCERPT=true; if (threads && threads.length) { for (var i=0; i < threads.length; i++) { var
-              t=threads[i]; if (t && t.deleted) { continue; } var replies=(t.replies && t.replies.length) ?
-              t.replies.length : 0; var likes=(t.likes && t.likes.length) ? t.likes.length : 0; var views=(typeof
-              t.views==='number' ) ? t.views : 0; var created=t.updatedAt || t.createdAt || Date.now(); var
-              username=(t.author && t.author.username) ? t.author.username : 'ผู้ใช้' ; var program=(t.author &&
-              t.author.program) ? t.author.program : '' ; var year=(t.author && t.author.year) ? t.author.year : '' ;
-              var progYear='' ; if (program) { progYear=program; } if (year) { if (progYear) { progYear=progYear
-              + ' · ปี ' + year; } else { progYear='ปี ' + year; } } var category=t.category || t.tag || '' ; %>
-              <!-- คลิกได้ทั้งแถว -->
-              <a class="item" href="/threads/<%= t._id %>" aria-label="เปิดหัวข้อ: <%= t.title %>">
-                <div class="meta-top">
-                  <span class="name">
-                    <%= username %>
-                  </span>
-                  <% if (progYear) { %><span class="chip">
-                      <%= progYear %>
-                    </span>
-                    <% } %>
-                      <% if (category) { %><span class="sep">•</span><span class="cat">โพสต์ใน <strong>
-                            <%= category %>
-                          </strong></span>
-                        <% } %>
-                          <span class="post-time" data-time="<%= new Date(t.createdAt).toISOString() %>"></span>
+          <section class="feed grid" aria-label="community feed">
+            <% (threads || []).forEach(t=> { if (!t || t.deleted) return; %>
+              <div class="card-container">
+                <a class="card" href="/threads/<%= t._id %>">
+                  <% if (t.coverImage) { %>
+                    <img src="<%= t.coverImage %>" class="cover" />
+                    <% } else if (t.pdfFile) { %>
+                      <div class="pdf-preview d-flex flex-column justify-content-center align-items-center"
+                        style="height: 10px; background: #f8f9fa; border-radius: 10px;">
+                        <span class="text-muted fs-5">📄 <%= t.title %>.pdf</span>
+                      </div>
+                      <% } %>
 
-                </div>
+                        <div class="pad">
+                          <div class="title-wrapper">
+                            <h3 class="ellipsis meta-line">
+                              <%= t.title %>
+                            </h3>
+                            <span class="post-time"
+                              data-time="<%= new Date(t.updatedAt || t.createdAt || Date.now()).toISOString() %>"></span>
+                          </div>
 
-                <div class="title-row">
-                  <h3 class="title"><span>
-                      <%= t.title %>
-                    </span></h3>
+                          <p class="muted meta-line author">
+                            by <%= (t.author && t.author.username) ? t.author.username : 'ผู้ใช้' %>
+                          </p>
 
-                </div>
+                          <% if (t.body) { %>
+                            <p class="muted excerpt">
+                              <%= t.body %>
+                            </p>
+                            <% } %>
 
-                <% if (SHOW_EXCERPT && t.body) { %>
-                  <p class="excerpt">
-                    <%= t.body %>
-                  </p>
-                  <% } %>
+                              <p class="muted meta-line stats">
+                                <% const likedByMe=currentUser && Array.isArray(t.likes) && t.likes.map(id=>
+                                  String(id)).includes(String(currentUser.id)); %>
 
-                    <div class="stats">
-                      <span class="stat" title="ถูกใจ">
-                        <svg viewBox="0 0 16 16" aria-hidden="true">
-                          <path d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-                        </svg>
-                        <span>
-                          <%= likes %>
-                        </span>
-                      </span>
-                      <span class="stat" title="ความเห็น">
-                        <svg viewBox="0 0 16 16" aria-hidden="true">
-                          <path
-                            d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
-                        </svg>
-                        <span>
-                          <%= replies %>
-                        </span>
-                      </span>
-                      <span class="stat" title="จำนวนดู">
-                        <svg viewBox="0 0 16 16" aria-hidden="true">
-                          <path
-                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                        </svg>
-                        <span>
-                          <%= views %>
-                        </span>
-                      </span>
-                    </div>
-              </a>
-              <% } /* end for */ } /* end if threads */ %>
+                                  <!-- heart -->
+                                  <% if (likedByMe) { %>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill"
+                                      viewBox="0 0 16 16" aria-hidden="true" style="color:#DE3163;">
+                                      <path fill="currentColor" fill-rule="evenodd"
+                                        d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                    </svg>
+                                    <% } else { %>
+                                      <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-heart-fill"
+                                        viewBox="0 0 16 16" aria-hidden="true" style="color:#4b5563;">
+                                        <path fill-rule="evenodd"
+                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+                                      </svg>
+                                      <% } %>
+                                        <span class="stat-num like-count">
+                                          <%= (t.likes || []).length %>
+                                        </span>
+
+
+                                        <!-- comments -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                          fill="currentColor" class="bi bi-chat-fill" aria-hidden="true"
+                                          style="color:#4b5563;" viewBox="0 0 16 16">
+                                          <path
+                                            d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9 9 0 0 0 8 15" />
+                                        </svg>
+                                        <span class="comment-count">
+                                          <%= (t.replies || []).length %>
+                                        </span>
+
+
+                                        <!-- views -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon-inline bi bi-eye-fill"
+                                          style="color:#4b5563;" viewBox="0 0 16 16" aria-hidden="true">
+                                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                          <path
+                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                        </svg>
+                                        <span class="stat-num">
+                                          <%= (typeof t.views==='number' ) ? t.views : 0 %>
+                                        </span>
+
+                                        <!-- ปุ่มไลก์ (ถ้าจะใช้ JS จับ) -->
+                                        <button type="button" class="like-btn<%= likedByMe ? ' liked' : '' %>"
+                                          data-thread-id="<%= t._id %>" aria-label="like"
+                                          style="display:none;">♥</button>
+                              </p>
+
+                              <% if (Array.isArray(t.tags) && t.tags.length) { %>
+                                <div class="tags">
+                                  <% t.tags.forEach(tag=> { %>
+                                    <span class="tag">
+                                      <%= tag %>
+                                    </span>
+                                    <% }) %>
+                                </div>
+                                <% } %>
+                        </div>
+                </a>
+              </div>
+              <% }); %>
           </section>
   </main>
 
@@ -385,14 +424,18 @@
       </svg>
     </a>
     <% } %>
+
       <script>
         (function () {
-          function timeAgo(input) {
-            const date = new Date(input);
+          function timeAgo(input) {            // ฟังก์ชันแปลงเวลา 
+            const date = new Date(input);      // แปลงสตริง/เลขเวลาเป็น Date
             const diffSec = Math.round((Date.now() - date.getTime()) / 1000);
-            const abs = Math.abs(diffSec);
-            if (abs < 45) return diffSec >= 0 ? "เมื่อสักครู่" : "อีกสักครู่";
-            const units = [
+            // ส่วนต่างเวลาระหว่างตอนนี้กับ input (วินาที)
+            const abs = Math.abs(diffSec);     // เอาค่าสัมบูรณ์ไว้เปรียบเทียบเกณฑ์
+            if (abs < 45)                      // ถ้าน้อยกว่า 45 วินาที
+              return diffSec >= 0 ? "เมื่อสักครู่" : "อีกสักครู่"; // อดีต/อนาคต สั้น ๆ
+
+            const units = [                    // ตารางหน่วยเวลาใหญ่→เล็ก (วินาทีต่อหน่วย)
               { s: 31536000, k: "ปี" },
               { s: 2592000, k: "เดือน" },
               { s: 604800, k: "สัปดาห์" },
@@ -401,23 +444,24 @@
               { s: 60, k: "นาที" },
               { s: 1, k: "วินาที" },
             ];
-            for (const u of units) {
+            for (const u of units) {           // หา “หน่วยที่เหมาะที่สุด”
               if (abs >= u.s) {
-                const n = Math.floor(abs / u.s);
+                const n = Math.floor(abs / u.s); // จำนวนเต็มของหน่วยนั้น ๆ
                 return diffSec >= 0 ? `${n} ${u.k}` : ` ${n} ${u.k}`;
+                // คืนข้อความง่าย ๆ (ยังไม่มีคำว่า “ที่แล้ว/อีก”)
               }
             }
             return "เมื่อสักครู่";
           }
 
-          function updateAll() {
+          function updateAll() {               // อัปเดตข้อความทุก .post-time
             document.querySelectorAll('.post-time[data-time]').forEach(el => {
-              el.textContent = timeAgo(el.getAttribute('data-time'));
+              el.textContent = timeAgo(el.getAttribute('data-time')); // อ่าน data-time → แปลง → ใส่ข้อความ
             });
           }
 
-          updateAll();
-          setInterval(updateAll, 60000); // อัปเดตทุก 1 นาที
+          updateAll();                         // เรียกครั้งแรกเมื่อหน้าโหลด
+          setInterval(updateAll, 60000);       // แล้วค่อยอัปเดตทุก 60 วินาที
         })();
       </script>
 
